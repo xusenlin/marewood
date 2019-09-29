@@ -18,5 +18,5 @@ func init()  {
 		panic("failed to connect database")
 	}
 
-	DB.AutoMigrate(&models.Category{},&models.Repository{},&models.Job{})
+	DB.AutoMigrate(&models.SysSetting{},&models.Category{},&models.Repository{},&models.Job{})
 }

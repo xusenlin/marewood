@@ -13,4 +13,5 @@ type Job struct {
 	DeployWay    int    `gorm:"not null;default:1;comment:'部署方式，1手动，2自动，3定时'"`
 	BuildDir     string `gorm:"not null;default:'dist';comment:'打包目录'"`
 	BuildCommand string `gorm:"not null;default:'npm run build';comment:'打包命令，可以读取package.json供选择'"`
+	//webhook 签名
 }
