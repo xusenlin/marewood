@@ -1,26 +1,20 @@
 package config
 
 import (
-	"encoding/json"
-	"io/ioutil"
+	"github.com/joho/godotenv"
+	"log"
 	"os"
 )
 
-type userConfig struct {
-	Port int `json:"port"`
-}
-
 type Config struct {
-	userConfig
-	DbDns          string
-	Version        float32
-	AppName        string
-	CurrentDir     string
-	AppRepository  string
-	ConfigFilePath string
-	RepositoryDir  string
-	WebRootDir     string
-	ClientDir      string
+	DbDns         string
+	Version       float32
+	AppName       string
+	CurrentDir    string
+	AppRepository string
+	RepositoryDir string
+	WebRootDir    string
+	ClientDir     string
 }
 
 var Cfg Config
@@ -28,34 +22,20 @@ var Cfg Config
 func init() {
 	var err error
 	if Cfg.CurrentDir, err = os.Getwd(); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	Cfg.Port = 8080
-	Cfg.Version = 0.1
-	Cfg.AppName = "前端自动部署工具"
-	Cfg.AppRepository = ""
-	Cfg.ConfigFilePath = Cfg.CurrentDir + "/config.json"
-	Cfg.DbDns = Cfg.CurrentDir + "/database.db"
-	Cfg.RepositoryDir = Cfg.CurrentDir + "/repository" //克隆过来的所有仓库
-	Cfg.WebRootDir = Cfg.CurrentDir + "/webs"          //打包完成后的静态文件存放地址
-	Cfg.ClientDir = Cfg.CurrentDir + "/public/build"   //客户端地址
-
-	var userCgf userConfig
-
-	configFile, err := ioutil.ReadFile(Cfg.ConfigFilePath)
-
+	err = godotenv.Load()
 	if err != nil {
-		userCgf.Port = 8089
+		log.Fatal("Error loading .env file")
 	}
 
-	jsonErr := json.Unmarshal(configFile, &userCgf)
-
-	if jsonErr != nil {
-
-		userCgf.Port = 8089
-	}
-
-	Cfg.userConfig = userCgf
+	Cfg.Version = 0.1
+	Cfg.AppName = "FEAutoDeploy"
+	Cfg.AppRepository = "https://github.com/xusenlin/FrontEndAutomatedDeployment"
+	Cfg.DbDns = Cfg.CurrentDir + "/database.db"
+	Cfg.RepositoryDir = Cfg.CurrentDir + "/resources/repository" //克隆过来的所有仓库
+	Cfg.WebRootDir = Cfg.CurrentDir + "/resources/webs"          //打包完成后的静态文件存放地址
+	Cfg.ClientDir = Cfg.CurrentDir + "/public/build"             //客户端地址
 
 }

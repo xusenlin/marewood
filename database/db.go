@@ -1,8 +1,9 @@
 package database
 
 import (
-	"AutomatedDeployment/config"
-	"AutomatedDeployment/models"
+	"FrontEndAutomatedDeployment/config"
+	"FrontEndAutomatedDeployment/models"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -19,4 +20,8 @@ func init()  {
 	}
 
 	DB.AutoMigrate(&models.SysSetting{},&models.Category{},&models.Repository{},&models.Job{})
+
+	if DB.Error != nil {
+		fmt.Printf("database error %v", DB.Error)
+	}
 }
