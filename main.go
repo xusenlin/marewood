@@ -13,7 +13,8 @@ func main() {
 
 	r := routes.InitRouter()
 
-	err := r.Run(":" + os.Getenv("HTTP_PORT")) // 监听并在 0.0.0.0:8080 上启动服务
+	err := r.Run(":" + os.Getenv("HTTP_PORT"))
+
 	if err != nil {
 		panic(err)
 	}

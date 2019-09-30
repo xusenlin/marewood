@@ -1,9 +1,0 @@
-package routes
-
-
-
-func initApiRoute()  {
-
-
-
-}
