@@ -3,6 +3,7 @@ package routes
 import (
 	"FrontEndAutomatedDeployment/config"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 //func InitRoute()  {
@@ -12,10 +13,16 @@ import (
 
 func InitRouter() *gin.Engine {
 	r := gin.Default()
-
-	r.Static("/", config.Cfg.ClientDir) // 静态文件服务
+	r.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently,"/public")
+	})
+	r.Static("/public", config.Cfg.ClientDir) // 静态文件服务
 	//r.LoadHTMLGlob("views/**/*") // 载入html模板目录
-
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 	// web路由
 
 	//r.GET("/about", Controllers.About)
