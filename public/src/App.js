@@ -1,12 +1,14 @@
 import React from "react";
 import {HashRouter, Switch, Route} from "react-router-dom";
+import { SnackbarProvider } from 'notistack';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Admin from './views/layout/index.js'
 
 
 function App() {
     return (
-        <React.Fragment>
+
+        <SnackbarProvider maxSnack={1}>
             <CssBaseline/>
             <HashRouter>
                 <Switch>
@@ -14,7 +16,7 @@ function App() {
                     <Route path="/" component={Admin} />
                 </Switch>
             </HashRouter>
-        </React.Fragment>
+        </SnackbarProvider>
     );
 }
 

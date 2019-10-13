@@ -65,31 +65,23 @@ func CategoryCreate(c *gin.Context)  {
 func CategoryDestroy(c *gin.Context)  {
 	var category models.Category
 
-	err := c.BindJSON(&category)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data": err.Error(),
-			"msg":"出错",
-		})
-		return
-	}
+	id := c.Query("id")
 
-	database.DB.Delete(&category)
+	database.DB.Delete(&category).Where("id = ?" , id)
 
 	if database.DB.Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data": database.DB.Error.Error(),
-			"msg":"数据库创建出错",
+			"msg":"数据库删除出错",
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
-		"data":"",
-		"msg":"创建成功",
+		"data":id,
+		"msg":"删除成功",
 	})
 
 }

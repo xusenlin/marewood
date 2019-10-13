@@ -1,7 +1,6 @@
 import Axios from 'axios'
 import Config from '../config/index.js'
-import {getToken, removeToken} from '../utils/dataStorage.js'
-
+import {getToken} from '../utils/dataStorage.js'
 
 const service = Axios.create({
     baseURL: Config.apiUrl + '/' + Config.apiPrefix,
@@ -38,7 +37,6 @@ service.interceptors.response.use(
         if (!res.config.closeLoading) {
             //关闭loading
         }
-
         if (res.status !== 200) {
             // notification.warn({
             //     message: '数据返回出错',
@@ -50,19 +48,10 @@ service.interceptors.response.use(
                 return res.data
             }
 
-            // if (res.data.code !== 100000) {
-            //     notification.warn({
-            //         description: res.data.msg
-            //     });
-            //     if (res.data.code === 100004) {//登录状态失效
-            //         removeToken();
-            //         setTimeout(_ => {
-            //             window.location.href = './#/login'
-            //             // Router.push('/login')
-            //         }, 1000)
-            //     }
-            //     return Promise.reject('error');
-            // }
+            if (res.data.status !== true) {
+                alert(res.data.msg);
+                return Promise.reject('error');
+            }
 
             return res.data.data
         }
