@@ -8,6 +8,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import {IconButton} from "@material-ui/core";
+
 import {categories} from '../../api/category.js'
 
 const styles = theme => ({
@@ -50,7 +53,7 @@ class CategoryTable extends React.Component {
                             <TableRow>
                                 <TableCell>ID</TableCell>
                                 <TableCell align="left">分类名字</TableCell>
-                                <TableCell align="left">项目数量</TableCell>
+                                <TableCell align="left">任务数量</TableCell>
                                 <TableCell align="left">备注</TableCell>
                                 <TableCell align="left">创建时间</TableCell>
                                 <TableCell align="left">操作</TableCell>
@@ -63,9 +66,14 @@ class CategoryTable extends React.Component {
                                         {row.ID}
                                     </TableCell>
                                     <TableCell align="left">{row.Name}</TableCell>
-                                    <TableCell align="left">{row.fat}</TableCell>
-                                    <TableCell align="left">{row.carbs}</TableCell>
-                                    <TableCell align="left">{row.protein}</TableCell>
+                                    <TableCell align="left">{ 10 }</TableCell>
+                                    <TableCell align="left">{row.Desc}</TableCell>
+                                    <TableCell align="left">{row.CreatedAt}</TableCell>
+                                    <TableCell align="left">
+                                        <IconButton edge="start" color="primary">
+                                            <DeleteIcon/>
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

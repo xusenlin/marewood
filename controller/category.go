@@ -67,7 +67,7 @@ func CategoryDestroy(c *gin.Context)  {
 
 	id := c.Query("id")
 
-	database.DB.Delete(&category).Where("id = ?" , id)
+	database.DB.Delete(&category).Where("id = " + id)
 
 	if database.DB.Error != nil {
 		c.JSON(http.StatusOK, gin.H{
