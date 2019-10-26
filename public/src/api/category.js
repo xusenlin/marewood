@@ -12,3 +12,17 @@ export function categories(params) {
         params: params
     })
 }
+
+
+/**
+ * 删除分类
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function destroy(params) {
+    return request({
+        url:  '/category/delete',
+        method: 'get',
+        params: params
+    })
+}

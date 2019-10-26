@@ -19,7 +19,7 @@ func InitRouter() *gin.Engine {
 		c.Redirect(http.StatusMovedPermanently, "/public")
 	})
 
-	v1 := r.Group("/api_v1")
+	v1 := r.Group("/v1")
 	{
 		v1.GET("/categories", controller.CategoryFindAll)
 		v1.POST("/category/create", controller.CategoryCreate)

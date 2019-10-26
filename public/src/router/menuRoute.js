@@ -1,6 +1,6 @@
 import Dashboard from '../views/dashboard';
 import Category from '../views/category';
-import List from '../views/itemList';
+import Job from '../views/job';
 
 import CategoryIcon from '@material-ui/icons/Category';
 import HomeIcon from '@material-ui/icons/Home';
@@ -20,27 +20,27 @@ export default [
 
     },
     {
-        title:'仓库分类',
+        title:'仓库列表',
+        path:'/repository',
+        icon:DashboardIcon,
+        component:Job
+    },
+    {
+        title:'任务分类',
         path:'/category',
         icon:CategoryIcon,
         component:Category
     },
     {
-        title:'仓库列表',
-        path:'/repository',
-        icon:DashboardIcon,
-        component:List
-    },
-    {
         title:'部署任务',
         path:'/job',
         icon:ViewListIcon,
-        component:List
+        component:Job
     },
     {
         title:'工具箱',
         path:'/folder',
         icon:FolderOpenIcon,
-        component:List
+        component:Job
     },
 ]

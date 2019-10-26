@@ -10,6 +10,12 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {IconButton} from "@material-ui/core";
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import {categories} from '../../api/category.js'
 
@@ -34,14 +40,32 @@ class CategoryTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tableData:[]
+            tableData:[],
+            destroyDialogShow:false,
+
         };
+        this.destroyId = 0;
     }
 
     componentDidMount() {
         categories().then(r=>{
             this.setState({tableData:r})
         }).catch(()=>{})
+    }
+
+
+
+    destroyDialogOpen(id){
+        this.destroyId = id;
+        this.setState({destroyDialogShow:true})
+    };
+
+    destroyDialogClose () {
+        this.setState({destroyDialogShow:false})
+    }
+    destroyConfirm () {
+        alert(this.destroyId)
+        this.setState({destroyDialogShow:false})
     }
     render() {
         const { classes } = this.props;
@@ -70,8 +94,8 @@ class CategoryTable extends React.Component {
                                     <TableCell align="left">{row.Desc}</TableCell>
                                     <TableCell align="left">{row.CreatedAt}</TableCell>
                                     <TableCell align="left">
-                                        <IconButton edge="start" color="primary">
-                                            <DeleteIcon/>
+                                        <IconButton edge="start" color="primary" onClick={this.destroyDialogOpen.bind(this,row.ID)}>
+                                            <DeleteIcon />
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
@@ -79,6 +103,27 @@ class CategoryTable extends React.Component {
                         </TableBody>
                     </Table>
                 </Paper>
+                <Dialog
+                    open={this.state.destroyDialogShow}
+                    onClose={this.destroyDialogClose.bind(this)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"确认删除分类?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            如果你确认要删除这个分类，请确保在这个分类下面已经没有任何任务了。
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.destroyDialogClose.bind(this)} color="primary">
+                            关闭
+                        </Button>
+                        <Button onClick={this.destroyConfirm.bind(this)} color="secondary" autoFocus>
+                            确认
+                        </Button>
+                    </DialogActions>
+                </Dialog>
                 <Fab color="primary" className={classes.fab} aria-label="add">
                     <AddIcon />
                 </Fab>
