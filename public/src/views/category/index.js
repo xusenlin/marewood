@@ -17,7 +17,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import {categories} from '../../api/category.js'
+import {categories,destroy} from '../../api/category.js'
 
 const styles = theme => ({
     root: {
@@ -48,12 +48,14 @@ class CategoryTable extends React.Component {
     }
 
     componentDidMount() {
+        this.getTableData()
+    }
+
+    getTableData(){
         categories().then(r=>{
             this.setState({tableData:r})
         }).catch(()=>{})
     }
-
-
 
     destroyDialogOpen(id){
         this.destroyId = id;
@@ -64,8 +66,10 @@ class CategoryTable extends React.Component {
         this.setState({destroyDialogShow:false})
     }
     destroyConfirm () {
-        alert(this.destroyId)
-        this.setState({destroyDialogShow:false})
+        destroy({id:this.destroyId}).then(r=>{
+            this.setState({destroyDialogShow:false});
+            this.getTableData()
+        }).catch(()=>{})
     }
     render() {
         const { classes } = this.props;
