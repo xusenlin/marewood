@@ -16,7 +16,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import EditCategory from './edit.js'
 import {categories,destroy} from '../../api/category.js'
 
 const styles = theme => ({
@@ -42,7 +42,7 @@ class CategoryTable extends React.Component {
         this.state = {
             tableData:[],
             destroyDialogShow:false,
-
+            editCategoryShow:false
         };
         this.destroyId = 0;
     }
@@ -60,7 +60,7 @@ class CategoryTable extends React.Component {
     destroyDialogOpen(id){
         this.destroyId = id;
         this.setState({destroyDialogShow:true})
-    };
+    }
 
     destroyDialogClose () {
         this.setState({destroyDialogShow:false})
@@ -70,6 +70,17 @@ class CategoryTable extends React.Component {
             this.setState({destroyDialogShow:false});
             this.getTableData()
         }).catch(()=>{})
+    }
+    editDialogShow () {
+        this.setState({editCategoryShow:true})
+    }
+    editDialogClose () {
+        this.setState({editCategoryShow:false})
+    }
+
+    createCategorySuccess(){
+        this.setState({editCategoryShow:false});
+        this.getTableData()
     }
     render() {
         const { classes } = this.props;
@@ -128,9 +139,14 @@ class CategoryTable extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <Fab color="primary" className={classes.fab} aria-label="add">
+                <Fab color="primary" className={classes.fab} aria-label="add" onClick={this.editDialogShow.bind(this)}>
                     <AddIcon />
                 </Fab>
+                <EditCategory
+                    show={this.state.editCategoryShow}
+                    handleClose={this.editDialogClose.bind(this)}
+                    createSuccess={this.createCategorySuccess.bind(this)}
+                />
             </div>
         );
     }

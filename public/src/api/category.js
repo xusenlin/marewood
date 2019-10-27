@@ -26,3 +26,16 @@ export function destroy(params) {
         params: params
     })
 }
+
+/**
+ * 编辑
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function create(params) {
+    return request({
+        url:  '/category/create',
+        method: 'post',
+        data: params
+    })
+}
