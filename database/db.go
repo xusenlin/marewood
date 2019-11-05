@@ -1,8 +1,8 @@
 package database
 
 import (
-	"FrontEndAutomatedDeployment/config"
-	"FrontEndAutomatedDeployment/models"
+	"FEDeployService/config"
+	"FEDeployService/models"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"

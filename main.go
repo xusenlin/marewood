@@ -1,8 +1,8 @@
 package main
 
 import (
-	"FrontEndAutomatedDeployment/database"
-	"FrontEndAutomatedDeployment/routes"
+	"FEDeployService/database"
+	"FEDeployService/routes"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"os"
 )

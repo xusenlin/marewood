@@ -1,4 +1,4 @@
-module FrontEndAutomatedDeployment
+module FEDeployService
 
 go 1.12
 
