@@ -10,7 +10,7 @@ import (
 
 var DB *gorm.DB
 
-func init()  {
+func InitDb()  {
 	var err error
 
 	DB, err = gorm.Open("sqlite3", config.Cfg.DbDns)
