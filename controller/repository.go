@@ -1,13 +1,12 @@
 package controller
 
 import (
-	"FEDeployService/config"
 	"FEDeployService/database"
 	"FEDeployService/models"
 	"FEDeployService/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"os/exec"
+	"strconv"
 )
 
 func RepositoryFindAll(c *gin.Context) {
@@ -44,33 +43,8 @@ func RepositoryCreate(c *gin.Context) {
 		})
 		return
 	}
+	repository.Status = models.RepoStatusProcessing
 
-	var cmd *exec.Cmd
-	if repository.UserName == "" || repository.Password == "" {
-		cmd = exec.Command("git", "clone", repository.Url)
-	} else {
-		authUrl, err := service.GitUrl2AuthUrl(repository.Url, repository.UserName, repository.Password)
-		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   err.Error(),
-				"msg":    "克隆仓库出错",
-			})
-			return
-		}
-		cmd = exec.Command("git", "clone", authUrl)
-	}
-	cmd.Dir = config.Cfg.RepositoryDir
-	out, err := cmd.CombinedOutput()
-
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   err.Error(),
-			"msg":    "克隆仓库出错",
-		})
-		return
-	}
 	if database.DB.Create(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
@@ -80,9 +54,27 @@ func RepositoryCreate(c *gin.Context) {
 		return
 	}
 
+	go func() {
+
+		out, err := service.GitClone(repository.Url, repository.UserName, repository.Password)
+		if err != nil {
+			database.DB.Model(&repository).
+				Where("id = ?", repository.ID).
+				Update("status", models.RepoStatusFail).
+				Update("console_output", out)
+			return
+		}
+
+		database.DB.Model(&repository).
+			Where("id = ?", repository.ID).
+			Update("status", models.RepoStatusSuccess).
+			Update("console_output", out)
+
+	}()
+
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
-		"data":   string(out),
+		"data":   "后台正在执行仓库克隆",
 		"msg":    "创建成功",
 	})
 }
@@ -111,4 +103,33 @@ func RepositoryDestroy(c *gin.Context) {
 }
 
 //webHook 更新
-func RepositoryUpdate(c *gin.Context) {}
+func RepositoryUpdate(c *gin.Context) {
+
+	strId := c.Query("id")
+	repositoryId, err := strconv.Atoi(strId)
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   err.Error(),
+			"msg":    "参数出错",
+		})
+		return
+	}
+
+	out, err := service.GitPullByRepositoryId(repositoryId)
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   err.Error(),
+			"msg":    "git pull error",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   out,
+		"msg":    "git pull success",
+	})
+}
