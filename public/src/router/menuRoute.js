@@ -1,5 +1,6 @@
 import Dashboard from '../views/dashboard';
 import Category from '../views/category';
+import Repository from '../views/repository';
 import Job from '../views/job';
 
 import CategoryIcon from '@material-ui/icons/Category';
@@ -10,6 +11,7 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 
 
 //https://material.io/resources/icons/?style=baseline
+
 
 export default [
     {
@@ -23,7 +25,7 @@ export default [
         title:'仓库列表',
         path:'/repository',
         icon:DashboardIcon,
-        component:Job
+        component:Repository
     },
     {
         title:'任务分类',
