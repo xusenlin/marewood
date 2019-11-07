@@ -5,12 +5,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Fingerprint from '@material-ui/icons/Fingerprint';
 import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
-
 import {
-    CircularProgress,Dialog,DialogContent,DialogTitle,DialogContentText,Tooltip,
+    Dialog,DialogContent,DialogTitle,DialogContentText,Tooltip,
     DialogActions,Button,IconButton,Fab,Paper,TableRow,TableHead,TableCell,TableBody,Table
 } from '@material-ui/core';
 import ApiUrl from '../../config/url.js'
+import RepositoryStatus from './repositoryStatus.js'
 import EditCategory from './edit.js'
 import {repositories} from '../../api/repository.js'
 
@@ -31,7 +31,7 @@ const styles = theme => ({
 });
 
 
-class RepositoriesTable extends React.Component {
+class RepositoryTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -107,12 +107,7 @@ class RepositoriesTable extends React.Component {
                                     </TableCell>
                                     <TableCell align="left">{row.Name}</TableCell>
                                     <TableCell align="left">
-                                        <Tooltip title="代码克隆中">
-                                            <IconButton  color="primary">
-                                                <CircularProgress size={20} />
-                                            </IconButton>
-                                        </Tooltip>
-                                        {/*{ row.Status }*/}
+                                        <RepositoryStatus status={row.Status} />
                                     </TableCell>
                                     <TableCell align="left">
                                         <Tooltip title={
@@ -191,4 +186,4 @@ class RepositoriesTable extends React.Component {
 }
 
 
-export default withStyles(styles)(RepositoriesTable)
+export default withStyles(styles)(RepositoryTable)
