@@ -165,6 +165,6 @@ func RepositoryUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
 		"data":   "",
-		"msg":    "git pull success",
+		"msg":    "git pull 已经执行",
 	})
 }

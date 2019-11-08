@@ -2,10 +2,11 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Fingerprint from '@material-ui/icons/Fingerprint';
+import LockIcon from '@material-ui/icons/Lock';
 import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
 import LinkIcon from '@material-ui/icons/Link'
+import LockOpenIcon from '@material-ui/icons/LockOpen'
 import Comment from '@material-ui/icons/Comment'
 import {
     Dialog, DialogContent, DialogTitle, DialogContentText, Tooltip,
@@ -133,17 +134,28 @@ class RepositoryTable extends React.Component {
                                         <RepositoryStatus status={row.Status}/>
                                     </TableCell>
                                     <TableCell align="left">
-                                        <Tooltip title={
-                                            <div>
-                                                用户名：{row.UserName}
-                                                <br/>
-                                                密码：{row.Password}
-                                            </div>
-                                        } interactive>
-                                            <IconButton color="primary">
-                                                <Fingerprint/>
-                                            </IconButton>
-                                        </Tooltip>
+                                        {
+                                            row.UserName && row.Password ? (
+                                                <Tooltip title={
+                                                    <div>
+                                                        用户名：{row.UserName}
+                                                        <br/>
+                                                        密码：{row.Password}
+                                                    </div>
+                                                } interactive>
+                                                    <IconButton color="primary">
+                                                        <LockIcon/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            ) : (
+                                                <Tooltip title="仓库非私密" interactive>
+                                                    <IconButton color="primary">
+                                                        <LockOpenIcon/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            )
+                                        }
+
                                     </TableCell>
                                     <TableCell align="left">
                                         <Tooltip title={
