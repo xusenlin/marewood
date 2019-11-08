@@ -14,6 +14,9 @@ import (
 	"time"
 )
 
+
+
+
 func GitClone(gitUrl string, userName string, password string) (string, error) {
 
 	var cmd *exec.Cmd
@@ -78,7 +81,7 @@ func VerificationWebHookSecret(webHookSecret string,signature string,bodyContent
 }
 
 func RandSeq(n int) string {
-	var letters = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	b := make([]byte, n)
 	rand.Seed(time.Now().UnixNano())
 	for i := range b {
