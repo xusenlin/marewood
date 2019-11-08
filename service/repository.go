@@ -78,8 +78,8 @@ func VerificationWebHookSecret(webHookSecret string,signature string,bodyContent
 }
 
 func RandSeq(n int) string {
-	var letters = []rune("abcdefghijklmnopqrstuvwxyz#ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-	b := make([]rune, n)
+	var letters = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	b := make([]byte, n)
 	rand.Seed(time.Now().UnixNano())
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]
