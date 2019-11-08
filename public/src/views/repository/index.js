@@ -6,14 +6,16 @@ import Fingerprint from '@material-ui/icons/Fingerprint';
 import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
 import LinkIcon from '@material-ui/icons/Link'
+import Comment from '@material-ui/icons/Comment'
 import {
     Dialog, DialogContent, DialogTitle, DialogContentText, Tooltip,
     DialogActions, Button, IconButton, Fab, Paper, TableRow, TableHead, TableCell, TableBody, Table
 } from '@material-ui/core';
+import HelperTooltips from '../../components/helperTooltips'
 import ApiUrl from '../../config/url.js'
-import RepositoryStatus from './repositoryStatus.js'
-import EditCategory from './edit.js'
-import {repositories} from '../../api/repository.js'
+import RepositoryStatus from './repositoryStatus'
+import Edit from './edit'
+import {repositories, destroy} from '../../api/repository'
 
 const styles = theme => ({
     root: {
@@ -38,20 +40,34 @@ class RepositoryTable extends React.Component {
         this.state = {
             tableData: [],
             destroyDialogShow: false,
-            editCategoryShow: false
+            editShow: false
         };
-        this.destroyId = 0;
+        this.destroyId = 0; //记录当前要删除的id
+        this.timeout = null;
     }
 
     componentDidMount() {
         this.getTableData()
     }
-
+    componentWillUnmount() {
+        if(this.timeout)clearTimeout(this.timeout);
+    }
     getTableData() {
+        if(this.timeout)clearTimeout(this.timeout);
+
         repositories().then(r => {
-            this.setState({tableData: r})
-        }).catch(() => {
-        })
+            this.setState({tableData: r});
+
+            for (let i = 0; i < r.length; i++) {
+                if (r[i].Status === 0) {
+                    this.timeout = setTimeout(()=>{
+                        this.getTableData()
+                    },5000);
+                    return
+                }
+            }
+
+        }).catch(() => {})
     }
 
     destroyDialogOpen(id) {
@@ -64,22 +80,23 @@ class RepositoryTable extends React.Component {
     }
 
     destroyConfirm() {
-        // destroy({id:this.destroyId}).then(r=>{
-        //     this.setState({destroyDialogShow:false});
-        //     this.getTableData()
-        // }).catch(()=>{})
+        destroy({id: this.destroyId}).then(r => {
+            this.setState({destroyDialogShow: false});
+            this.getTableData()
+        }).catch(() => {
+        })
     }
 
     editDialogShow() {
-        this.setState({editCategoryShow: true})
+        this.setState({editShow: true})
     }
 
     editDialogClose() {
-        this.setState({editCategoryShow: false})
+        this.setState({editShow: false})
     }
 
-    createCategorySuccess() {
-        this.setState({editCategoryShow: false});
+    createSuccess() {
+        this.setState({editShow: false});
         this.getTableData()
     }
 
@@ -101,7 +118,7 @@ class RepositoryTable extends React.Component {
                                 <TableCell align="left">webHook密钥</TableCell>
                                 <TableCell align="left">webHook地址</TableCell>
                                 <TableCell align="left">创建时间</TableCell>
-                                <TableCell align="left">操作</TableCell>
+                                <TableCell align="left">操作 <HelperTooltips help="删除/提交记录"/> </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -131,7 +148,7 @@ class RepositoryTable extends React.Component {
                                     <TableCell align="left">
                                         <Tooltip title={
                                             <div style={{whiteSpace: "pre-wrap"}}>
-                                                {row.ConsoleOutput}
+                                                {row.TerminalInfo}
                                             </div>
                                         } interactive>
                                             <IconButton color="primary">
@@ -157,9 +174,13 @@ class RepositoryTable extends React.Component {
                                     <TableCell align="left">{ApiUrl}/web_hook?id={row.ID}</TableCell>
                                     <TableCell align="left">{row.CreatedAt}</TableCell>
                                     <TableCell align="left">
-                                        <IconButton edge="start" color="primary"
+                                        <IconButton color="primary"
                                                     onClick={this.destroyDialogOpen.bind(this, row.ID)}>
                                             <DeleteIcon/>
+                                        </IconButton>
+                                        <IconButton color="primary"
+                                                    onClick={this.destroyDialogOpen.bind(this, row.ID)}>
+                                            <Comment/>
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
@@ -173,10 +194,10 @@ class RepositoryTable extends React.Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">{"确认删除分类?"}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{"确认删除仓库?"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            如果你确认要删除这个分类，请确保在这个分类下面已经没有任何任务了。
+                            你确认要删除这个仓库？为了不影响以前的任务，本地的代码不会被移除。
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -191,10 +212,10 @@ class RepositoryTable extends React.Component {
                 <Fab color="primary" className={classes.fab} aria-label="add" onClick={this.editDialogShow.bind(this)}>
                     <AddIcon/>
                 </Fab>
-                <EditCategory
-                    show={this.state.editCategoryShow}
+                <Edit
+                    show={this.state.editShow}
                     handleClose={this.editDialogClose.bind(this)}
-                    createSuccess={this.createCategorySuccess.bind(this)}
+                    createSuccess={this.createSuccess.bind(this)}
                 />
             </div>
         );

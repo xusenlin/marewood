@@ -6,7 +6,6 @@ import (
 	"FEDeployService/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
 
 func RepositoryFindAll(c *gin.Context) {
@@ -30,7 +29,6 @@ func RepositoryFindAll(c *gin.Context) {
 
 }
 
-//还要克隆过来
 func RepositoryCreate(c *gin.Context) {
 
 	var repository models.Repository
@@ -43,6 +41,8 @@ func RepositoryCreate(c *gin.Context) {
 		})
 		return
 	}
+
+	repository.WebHookSecret = service.RandSeq(8)
 	repository.Status = models.RepoStatusProcessing
 
 	if database.DB.Create(&repository).Error != nil {
@@ -61,14 +61,14 @@ func RepositoryCreate(c *gin.Context) {
 			database.DB.Model(&repository).
 				Where("id = ?", repository.ID).
 				Update("status", models.RepoStatusFail).
-				Update("console_output", out)
+				Update("terminal_info", out)
 			return
 		}
 
 		database.DB.Model(&repository).
 			Where("id = ?", repository.ID).
 			Update("status", models.RepoStatusSuccess).
-			Update("console_output", out)
+			Update("terminal_info", out)
 
 	}()
 
@@ -104,32 +104,67 @@ func RepositoryDestroy(c *gin.Context) {
 
 //webHook 更新
 func RepositoryUpdate(c *gin.Context) {
+	//验证
 
-	strId := c.Query("id")
-	repositoryId, err := strconv.Atoi(strId)
+	repositoryId := c.GetInt("id")
 
-	if err != nil {
+	if "push" != c.GetHeader("x-github-event") {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   err.Error(),
-			"msg":    "参数出错",
+			"data":   "",
+			"msg":    "webHook不是push事件",
 		})
 		return
 	}
 
-	out, err := service.GitPullByRepositoryId(repositoryId)
+	var signature string
 
-	if err != nil {
+	signature = c.GetHeader("HTTP_X_GITLAB_TOKEN") //GitLab
+	if "" == signature{
+		signature = c.GetHeader("X-Hub-Signature") //Github
+	}
+	if "" == signature{
+		signature = c.GetHeader("password") //Gitee
+	}
+
+	bodyContent,err := c.GetRawData()
+
+	if err != nil{
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   err.Error(),
-			"msg":    "git pull error",
+			"msg":    "bodyContent获取出错",
 		})
 		return
 	}
+
+	var repository models.Repository
+
+	if database.DB.First(&repository, repositoryId).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   database.DB.Error,
+			"msg":    "通过id找不到仓库",
+		})
+		return
+	}
+
+	if !service.VerificationWebHookSecret(repository.WebHookSecret,signature,bodyContent){
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "密钥验证不通过",
+		})
+		return
+	}
+
+	go func() {
+		service.GitPullAndSaveRecord(repository.Url,repository.ID)
+	}()
+
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
-		"data":   out,
+		"data":   "",
 		"msg":    "git pull success",
 	})
 }

@@ -19,7 +19,7 @@ func InitRouter() *gin.Engine {
 		c.Redirect(http.StatusMovedPermanently, "/public")
 	})
 
-	r.GET(config.Cfg.WebHookUrl, controller.RepositoryUpdate) //WebHook仓库更新
+	r.Any(config.Cfg.WebHookUrl, controller.RepositoryUpdate) //WebHook仓库更新
 
 	v1 := r.Group("/v1")
 	{
