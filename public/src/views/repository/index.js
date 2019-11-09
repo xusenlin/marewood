@@ -155,7 +155,6 @@ class RepositoryTable extends React.Component {
                                                 </Tooltip>
                                             )
                                         }
-
                                     </TableCell>
                                     <TableCell align="left">
                                         <Tooltip title={
@@ -191,7 +190,7 @@ class RepositoryTable extends React.Component {
                                             <DeleteIcon/>
                                         </IconButton>
                                         <IconButton color="primary"
-                                                    onClick={this.destroyDialogOpen.bind(this, row.ID)}>
+                                                    onClick={()=>{this.props.history.push({pathname:'webHookRecord',query:{id:row.ID}})}}>
                                             <Comment/>
                                         </IconButton>
                                     </TableCell>

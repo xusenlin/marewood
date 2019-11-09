@@ -19,20 +19,21 @@ func InitRouter() *gin.Engine {
 		c.Redirect(http.StatusMovedPermanently, "/public")
 	})
 
-	r.Any(config.Cfg.WebHookUrl, controller.RepositoryUpdate) //WebHook仓库更新
+	r.POST(config.Cfg.WebHookUrl, controller.RepositoryUpdate) //WebHook仓库更新 待测试验证
 
 	v1 := r.Group("/v1")
 	{
 		v1.GET("/categories", controller.CategoryFindAll)
 		v1.POST("/category/create", controller.CategoryCreate)
 		v1.GET("/category/delete", controller.CategoryDestroy)
-		//v1.POST("/user/update", Controllers.UserUpdate)
+		//v1.POST("/category/update", Controllers.CategoryUpdate)
 
 		v1.GET("/repositories", controller.RepositoryFindAll)
 		v1.POST("/repository/create", controller.RepositoryCreate)
 		v1.GET("/repository/delete", controller.RepositoryDestroy)
-		//v1.POST("/user/update", Controllers.UserUpdate)
+		//v1.POST("/repository/update", Controllers.RepositoryUpdate)
 
+		v1.GET("/webHookRecord", controller.WebHookRecordFind)
 
 	}
 

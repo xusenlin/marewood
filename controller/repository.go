@@ -104,9 +104,7 @@ func RepositoryDestroy(c *gin.Context) {
 
 //webHook 更新
 func RepositoryUpdate(c *gin.Context) {
-	//验证
-
-	repositoryId := c.GetInt("id")
+	repositoryId := c.Query("id")
 
 	if "push" != c.GetHeader("x-github-event") {
 		c.JSON(http.StatusOK, gin.H{

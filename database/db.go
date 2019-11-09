@@ -19,7 +19,7 @@ func InitDb()  {
 		panic("failed to connect database")
 	}
 
-	DB.AutoMigrate(&models.SysSetting{},&models.Category{},&models.Repository{},&models.Job{})
+	DB.AutoMigrate(&models.SysSetting{},&models.Category{},&models.Repository{},&models.Job{},&models.WebHookRecord{})
 
 	if DB.Error != nil {
 		fmt.Printf("database error %v", DB.Error)
