@@ -7,6 +7,8 @@ import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
 import LinkIcon from '@material-ui/icons/Link'
 import LockOpenIcon from '@material-ui/icons/LockOpen'
+import SaveAltIcon from '@material-ui/icons/SaveAlt'
+import UpdateIcon from '@material-ui/icons/Update'
 import Comment from '@material-ui/icons/Comment'
 import {
     Dialog, DialogContent, DialogTitle, DialogContentText, Tooltip,
@@ -15,6 +17,7 @@ import {
 import HelperTooltips from '../../components/helperTooltips'
 import ApiUrl from '../../config/url.js'
 import RepositoryStatus from './repositoryStatus'
+import DependStatus from './dependStatus'
 import Edit from './edit'
 import {repositories, destroy} from '../../api/repository'
 
@@ -111,15 +114,17 @@ class RepositoryTable extends React.Component {
                             <TableRow>
                                 <TableCell>ID</TableCell>
                                 <TableCell align="left">仓库名字</TableCell>
-                                <TableCell align="left">状态</TableCell>
+                                <TableCell align="left">克隆状态</TableCell>
+                                <TableCell align="left">依赖状态</TableCell>
                                 <TableCell align="left">仓库权限</TableCell>
                                 <TableCell align="left">终端信息</TableCell>
+                                <TableCell align="left">依赖终端信息</TableCell>
                                 <TableCell align="left">备注</TableCell>
                                 <TableCell align="left">仓库地址</TableCell>
                                 <TableCell align="left">webHook密钥</TableCell>
                                 <TableCell align="left">webHook地址</TableCell>
-                                <TableCell align="left">创建时间</TableCell>
-                                <TableCell align="left">操作 <HelperTooltips help="删除/提交记录"/> </TableCell>
+                                {/*<TableCell align="left">创建时间</TableCell>*/}
+                                <TableCell align="left">操作 <HelperTooltips help="删除/重新克隆/重新处理依赖/提交记录"/> </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -132,6 +137,9 @@ class RepositoryTable extends React.Component {
                                     <TableCell align="left">{row.Name}</TableCell>
                                     <TableCell align="left">
                                         <RepositoryStatus status={row.Status}/>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                        <DependStatus status={row.DependStatus}/>
                                     </TableCell>
                                     <TableCell align="left">
                                         {
@@ -168,6 +176,17 @@ class RepositoryTable extends React.Component {
                                         </Tooltip>
                                     </TableCell>
                                     <TableCell align="left">
+                                        <Tooltip title={
+                                            <div style={{whiteSpace: "pre-wrap"}}>
+                                                {row.DependTerminalInfo}
+                                            </div>
+                                        } interactive>
+                                            <IconButton color="primary">
+                                                <Computer/>
+                                            </IconButton>
+                                        </Tooltip>
+                                    </TableCell>
+                                    <TableCell align="left">
                                         <Tooltip title={row.Desc} interactive>
                                             <IconButton color="primary">
                                                 <Announcement/>
@@ -183,11 +202,19 @@ class RepositoryTable extends React.Component {
                                     </TableCell>
                                     <TableCell align="left">{row.WebHookSecret}</TableCell>
                                     <TableCell align="left">{ApiUrl}/web_hook?id={row.ID}</TableCell>
-                                    <TableCell align="left">{row.CreatedAt}</TableCell>
+                                    {/*<TableCell align="left">{row.CreatedAt}</TableCell>*/}
                                     <TableCell align="left">
                                         <IconButton color="primary"
                                                     onClick={this.destroyDialogOpen.bind(this, row.ID)}>
                                             <DeleteIcon/>
+                                        </IconButton>
+                                        <IconButton color="primary">
+                                            {/*状态不再处理中才可以点击*/}
+                                            <SaveAltIcon/>
+                                        </IconButton>
+                                        <IconButton color="primary">
+                                            {/*状态不再处理中才可以点击*/}
+                                            <UpdateIcon/>
                                         </IconButton>
                                         <IconButton color="primary"
                                                     onClick={()=>{this.props.history.push({pathname:'webHookRecord',query:{id:row.ID}})}}>

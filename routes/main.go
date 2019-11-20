@@ -13,13 +13,16 @@ func InitRouter() *gin.Engine {
 	r := gin.Default()
 	r.Use(middlewares.Cors())
 
-	r.Static("/public", config.Cfg.ClientDir)
+	{
+		r.Static("/public", config.Cfg.ClientDir)
 
-	r.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/public")
-	})
+		r.GET("/", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, "/public")
+		})
 
-	r.POST(config.Cfg.WebHookUrl, controller.RepositoryUpdate) //WebHook仓库更新 待测试验证
+		r.POST(config.Cfg.WebHookUrl, controller.RepositoryUpdate) //WebHook仓库更新 待测试验证
+	}
+
 
 	v1 := r.Group("/v1")
 	{
@@ -34,7 +37,6 @@ func InitRouter() *gin.Engine {
 		//v1.POST("/repository/update", Controllers.RepositoryUpdate)
 
 		v1.GET("/webHookRecord", controller.WebHookRecordFind)
-
 	}
 
 	return r

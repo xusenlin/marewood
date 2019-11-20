@@ -2,11 +2,15 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-
 const RepoStatusFail = 2
 const RepoStatusSuccess = 1
 const RepoStatusProcessing = 0
 
+const RepoDependStatusFail = 2
+const RepoDependStatusSuccess = 1
+const RepoDependStatusProcessing = 0
+
+const RepoWebHookSecretRandSeqLen = 8
 
 type Repository struct {
 	gorm.Model
@@ -17,7 +21,7 @@ type Repository struct {
 	UserName      string //仓库是私有的话需要填写
 	Password      string //仓库是私有的话需要填写
 	Status        int    //此仓库是否已经将代码克隆过来
-	TerminalInfo   string `gorm:"type:varchar(1000)"`
-	//WebHookUrl    string //webHook 地址 这里不再需要通过公共的接口根据仓库id来
-	//仓库存放在
+	TerminalInfo  string `gorm:"type:varchar(1000)"`
+	DependStatus  int //此仓库依赖的状态
+	DependTerminalInfo    string `gorm:"type:varchar(1000)"`
 }

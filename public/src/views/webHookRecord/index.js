@@ -1,7 +1,8 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Computer from '@material-ui/icons/Computer';
-import {Tooltip, IconButton,CircularProgress, Paper, TableRow, TableHead, TableCell, TableBody, Table} from '@material-ui/core';
+import {Tooltip, IconButton, Paper, TableRow, TableHead, TableCell, TableBody, Table} from '@material-ui/core';
+import RecordStatus from './recordStatus'
 
 import {webHookRecord} from '../../api/webHookRecord'
 
@@ -54,11 +55,7 @@ class RecordTable extends React.Component {
                                         {row.ID}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.Status === 1 ? (
-                                            <CircularProgress variant="static" value={100} size={20}/>
-                                        ):(
-                                            <CircularProgress variant="static" value={100} size={20} color="secondary"/>
-                                            )}
+                                        <RecordStatus status={row.Status} />
                                     </TableCell>
                                     <TableCell align="left">
                                         <Tooltip title={

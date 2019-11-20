@@ -42,8 +42,9 @@ func RepositoryCreate(c *gin.Context) {
 		return
 	}
 
-	repository.WebHookSecret = service.RandSeq(8)
+	repository.WebHookSecret = service.RandSeq(models.RepoWebHookSecretRandSeqLen)
 	repository.Status = models.RepoStatusProcessing
+	repository.DependStatus = models.RepoDependStatusProcessing
 
 	if database.DB.Create(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -69,6 +70,8 @@ func RepositoryCreate(c *gin.Context) {
 			Where("id = ?", repository.ID).
 			Update("status", models.RepoStatusSuccess).
 			Update("terminal_info", out)
+
+
 
 	}()
 

@@ -1,23 +1,15 @@
 import React from 'react';
-import {withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Fab from '@material-ui/core/Fab';
+import {withStyles} from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {IconButton} from "@material-ui/core";
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import {
+    Table,TableRow,TableBody,TableHead,TableCell,Paper,Fab,IconButton,Button,
+    Dialog,DialogTitle,DialogContent,DialogContentText,DialogActions
+} from '@material-ui/core';
+import HelperTooltips from "../../components/helperTooltips";
 import EditCategory from './edit.js'
 import {categories,destroy} from '../../api/category.js'
+
 
 const styles = theme => ({
     root: {
@@ -95,7 +87,7 @@ class CategoryTable extends React.Component {
                                 <TableCell align="left">任务数量</TableCell>
                                 <TableCell align="left">备注</TableCell>
                                 <TableCell align="left">创建时间</TableCell>
-                                <TableCell align="left">操作</TableCell>
+                                <TableCell align="left">操作<HelperTooltips help="删除"/></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

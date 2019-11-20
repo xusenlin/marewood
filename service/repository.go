@@ -15,8 +15,6 @@ import (
 )
 
 
-
-
 func GitClone(gitUrl string, userName string, password string) (string, error) {
 
 	var cmd *exec.Cmd
