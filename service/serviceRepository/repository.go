@@ -1,13 +1,15 @@
-package service
+package serviceRepository
 
 import (
 	"FEDeployService/config"
 	"FEDeployService/database"
 	"FEDeployService/models"
+	"FEDeployService/service/serviceHelper"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/hex"
 	"errors"
+	"github.com/gin-gonic/gin"
 	"math/rand"
 	"os"
 	"os/exec"
@@ -22,7 +24,7 @@ func GitClone(gitUrl string, userName string, password string) (string, error) {
 	if userName == "" || password == "" {
 		cmd = exec.Command("git", "clone", gitUrl)
 	} else {
-		authUrl, err := GitUrl2AuthUrl(gitUrl, userName, password)
+		authUrl, err := serviceHelper.GitUrl2AuthUrl(gitUrl, userName, password)
 		if err != nil {
 			return "", err
 		}
@@ -41,7 +43,7 @@ func GitClone(gitUrl string, userName string, password string) (string, error) {
 
 func GitPullByRepositoryUrl(url string) (string, error) {
 
-	repositoryName, err := GetRepositoryNameByUrl(url)
+	repositoryName, err := serviceHelper.GetRepositoryNameByUrl(url)
 	if err != nil {
 		return "", err
 	}
@@ -101,4 +103,16 @@ func GitPullAndSaveRecord(url string,repositoryId uint) bool {
 	}
 
 	return database.DB.NewRecord(record)
+}
+
+func GetHeaderSignature(c *gin.Context) string {
+	signature := c.GetHeader("HTTP_X_GITLAB_TOKEN") //GitLab
+
+	if "" == signature{
+		signature = c.GetHeader("X-Hub-Signature") //Github
+	}
+	if "" == signature{
+		signature = c.GetHeader("password") //Gitee
+	}
+	return signature
 }

@@ -1,4 +1,4 @@
-package service
+package serviceHelper
 
 import (
 	"FEDeployService/config"
@@ -26,16 +26,13 @@ func checkEnv() error {
 		return err
 	}
 
-	if _, err := exec.LookPath("npm"); err != nil {
-		return err
-	}
-
-	if _, err := exec.LookPath("yarn"); err != nil {
-		return err
+	for _,dependentTools := range config.Cfg.DependentTools{
+		if _, err := exec.LookPath(dependentTools); err != nil {
+			return err
+		}
 	}
 
 	return nil
-
 }
 
 

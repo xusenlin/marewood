@@ -4,16 +4,19 @@ import (
 	_ "FEDeployService/config"
 	"FEDeployService/database"
 	"FEDeployService/routes"
-	"FEDeployService/service"
+	"FEDeployService/service/serviceHelper"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"log"
 	"os"
 )
 
 
 func main() {
 
-	if err := service.CheckEnvAndInitDir(); err !=nil{
-		panic(err)
+	if err := serviceHelper.CheckEnvAndInitDir(); err !=nil{
+		log.Printf("检查命令工具或者初始化目录失败！")
+		log.Printf("请安装git和node以及在.env配置里所有前端依赖安装工具")
+		log.Fatal(err)
 	}
 	database.InitDb()
 	defer database.DB.Close()

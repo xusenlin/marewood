@@ -1,10 +1,9 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
+import {
+    Button,TextField,Dialog,DialogActions,InputLabel,
+    DialogContent,DialogTitle,Select,MenuItem
+} from '@material-ui/core';
 import {create} from '../../api/repository'
 
 
@@ -18,7 +17,7 @@ class Edit extends React.Component {
             desc:'',
             userName:'',
             password:'',
-            needAuth:false
+            dependentTools:'',//还没做
         };
     }
 
@@ -57,7 +56,20 @@ class Edit extends React.Component {
                             autoFocus value={this.state.password} margin="dense" id="password"
                             onChange={this.textFieldChange.bind(this,'password')} label="密码" type="password" fullWidth
                         />
-
+                        <InputLabel id="dependentToolsSelect">依赖安装工具</InputLabel>
+                        <Select
+                            style={{width:"100%"}}
+                            labelId="dependentToolsSelect"
+                            id="dependentTools"
+                            value={this.state.dependentTools}
+                            onChange={this.textFieldChange.bind(this,'dependentTools')}
+                        >
+                            {
+                                this.props.dependentSupport.map(r=>{
+                                    return <MenuItem value={r}>{r}</MenuItem>
+                                })
+                            }
+                        </Select>
                         <TextField
                             required
                             margin="dense" value={this.state.desc} id="desc" multiline rows={2}

@@ -1,5 +1,20 @@
 import request from '../utils/request.js'
 
+
+/**
+ * 获取全部依赖安装工具
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function dependentSupport(params) {
+    return request({
+        url:  '/dependent_support',
+        method: 'get',
+        params: params
+    })
+}
+
+
 /**
  * 获取全部仓库
  * @param params

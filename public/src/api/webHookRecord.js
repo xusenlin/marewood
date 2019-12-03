@@ -7,7 +7,7 @@ import request from '../utils/request.js'
  */
 export function webHookRecord(params) {
     return request({
-        url:  '/webHookRecord',
+        url:  '/webHook_record',
         method: 'get',
         params: params
     })

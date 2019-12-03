@@ -19,7 +19,7 @@ import ApiUrl from '../../config/url.js'
 import RepositoryStatus from './repositoryStatus'
 import DependStatus from './dependStatus'
 import Edit from './edit'
-import {repositories, destroy} from '../../api/repository'
+import {repositories, destroy,dependentSupport} from '../../api/repository'
 
 const styles = theme => ({
     root: {
@@ -44,7 +44,8 @@ class RepositoryTable extends React.Component {
         this.state = {
             tableData: [],
             destroyDialogShow: false,
-            editShow: false
+            editShow: false,
+            dependentSupport:[]
         };
         this.destroyId = 0; //记录当前要删除的id
         this.timeout = null;
@@ -52,6 +53,9 @@ class RepositoryTable extends React.Component {
 
     componentDidMount() {
         this.getTableData()
+        dependentSupport().then(r=>{
+            this.setState({dependentSupport:r})
+        }).catch(()=>{})
     }
     componentWillUnmount() {
         if(this.timeout)clearTimeout(this.timeout);
@@ -121,6 +125,7 @@ class RepositoryTable extends React.Component {
                                 <TableCell align="left">依赖终端信息</TableCell>
                                 <TableCell align="left">备注</TableCell>
                                 <TableCell align="left">仓库地址</TableCell>
+                                <TableCell align="left">依赖安装工具</TableCell>
                                 <TableCell align="left">webHook密钥</TableCell>
                                 <TableCell align="left">webHook地址</TableCell>
                                 {/*<TableCell align="left">创建时间</TableCell>*/}
@@ -200,6 +205,7 @@ class RepositoryTable extends React.Component {
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
+                                    <TableCell align="left">{row.DependentTools}</TableCell>
                                     <TableCell align="left">{row.WebHookSecret}</TableCell>
                                     <TableCell align="left">{ApiUrl}/web_hook?id={row.ID}</TableCell>
                                     {/*<TableCell align="left">{row.CreatedAt}</TableCell>*/}
@@ -251,6 +257,7 @@ class RepositoryTable extends React.Component {
                     <AddIcon/>
                 </Fab>
                 <Edit
+                    dependentSupport={this.state.dependentSupport}
                     show={this.state.editShow}
                     handleClose={this.editDialogClose.bind(this)}
                     createSuccess={this.createSuccess.bind(this)}

@@ -3,7 +3,7 @@ package controller
 import (
 	"FEDeployService/database"
 	"FEDeployService/models"
-	"FEDeployService/service"
+	"FEDeployService/service/serviceRepository"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -42,7 +42,7 @@ func RepositoryCreate(c *gin.Context) {
 		return
 	}
 
-	repository.WebHookSecret = service.RandSeq(models.RepoWebHookSecretRandSeqLen)
+	repository.WebHookSecret = serviceRepository.RandSeq(models.RepoWebHookSecretRandSeqLen)
 	repository.Status = models.RepoStatusProcessing
 	repository.DependStatus = models.RepoDependStatusProcessing
 
@@ -57,7 +57,7 @@ func RepositoryCreate(c *gin.Context) {
 
 	go func() {
 
-		out, err := service.GitClone(repository.Url, repository.UserName, repository.Password)
+		out, err := serviceRepository.GitClone(repository.Url, repository.UserName, repository.Password)
 		if err != nil {
 			database.DB.Model(&repository).
 				Where("id = ?", repository.ID).
@@ -107,6 +107,7 @@ func RepositoryDestroy(c *gin.Context) {
 
 //webHook 更新
 func RepositoryUpdate(c *gin.Context) {
+	//这块代码有点多，后面优化下
 	repositoryId := c.Query("id")
 
 	if "push" != c.GetHeader("x-github-event") {
@@ -120,14 +121,7 @@ func RepositoryUpdate(c *gin.Context) {
 
 	var signature string
 
-	signature = c.GetHeader("HTTP_X_GITLAB_TOKEN") //GitLab
-	if "" == signature{
-		signature = c.GetHeader("X-Hub-Signature") //Github
-	}
-	if "" == signature{
-		signature = c.GetHeader("password") //Gitee
-	}
-
+	signature = serviceRepository.GetHeaderSignature(c)
 	bodyContent,err := c.GetRawData()
 
 	if err != nil{
@@ -150,7 +144,7 @@ func RepositoryUpdate(c *gin.Context) {
 		return
 	}
 
-	if !service.VerificationWebHookSecret(repository.WebHookSecret,signature,bodyContent){
+	if !serviceRepository.VerificationWebHookSecret(repository.WebHookSecret,signature,bodyContent){
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -160,7 +154,7 @@ func RepositoryUpdate(c *gin.Context) {
 	}
 
 	go func() {
-		service.GitPullAndSaveRecord(repository.Url,repository.ID)
+		serviceRepository.GitPullAndSaveRecord(repository.Url,repository.ID)
 	}()
 
 	c.JSON(http.StatusOK, gin.H{

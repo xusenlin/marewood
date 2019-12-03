@@ -6,12 +6,19 @@ import (
 	"FEDeployService/middlewares"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 )
 
 func InitRouter() *gin.Engine {
+	// 设置gin模式
+	gin.SetMode(os.Getenv("GIN_MODE"))
 
 	r := gin.Default()
 	r.Use(middlewares.Cors())
+
+	r.GET("/ping", func (c *gin.Context) {//服务健康检查
+		c.JSON(http.StatusOK, gin.H{"message": "pong"})
+	})
 
 	{
 		r.Static("/public", config.Cfg.ClientDir)
@@ -26,17 +33,23 @@ func InitRouter() *gin.Engine {
 
 	v1 := r.Group("/v1")
 	{
+		//任务分类
 		v1.GET("/categories", controller.CategoryFindAll)
 		v1.POST("/category/create", controller.CategoryCreate)
 		v1.GET("/category/delete", controller.CategoryDestroy)
 		//v1.POST("/category/update", Controllers.CategoryUpdate)
 
+		//仓库相关
 		v1.GET("/repositories", controller.RepositoryFindAll)
 		v1.POST("/repository/create", controller.RepositoryCreate)
 		v1.GET("/repository/delete", controller.RepositoryDestroy)
 		//v1.POST("/repository/update", Controllers.RepositoryUpdate)
 
-		v1.GET("/webHookRecord", controller.WebHookRecordFind)
+		//仓库更新记录
+		v1.GET("/webHook_record", controller.WebHookRecordFind)
+
+		//依赖列表
+		v1.GET("/dependent_support", controller.DependentSupport)
 	}
 
 	return r
