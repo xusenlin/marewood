@@ -15,8 +15,8 @@ func RepositoryFindAll(c *gin.Context) {
 	if database.DB.Order("created_at desc").Find(&result).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
-			"msg":    "数据库查询出错",
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
 		})
 		return
 	}
@@ -33,11 +33,11 @@ func RepositoryCreate(c *gin.Context) {
 
 	var repository models.Repository
 
-	if err := c.BindJSON(&repository); err != nil {
+	if err := c.ShouldBindJSON(&repository); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   err.Error(),
-			"msg":    "出错",
+			"data":   "",
+			"msg":    err.Error(),
 		})
 		return
 	}
@@ -49,8 +49,8 @@ func RepositoryCreate(c *gin.Context) {
 	if database.DB.Create(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
-			"msg":    "数据库创建出错",
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
 		})
 		return
 	}
@@ -71,14 +71,12 @@ func RepositoryCreate(c *gin.Context) {
 			Update("status", models.RepoStatusSuccess).
 			Update("terminal_info", out)
 
-
-
 	}()
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
-		"data":   "后台正在执行仓库克隆",
-		"msg":    "创建成功",
+		"data":   "",
+		"msg":    "创建成功,后台正在执行仓库克隆",
 	})
 }
 
@@ -91,8 +89,8 @@ func RepositoryDestroy(c *gin.Context) {
 	if database.DB.Where("id = ?", id).Delete(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
-			"msg":    "数据库删除出错",
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
 		})
 		return
 	}
@@ -122,13 +120,13 @@ func RepositoryUpdate(c *gin.Context) {
 	var signature string
 
 	signature = serviceRepository.GetHeaderSignature(c)
-	bodyContent,err := c.GetRawData()
+	bodyContent, err := c.GetRawData()
 
-	if err != nil{
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   err.Error(),
-			"msg":    "bodyContent获取出错",
+			"data":   "",
+			"msg":    err.Error(),
 		})
 		return
 	}
@@ -138,13 +136,13 @@ func RepositoryUpdate(c *gin.Context) {
 	if database.DB.First(&repository, repositoryId).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error,
-			"msg":    "通过id找不到仓库",
+			"data":   "",
+			"msg":    database.DB.Error,
 		})
 		return
 	}
 
-	if !serviceRepository.VerificationWebHookSecret(repository.WebHookSecret,signature,bodyContent){
+	if !serviceRepository.VerificationWebHookSecret(repository.WebHookSecret, signature, bodyContent) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -154,7 +152,7 @@ func RepositoryUpdate(c *gin.Context) {
 	}
 
 	go func() {
-		serviceRepository.GitPullAndSaveRecord(repository.Url,repository.ID)
+		serviceRepository.GitPullAndSaveRecord(repository.Url, repository.ID)
 	}()
 
 	c.JSON(http.StatusOK, gin.H{

@@ -56,17 +56,15 @@ class Edit extends React.Component {
                             autoFocus value={this.state.password} margin="dense" id="password"
                             onChange={this.textFieldChange.bind(this,'password')} label="密码" type="password" fullWidth
                         />
-                        <InputLabel id="dependentToolsSelect">依赖安装工具</InputLabel>
+                        <InputLabel >依赖安装工具</InputLabel>
                         <Select
                             style={{width:"100%"}}
-                            labelId="dependentToolsSelect"
-                            id="dependentTools"
                             value={this.state.dependentTools}
                             onChange={this.textFieldChange.bind(this,'dependentTools')}
                         >
                             {
                                 this.props.dependentSupport.map(r=>{
-                                    return <MenuItem value={r}>{r}</MenuItem>
+                                    return <MenuItem key={r} value={r}>{r}</MenuItem>
                                 })
                             }
                         </Select>

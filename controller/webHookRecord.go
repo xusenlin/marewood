@@ -16,8 +16,8 @@ func WebHookRecordFind(c *gin.Context)  {
 	if database.DB.Where("repository_id = ?", id).Order("created_at desc").Find(&result).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
-			"msg":    "数据库查询出错",
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
 		})
 		return
 	}

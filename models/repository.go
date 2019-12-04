@@ -19,14 +19,14 @@ const RepoWebHookSecretRandSeqLen = 8
 
 type Repository struct {
 	gorm.Model
-	Name               string
+	Name               string `binding:"required,min=2,max=16"`
 	Desc               string `gorm:"type:varchar(1000)"`
-	Url                string //仓库的地址
-	WebHookSecret      string //webHook密钥
-	UserName           string //仓库是私有的话需要填写
-	Password           string //仓库是私有的话需要填写
-	Status             int    //此仓库是否已经将代码克隆过来
-	DependentTools     string  //依赖工具选择
+	Url                string `binding:"url"`      //仓库的地址
+	WebHookSecret      string                      //webHook密钥
+	UserName           string                      //仓库是私有的话需要填写
+	Password           string                      //仓库是私有的话需要填写
+	Status             int                         //此仓库是否已经将代码克隆过来
+	DependentTools     string `binding:"required"` //依赖工具选择
 	TerminalInfo       string `gorm:"type:varchar(1000)"`
 	DependStatus       int //此仓库依赖的状态
 	DependTerminalInfo string `gorm:"type:varchar(1000)"`

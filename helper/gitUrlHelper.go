@@ -1,4 +1,4 @@
-package serviceHelper
+package helper
 
 import (
 	"errors"

@@ -32,11 +32,11 @@ func CategoryCreate(c *gin.Context) {
 
 	var category models.Category
 
-	if err := c.BindJSON(&category); err != nil {
+	if err := c.ShouldBindJSON(&category); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   err.Error(),
-			"msg":    "出错",
+			"data":   "",
+			"msg":    err.Error(),
 		})
 		return
 	}

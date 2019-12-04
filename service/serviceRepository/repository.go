@@ -3,8 +3,8 @@ package serviceRepository
 import (
 	"FEDeployService/config"
 	"FEDeployService/database"
+	"FEDeployService/helper"
 	"FEDeployService/models"
-	"FEDeployService/service/serviceHelper"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/hex"
@@ -24,7 +24,7 @@ func GitClone(gitUrl string, userName string, password string) (string, error) {
 	if userName == "" || password == "" {
 		cmd = exec.Command("git", "clone", gitUrl)
 	} else {
-		authUrl, err := serviceHelper.GitUrl2AuthUrl(gitUrl, userName, password)
+		authUrl, err := helper.GitUrl2AuthUrl(gitUrl, userName, password)
 		if err != nil {
 			return "", err
 		}
@@ -43,7 +43,7 @@ func GitClone(gitUrl string, userName string, password string) (string, error) {
 
 func GitPullByRepositoryUrl(url string) (string, error) {
 
-	repositoryName, err := serviceHelper.GetRepositoryNameByUrl(url)
+	repositoryName, err := helper.GetRepositoryNameByUrl(url)
 	if err != nil {
 		return "", err
 	}

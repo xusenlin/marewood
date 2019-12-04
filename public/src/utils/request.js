@@ -1,6 +1,8 @@
 import Axios from 'axios'
-import Config from '../config/index.js'
-import {getToken} from '../utils/dataStorage.js'
+import Config from '../config/index'
+import {getToken} from '../utils/dataStorage'
+import Toast from '../components/snackbar/index'
+
 
 const service = Axios.create({
     baseURL: Config.apiUrl + '/' + Config.apiPrefix,
@@ -16,12 +18,6 @@ service.defaults.retryDelay = Config.requestRetryDelay;
 
 service.interceptors.request.use(
     config => {
-        if (!config.closeLoading) {
-            //加载提示
-        }
-        // config.headers['businessSource'] = 3;
-        // config.headers['terminalPlatform'] = 4;
-        // config.headers['requestId'] = new Date().getTime();
         config.headers['Authorization'] = getToken() || '';
         return config
     },
@@ -33,26 +29,13 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
     res => {
-
-        if (!res.config.closeLoading) {
-            //关闭loading
-        }
         if (res.status !== 200) {
-            // notification.warn({
-            //     message: '数据返回出错',
-            //     description: "请稍后重试"
-            // });
-            return Promise.reject('error')
+            return Promise.reject(res)
         } else {
-            if (res.config.closeInterceptors) {
-                return res.data
-            }
-
             if (res.data.status !== true) {
-                alert(res.data.msg);
-                return Promise.reject('error');
+                Toast.error(res.data.msg);
+                return Promise.reject(res);
             }
-
             return res.data.data
         }
     },
