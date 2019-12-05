@@ -1,5 +1,5 @@
 import React from 'react';
-import Snackbar from '@material-ui/core/Snackbar/index';
+import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContentWrapper from './snackbarContentWrapper'
 
 
