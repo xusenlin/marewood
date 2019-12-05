@@ -10,13 +10,12 @@ import (
 	"encoding/hex"
 	"errors"
 	"github.com/gin-gonic/gin"
-	"math/rand"
 	"os"
 	"os/exec"
-	"time"
 )
 
 
+//克隆仓库，userName，password可留空
 func GitClone(gitUrl string, userName string, password string) (string, error) {
 
 	var cmd *exec.Cmd
@@ -41,6 +40,7 @@ func GitClone(gitUrl string, userName string, password string) (string, error) {
 	return string(out), nil
 }
 
+//通过仓库url更新仓库
 func GitPullByRepositoryUrl(url string) (string, error) {
 
 	repositoryName, err := helper.GetRepositoryNameByUrl(url)
@@ -66,6 +66,7 @@ func GitPullByRepositoryUrl(url string) (string, error) {
 	return string(out), nil
 }
 
+//验证ebHook Secret
 func VerificationWebHookSecret(webHookSecret string,signature string,bodyContent []byte) bool {
 
 	mac := hmac.New(sha1.New, []byte(webHookSecret))
@@ -80,16 +81,7 @@ func VerificationWebHookSecret(webHookSecret string,signature string,bodyContent
 	return  true
 }
 
-func RandSeq(n int) string {
-	const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	b := make([]byte, n)
-	rand.Seed(time.Now().UnixNano())
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
-}
-
+//通过仓库url更新仓库并且保存记录
 func GitPullAndSaveRecord(url string,repositoryId uint) bool {
 
 	out, err := GitPullByRepositoryUrl(url)
@@ -105,6 +97,7 @@ func GitPullAndSaveRecord(url string,repositoryId uint) bool {
 	return database.DB.NewRecord(record)
 }
 
+//获取请求中的签名
 func GetHeaderSignature(c *gin.Context) string {
 	signature := c.GetHeader("HTTP_X_GITLAB_TOKEN") //GitLab
 

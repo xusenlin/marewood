@@ -2,6 +2,7 @@ package controller
 
 import (
 	"FEDeployService/database"
+	"FEDeployService/helper"
 	"FEDeployService/models"
 	"FEDeployService/service/serviceRepository"
 	"github.com/gin-gonic/gin"
@@ -42,7 +43,7 @@ func RepositoryCreate(c *gin.Context) {
 		return
 	}
 
-	repository.WebHookSecret = serviceRepository.RandSeq(models.RepoWebHookSecretRandSeqLen)
+	repository.WebHookSecret = helper.RandSeq(models.RepoWebHookSecretRandSeqLen)
 	repository.Status = models.RepoStatusProcessing
 	repository.DependStatus = models.RepoDependStatusProcessing
 
@@ -62,6 +63,7 @@ func RepositoryCreate(c *gin.Context) {
 			database.DB.Model(&repository).
 				Where("id = ?", repository.ID).
 				Update("status", models.RepoStatusFail).
+				Update("depend_status", models.RepoDependStatusFail).
 				Update("terminal_info", out)
 			return
 		}
@@ -70,6 +72,8 @@ func RepositoryCreate(c *gin.Context) {
 			Where("id = ?", repository.ID).
 			Update("status", models.RepoStatusSuccess).
 			Update("terminal_info", out)
+
+		//处理依赖
 
 	}()
 

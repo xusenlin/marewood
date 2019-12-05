@@ -13,7 +13,6 @@ class CustomizeSnackbar extends React.Component {
             type:"info"
         };
     }
-
     openSnackbar(type, content, duration){
         this.setState({
             open: true,
@@ -45,9 +44,7 @@ class CustomizeSnackbar extends React.Component {
             </Snackbar>
         );
     }
-
 }
-
 
 export default CustomizeSnackbar
 

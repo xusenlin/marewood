@@ -30,7 +30,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     res => {
         if (res.status !== 200) {
-            Snackbar.error("status code is not 200");
+            Snackbar.error("Status Code Is Not 200");
             return Promise.reject(res)
         } else {
             if (res.data.status !== true) {
