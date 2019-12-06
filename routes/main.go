@@ -48,8 +48,9 @@ func InitRouter() *gin.Engine {
 		//仓库更新记录
 		v1.GET("/webHook_record", controller.WebHookRecordFind)
 
-		//依赖列表
+		//依赖相关
 		v1.GET("/dependent_support", controller.DependentSupport)
+		v1.GET("/dependent_reinstall", controller.ReinstallDepend)
 	}
 
 	return r

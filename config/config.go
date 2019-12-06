@@ -1,10 +1,10 @@
 package config
 
 import (
-	"FEDeployService/helper"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
+	"strings"
 )
 
 type Config struct {
@@ -45,6 +45,18 @@ func init() {
 	Cfg.WebRootDir = Cfg.ResourcesDir + "/webs"            //打包完成后的静态文件存放地址
 	Cfg.ClientDir = Cfg.CurrentDir + "/public/build"       //客户端地址
 	Cfg.WebHookUrl = "/web_hook"                           //仓库pull事件触发时，会带上仓库id触发此接口做本地仓库更新代码和根据package.json变动跟新依赖，并触发此仓库关联的自动任务
-	Cfg.DependTools = helper.GetDependTools()
+	Cfg.DependTools = getDependTools()
 
+}
+
+
+func getDependTools() []string {
+	toolsStr := os.Getenv("DEPENDENT_TOOLS")
+
+	if !strings.Contains(toolsStr, "|") {
+		return []string{"npm"}
+	}
+	tools := strings.Split(toolsStr, "|")
+
+	return tools
 }

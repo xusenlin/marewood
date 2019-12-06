@@ -16,6 +16,23 @@ export function dependentSupport(params) {
 
 
 /**
+ * 重新安装依赖
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function dependentReinstall(params) {
+    return request({
+        url:  '/dependent_reinstall',
+        method: 'get',
+        params: params
+    })
+}
+
+
+
+
+
+/**
  * 获取全部仓库
  * @param params
  * @returns {AxiosPromise}

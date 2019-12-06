@@ -57,7 +57,7 @@ func RepositoryCreate(c *gin.Context) {
 	}
 
 	go func() {
-
+		//克隆并更新记录
 		out, err := serviceRepository.GitClone(repository.Url, repository.UserName, repository.Password)
 		if err != nil {
 			database.DB.Model(&repository).
@@ -74,7 +74,19 @@ func RepositoryCreate(c *gin.Context) {
 			Update("terminal_info", out)
 
 		//安装依赖并更新记录
+		dependOut, err := serviceRepository.InstallDepend(repository.Url, repository.DependTools)
+		if err != nil {
+			database.DB.Model(&repository).
+				Where("id = ?", repository.ID).
+				Update("depend_status", models.RepoDependStatusFail).
+				Update("depend_terminal_info", dependOut)
+			return
+		}
 
+		database.DB.Model(&repository).
+			Where("id = ?", repository.ID).
+			Update("depend_status", models.RepoDependStatusSuccess).
+			Update("depend_terminal_info", dependOut)
 
 	}()
 
@@ -85,11 +97,20 @@ func RepositoryCreate(c *gin.Context) {
 	})
 }
 
-//不同时删除仓库目录，因为任务可能还在使用
+
 func RepositoryDestroy(c *gin.Context) {
 	var repository models.Repository
 
 	id := c.Query("id")
+
+	if true {//这里后面要根据此仓库是否被使用来确认仓库是否能被删除
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   id,
+			"msg":    "无法删除，还有任务在使用此仓库，下面还有未完成代码",
+		})
+		return
+	}
 
 	if database.DB.Where("id = ?", id).Delete(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -99,6 +120,7 @@ func RepositoryDestroy(c *gin.Context) {
 		})
 		return
 	}
+	//这里删除仓库目录
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,

@@ -8,7 +8,6 @@ import Announcement from '@material-ui/icons/Announcement';
 import LinkIcon from '@material-ui/icons/Link'
 import LockOpenIcon from '@material-ui/icons/LockOpen'
 import SaveAltIcon from '@material-ui/icons/SaveAlt'
-import UpdateIcon from '@material-ui/icons/Update'
 import Comment from '@material-ui/icons/Comment'
 import {
     Dialog, DialogContent, DialogTitle, DialogContentText, Tooltip,
@@ -19,7 +18,8 @@ import ApiUrl from '../../config/url.js'
 import RepositoryStatus from './repositoryStatus'
 import DependStatus from './dependStatus'
 import Edit from './edit'
-import {repositories, destroy,dependentSupport} from '../../api/repository'
+import {repositories, destroy,dependentSupport,dependentReinstall} from '../../api/repository'
+import Snackbar from '../../components/snackbar/index'
 
 const styles = theme => ({
     root: {
@@ -67,7 +67,7 @@ class RepositoryTable extends React.Component {
             this.setState({tableData: r});
 
             for (let i = 0; i < r.length; i++) {
-                if (r[i].Status === 0) {
+                if (r[i].Status === 0 || r[i].DependStatus === 0) {
                     this.timeout = setTimeout(()=>{
                         this.getTableData()
                     },5000);
@@ -85,6 +85,21 @@ class RepositoryTable extends React.Component {
 
     destroyDialogClose() {
         this.setState({destroyDialogShow: false})
+    }
+
+    reinstallDepend(row){
+        if(row.Status !== 1){
+            Snackbar.warning("仓库状态不正常，无法重新安装依赖");
+            return
+        }
+        if(row.DependStatus === 0){
+            Snackbar.warning("依赖还在处理中，等待处理完成再次尝试");
+            return
+        }
+        dependentReinstall({id:row.ID}).then(r=>{
+            Snackbar.success("后台重新安装依赖中");
+            this.getTableData()
+        }).catch(()=>{})
     }
 
     destroyConfirm() {
@@ -129,7 +144,7 @@ class RepositoryTable extends React.Component {
                                 <TableCell align="left">webHook密钥</TableCell>
                                 <TableCell align="left">webHook地址</TableCell>
                                 {/*<TableCell align="left">创建时间</TableCell>*/}
-                                <TableCell align="left">操作 <HelperTooltips help="删除/重新克隆/重新处理依赖/提交记录"/> </TableCell>
+                                <TableCell align="left">操作 <HelperTooltips help="删除/重新处理依赖/提交记录"/> </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -205,7 +220,9 @@ class RepositoryTable extends React.Component {
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
-                                    <TableCell align="left">{row.DependTools}</TableCell>
+                                    <TableCell align="center">
+                                        <span className="depend-tools">{(row.DependTools).toUpperCase()}</span>
+                                    </TableCell>
                                     <TableCell align="left">{row.WebHookSecret}</TableCell>
                                     <TableCell align="left">{ApiUrl}/web_hook?id={row.ID}</TableCell>
                                     {/*<TableCell align="left">{row.CreatedAt}</TableCell>*/}
@@ -214,13 +231,8 @@ class RepositoryTable extends React.Component {
                                                     onClick={this.destroyDialogOpen.bind(this, row.ID)}>
                                             <DeleteIcon/>
                                         </IconButton>
-                                        <IconButton color="primary">
-                                            {/*状态不再处理中才可以点击*/}
+                                        <IconButton color="primary" onClick={this.reinstallDepend.bind(this,row)}>
                                             <SaveAltIcon/>
-                                        </IconButton>
-                                        <IconButton color="primary">
-                                            {/*状态不再处理中才可以点击*/}
-                                            <UpdateIcon/>
                                         </IconButton>
                                         <IconButton color="primary"
                                                     onClick={()=>{this.props.history.push({pathname:'webHookRecord',query:{id:row.ID}})}}>
@@ -241,7 +253,7 @@ class RepositoryTable extends React.Component {
                     <DialogTitle id="alert-dialog-title">{"确认删除仓库?"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            你确认要删除这个仓库？为了不影响以前的任务，本地的代码不会被移除。
+                            你确认要删除这个仓库？没有任务使用此仓库才能删除。
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
