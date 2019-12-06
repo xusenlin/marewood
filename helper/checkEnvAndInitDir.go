@@ -26,8 +26,8 @@ func checkEnv() error {
 		return err
 	}
 
-	for _,dependentTools := range config.Cfg.DependentTools{
-		if _, err := exec.LookPath(dependentTools); err != nil {
+	for _,dependTools := range config.Cfg.DependTools{
+		if _, err := exec.LookPath(dependTools); err != nil {
 			return err
 		}
 	}

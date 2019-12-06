@@ -26,7 +26,7 @@ type Repository struct {
 	UserName           string                      //仓库是私有的话需要填写
 	Password           string                      //仓库是私有的话需要填写
 	Status             int                         //此仓库是否已经将代码克隆过来
-	DependentTools     string `binding:"required"` //依赖工具选择
+	DependTools        string `binding:"required"` //依赖工具选择
 	TerminalInfo       string `gorm:"type:varchar(1000)"`
 	DependStatus       int //此仓库依赖的状态
 	DependTerminalInfo string `gorm:"type:varchar(1000)"`

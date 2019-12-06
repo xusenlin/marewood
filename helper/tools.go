@@ -2,6 +2,8 @@ package helper
 
 import (
 	"math/rand"
+	"os"
+	"strings"
 	"time"
 )
 
@@ -14,4 +16,15 @@ func RandSeq(n int) string {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+func GetDependTools() []string {
+	toolsStr := os.Getenv("DEPENDENT_TOOLS")
+
+	if !strings.Contains(toolsStr,"|") {
+		return []string{"npm"}
+	}
+	tools := strings.Split(toolsStr,"|")
+
+	return tools
 }

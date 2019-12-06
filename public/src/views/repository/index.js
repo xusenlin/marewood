@@ -205,7 +205,7 @@ class RepositoryTable extends React.Component {
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
-                                    <TableCell align="left">{row.DependentTools}</TableCell>
+                                    <TableCell align="left">{row.DependTools}</TableCell>
                                     <TableCell align="left">{row.WebHookSecret}</TableCell>
                                     <TableCell align="left">{ApiUrl}/web_hook?id={row.ID}</TableCell>
                                     {/*<TableCell align="left">{row.CreatedAt}</TableCell>*/}

@@ -5,11 +5,7 @@ import (
 	"FEDeployService/database"
 	"FEDeployService/helper"
 	"FEDeployService/models"
-	"crypto/hmac"
-	"crypto/sha1"
-	"encoding/hex"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"os"
 	"os/exec"
 )
@@ -66,21 +62,6 @@ func GitPullByRepositoryUrl(url string) (string, error) {
 	return string(out), nil
 }
 
-//验证ebHook Secret
-func VerificationWebHookSecret(webHookSecret string,signature string,bodyContent []byte) bool {
-
-	mac := hmac.New(sha1.New, []byte(webHookSecret))
-	mac.Write(bodyContent)
-
-	hash := "sha1=" + hex.EncodeToString(mac.Sum(nil))
-
-	if signature != hash {
-		return false
-	}
-
-	return  true
-}
-
 //通过仓库url更新仓库并且保存记录
 func GitPullAndSaveRecord(url string,repositoryId uint) bool {
 
@@ -97,15 +78,3 @@ func GitPullAndSaveRecord(url string,repositoryId uint) bool {
 	return database.DB.NewRecord(record)
 }
 
-//获取请求中的签名
-func GetHeaderSignature(c *gin.Context) string {
-	signature := c.GetHeader("HTTP_X_GITLAB_TOKEN") //GitLab
-
-	if "" == signature{
-		signature = c.GetHeader("X-Hub-Signature") //Github
-	}
-	if "" == signature{
-		signature = c.GetHeader("password") //Gitee
-	}
-	return signature
-}

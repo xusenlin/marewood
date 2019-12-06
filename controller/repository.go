@@ -73,7 +73,8 @@ func RepositoryCreate(c *gin.Context) {
 			Update("status", models.RepoStatusSuccess).
 			Update("terminal_info", out)
 
-		//处理依赖
+		//安装依赖并更新记录
+
 
 	}()
 
@@ -105,63 +106,4 @@ func RepositoryDestroy(c *gin.Context) {
 		"msg":    "删除成功",
 	})
 
-}
-
-//webHook 更新
-func RepositoryUpdate(c *gin.Context) {
-	//这块代码有点多，后面优化下
-	repositoryId := c.Query("id")
-
-	if "push" != c.GetHeader("x-github-event") {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    "webHook不是push事件",
-		})
-		return
-	}
-
-	var signature string
-
-	signature = serviceRepository.GetHeaderSignature(c)
-	bodyContent, err := c.GetRawData()
-
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    err.Error(),
-		})
-		return
-	}
-
-	var repository models.Repository
-
-	if database.DB.First(&repository, repositoryId).Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    database.DB.Error,
-		})
-		return
-	}
-
-	if !serviceRepository.VerificationWebHookSecret(repository.WebHookSecret, signature, bodyContent) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    "密钥验证不通过",
-		})
-		return
-	}
-
-	go func() {
-		serviceRepository.GitPullAndSaveRecord(repository.Url, repository.ID)
-	}()
-
-	c.JSON(http.StatusOK, gin.H{
-		"status": true,
-		"data":   "",
-		"msg":    "git pull 已经执行",
-	})
 }

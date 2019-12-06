@@ -17,7 +17,7 @@ class Edit extends React.Component {
             desc:'',
             userName:'',
             password:'',
-            dependentTools:'',//还没做
+            dependTools:'',
         };
     }
 
@@ -59,8 +59,8 @@ class Edit extends React.Component {
                         <InputLabel >依赖安装工具</InputLabel>
                         <Select
                             style={{width:"100%"}}
-                            value={this.state.dependentTools}
-                            onChange={this.textFieldChange.bind(this,'dependentTools')}
+                            value={this.state.dependTools}
+                            onChange={this.textFieldChange.bind(this,'dependTools')}
                         >
                             {
                                 this.props.dependentSupport.map(r=>{
