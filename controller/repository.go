@@ -107,7 +107,7 @@ func RepositoryDestroy(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   id,
-			"msg":    "无法删除，还有任务在使用此仓库，下面还有未完成代码",
+			"msg":    "无法删除，还有任务在使用此仓库",
 		})
 		return
 	}
@@ -120,7 +120,17 @@ func RepositoryDestroy(c *gin.Context) {
 		})
 		return
 	}
-	//这里删除仓库目录
+	//删除仓库目录
+	err := serviceRepository.DeleteRepository(repository.Url)
+
+	if  err!= nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,

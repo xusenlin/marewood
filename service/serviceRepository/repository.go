@@ -78,3 +78,25 @@ func GitPullAndSaveRecord(url string,repositoryId uint) bool {
 	return database.DB.NewRecord(record)
 }
 
+func DeleteRepository(url string) error {
+
+	repositoryName, err := helper.GetRepositoryNameByUrl(url)
+	if err != nil {
+		return err
+	}
+
+	repoDir := config.Cfg.RepositoryDir + "/" + repositoryName
+
+	file, err := os.Stat(repoDir)
+
+	if err != nil || !file.IsDir() {
+		return  errors.New("找不到仓库目录,无法删除仓库")
+	}
+
+	removeErr := os.RemoveAll(repoDir)
+
+	if removeErr != nil {
+		return removeErr
+	}
+	return  nil
+}
