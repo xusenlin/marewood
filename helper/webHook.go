@@ -5,11 +5,12 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
+	"strings"
 )
 
 //获取请求中的签名
 func GetHeaderSignature(c *gin.Context) string {
-	signature := c.GetHeader("HTTP_X_GITLAB_TOKEN") //GitLab
+	signature := c.GetHeader("X-Gitlab-Token") //GitLab
 
 	if "" == signature{
 		signature = c.GetHeader("X-Hub-Signature") //Github
@@ -34,4 +35,12 @@ func VerificationWebHookSecret(webHookSecret string,signature string,bodyContent
 	}
 
 	return  true
+}
+
+//从webHooks push中检查是否有依赖变动
+func HasDependChange(out string) (hasChange bool)  {
+	if strings.Index(out,"package.json") == -1 {
+		return false
+	}
+	return true
 }

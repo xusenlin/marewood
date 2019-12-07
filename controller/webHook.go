@@ -12,6 +12,16 @@ import (
 //webHook 更新
 func RepositoryUpdate(c *gin.Context) {
 
+	raw,_ := c.GetRawData()
+	c.JSON(http.StatusOK, gin.H{
+		"status": false,
+		"data":   string(raw),
+		"msg":    "GetRawData事件",
+	})
+	return
+
+
+
 	repositoryId := c.Query("id")
 
 	if "push" != c.GetHeader("x-github-event") {
