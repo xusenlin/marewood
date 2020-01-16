@@ -63,19 +63,23 @@ func GitPullByRepositoryUrl(url string) (string, error) {
 }
 
 //通过仓库url更新仓库并且保存记录
-func GitPullAndSaveRecord(url string,repositoryId uint) bool {
+func GitPullAndSaveRecord(url string,repositoryId uint) (string, error) {
 
 	out, err := GitPullByRepositoryUrl(url)
 
 	record := models.WebHookRecord{Status:0,TerminalInfo:out,RepositoryId:repositoryId}
 
+
 	if err != nil {
 		record.Status = models.WebHookRecordFail
-	}else {
-		record.Status = models.WebHookRecordSuccess
+		database.DB.NewRecord(record)
+		return out,err
 	}
 
-	return database.DB.NewRecord(record)
+	record.Status = models.WebHookRecordSuccess
+	database.DB.NewRecord(record)
+
+	return out,nil
 }
 
 func DeleteRepository(url string) error {
