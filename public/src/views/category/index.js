@@ -9,6 +9,7 @@ import {
 import HelperTooltips from "../../components/helperTooltips";
 import EditCategory from './edit.js'
 import {categories,destroy} from '../../api/category.js'
+import Snackbar from "../../components/snackbar";
 
 
 const styles = theme => ({
@@ -59,6 +60,7 @@ class CategoryTable extends React.Component {
     }
     destroyConfirm () {
         destroy({id:this.destroyId}).then(r=>{
+            Snackbar.success("删除成功！");
             this.setState({destroyDialogShow:false});
             this.getTableData()
         }).catch(()=>{})

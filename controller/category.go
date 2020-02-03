@@ -63,6 +63,9 @@ func CategoryDestroy(c *gin.Context) {
 	id := c.Query("id")
 
 	//删除之前请确保此分类没有被使用
+
+
+
 	if database.DB.Where("id = ?", id).Delete(&category).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
