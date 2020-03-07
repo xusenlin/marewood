@@ -78,7 +78,6 @@ func RepositoryCreate(c *gin.Context) {
 	})
 }
 
-
 func RepositoryDestroy(c *gin.Context) {
 	var repository models.Repository
 
@@ -119,4 +118,68 @@ func RepositoryDestroy(c *gin.Context) {
 		"msg":    "删除成功",
 	})
 
+}
+
+func RepositoryGitPull(c *gin.Context)  {
+
+	var repository models.Repository
+	id := c.Query("id")
+
+	if database.DB.First( &repository , id ).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+
+	out,err := serviceRepository.GitPullByRepositoryUrl(repository.Url)
+
+	if  err!= nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   out,
+		"msg":    "执行成功",
+	})
+}
+
+func RepositoryDeleteDepend(c *gin.Context)  {
+
+	var repository models.Repository
+	id := c.Query("id")
+
+	if database.DB.First( &repository , id ).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+
+	err := serviceRepository.DeleteDepend(repository.Url)
+
+	if  err!= nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   "仓库依赖删除成功，相关任务执行的时候会重新安装",
+		"msg":    "执行成功",
+	})
 }

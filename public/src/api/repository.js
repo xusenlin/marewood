@@ -3,18 +3,31 @@ import request from '../utils/request.js'
 
 
 /**
- * 重新安装依赖
+ * 更新仓库代码
  * @param params
  * @returns {AxiosPromise}
  */
 export function gitPull(params) {
     return request({
-        url:  '/dependent_reinstall',
+        url:  '/repository/git_pull',
         method: 'get',
         params: params
     })
 }
 
+
+/**
+ * 删除仓库依赖
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function deleteDepend(params) {
+    return request({
+        url:  '/repository/delete_depend',
+        method: 'get',
+        params: params
+    })
+}
 
 
 

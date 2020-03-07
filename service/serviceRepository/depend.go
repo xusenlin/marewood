@@ -45,7 +45,7 @@ func DeleteDepend(url string) error {
 	file, err := os.Stat(dependDir)
 
 	if err != nil || !file.IsDir() {
-		return  errors.New("找不到依赖目录,无法删除依赖")
+		return  errors.New("找不到依赖目录或者还没有产生依赖,无法删除依赖")
 	}
 
 	removeErr := os.RemoveAll(dependDir)

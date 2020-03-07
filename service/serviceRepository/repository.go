@@ -36,7 +36,6 @@ func GitClone(gitUrl string, userName string, password string) (string, error) {
 
 //通过仓库url更新仓库
 func GitPullByRepositoryUrl(url string) (string, error) {
-
 	repositoryName, err := helper.GetRepositoryNameByUrl(url)
 	if err != nil {
 		return "", err

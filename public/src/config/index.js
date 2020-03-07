@@ -3,7 +3,7 @@ import ApiUrl from './url.js'
 export default {
     apiUrl: ApiUrl,
     apiPrefix: 'v1',
-    timeout: 5000,
+    timeout: 10000,
     requestRetry:4,
     requestRetryDelay:800,
     siteName: "FEAutoDeploy",

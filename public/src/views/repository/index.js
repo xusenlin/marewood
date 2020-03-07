@@ -2,6 +2,7 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+import RestoreFromTrash from '@material-ui/icons/RestoreFromTrash';
 import LockIcon from '@material-ui/icons/Lock';
 import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
@@ -14,7 +15,7 @@ import {
 } from '@material-ui/core';
 import RepositoryStatus from './repositoryStatus'
 import Edit from './edit'
-import {repositories, destroy, gitPull} from '../../api/repository'
+import {repositories, destroy, gitPull,deleteDepend} from '../../api/repository'
 import Snackbar from '../../components/snackbar/index'
 import { getSystemInfo } from "../../utils/dataStorage"
 
@@ -83,15 +84,24 @@ class RepositoryTable extends React.Component {
 
     updateRepository(row){
         if(row.Status !== 1){
-            Snackbar.warning("仓库状态不正常，无法重新安装依赖");
+            Snackbar.warning("仓库状态不正常，无法执行Git Pull 命令");
             return
         }
         gitPull({id:row.ID}).then(r=>{
-            Snackbar.success("后台执行Git Pull 命令中");
-            this.getTableData()
+            Snackbar.success(r);
+            // this.getTableData()
         }).catch(()=>{})
     }
-
+    deleteRepositoryDepend(row){
+        if(row.Status !== 1){
+            Snackbar.warning("仓库状态不正常，无法删除依赖");
+            return
+        }
+        deleteDepend({id:row.ID}).then(r=>{
+            Snackbar.success(r);
+            // this.getTableData()
+        }).catch(()=>{})
+    }
     destroyConfirm() {
         destroy({id: this.destroyId}).then(r => {
             this.setState({destroyDialogShow: false});
@@ -206,6 +216,11 @@ class RepositoryTable extends React.Component {
                                         <Tooltip title="Git Pull" interactive>
                                             <IconButton color="primary" onClick={this.updateRepository.bind(this,row)}>
                                                 <SaveAltIcon/>
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="删除依赖" interactive>
+                                            <IconButton color="primary" onClick={this.deleteRepositoryDepend.bind(this,row)}>
+                                                <RestoreFromTrash/>
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
