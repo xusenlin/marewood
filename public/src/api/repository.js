@@ -1,26 +1,13 @@
 import request from '../utils/request.js'
 
 
-/**
- * 获取全部依赖安装工具
- * @param params
- * @returns {AxiosPromise}
- */
-export function dependentSupport(params) {
-    return request({
-        url:  '/dependent_support',
-        method: 'get',
-        params: params
-    })
-}
-
 
 /**
  * 重新安装依赖
  * @param params
  * @returns {AxiosPromise}
  */
-export function dependentReinstall(params) {
+export function gitPull(params) {
     return request({
         url:  '/dependent_reinstall',
         method: 'get',

@@ -2,9 +2,7 @@ package serviceRepository
 
 import (
 	"FEDeployService/config"
-	"FEDeployService/database"
 	"FEDeployService/helper"
-	"FEDeployService/models"
 	"errors"
 	"os"
 	"os/exec"
@@ -62,25 +60,6 @@ func GitPullByRepositoryUrl(url string) (string, error) {
 	return string(out), nil
 }
 
-//通过仓库url更新仓库并且保存记录
-func GitPullAndSaveRecord(url string,repositoryId uint) (string, error) {
-
-	out, err := GitPullByRepositoryUrl(url)
-
-	record := models.WebHookRecord{Status:0,TerminalInfo:out,RepositoryId:repositoryId}
-
-
-	if err != nil {
-		record.Status = models.WebHookRecordFail
-		database.DB.NewRecord(record)
-		return out,err
-	}
-
-	record.Status = models.WebHookRecordSuccess
-	database.DB.NewRecord(record)
-
-	return out,nil
-}
 
 func DeleteRepository(url string) error {
 

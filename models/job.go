@@ -2,6 +2,9 @@ package models
 
 import "github.com/jinzhu/gorm"
 
+//随机生成的密钥长度
+const RepoWebHookSecretRandSeqLen = 8
+
 type Job struct {
 	gorm.Model
 	Name         string `binding:"required,min=2,max=16"`

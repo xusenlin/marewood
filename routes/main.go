@@ -33,24 +33,22 @@ func InitRouter() *gin.Engine {
 
 	v1 := r.Group("/v1")
 	{
+		//系统信息
+		v1.GET("/system/info", controller.SystemInfo)
+		//仓库相关
+		v1.GET("/repositories", controller.RepositoryFindAll)
+		v1.POST("/repository/create", controller.RepositoryCreate)
+		v1.GET("/repository/delete", controller.RepositoryDestroy)
+		//v1.POST("/repository/update", Controllers.RepositoryUpdate)
 		//任务分类
 		v1.GET("/categories", controller.CategoryFindAll)
 		v1.POST("/category/create", controller.CategoryCreate)
 		v1.GET("/category/delete", controller.CategoryDestroy)
 		//v1.POST("/category/update", Controllers.CategoryUpdate)
 
-		//仓库相关
-		v1.GET("/repositories", controller.RepositoryFindAll)
-		v1.POST("/repository/create", controller.RepositoryCreate)
-		v1.GET("/repository/delete", controller.RepositoryDestroy)
-		//v1.POST("/repository/update", Controllers.RepositoryUpdate)
-
-		//仓库更新记录
-		v1.GET("/webHook_record", controller.WebHookRecordFind)
-
-		//依赖相关
-		v1.GET("/dependent_support", controller.DependentSupport)
-		v1.GET("/dependent_reinstall", controller.ReinstallDepend)
+		////依赖相关
+		//v1.GET("/dependent_support", controller.DependentSupport)
+		//v1.GET("/dependent_reinstall", controller.ReinstallDepend)
 	}
 
 	return r

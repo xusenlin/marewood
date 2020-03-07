@@ -2,7 +2,6 @@ package controller
 
 import (
 	"FEDeployService/database"
-	"FEDeployService/helper"
 	"FEDeployService/models"
 	"FEDeployService/service/serviceRepository"
 	"github.com/gin-gonic/gin"
@@ -43,9 +42,7 @@ func RepositoryCreate(c *gin.Context) {
 		return
 	}
 
-	repository.WebHookSecret = helper.RandSeq(models.RepoWebHookSecretRandSeqLen)
 	repository.Status = models.RepoStatusProcessing
-	repository.DependStatus = models.RepoDependStatusProcessing
 
 	if database.DB.Create(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -63,7 +60,6 @@ func RepositoryCreate(c *gin.Context) {
 			database.DB.Model(&repository).
 				Where("id = ?", repository.ID).
 				Update("status", models.RepoStatusFail).
-				Update("depend_status", models.RepoDependStatusFail).
 				Update("terminal_info", out)
 			return
 		}
@@ -72,21 +68,6 @@ func RepositoryCreate(c *gin.Context) {
 			Where("id = ?", repository.ID).
 			Update("status", models.RepoStatusSuccess).
 			Update("terminal_info", out)
-
-		//安装依赖并更新记录
-		dependOut, err := serviceRepository.InstallDepend(repository.Url, repository.DependTools)
-		if err != nil {
-			database.DB.Model(&repository).
-				Where("id = ?", repository.ID).
-				Update("depend_status", models.RepoDependStatusFail).
-				Update("depend_terminal_info", dependOut)
-			return
-		}
-
-		database.DB.Model(&repository).
-			Where("id = ?", repository.ID).
-			Update("depend_status", models.RepoDependStatusSuccess).
-			Update("depend_terminal_info", dependOut)
 
 	}()
 

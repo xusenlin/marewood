@@ -1,14 +1,15 @@
 import request from '../utils/request.js'
 
 /**
- * 获取记录
+ * 系统信息
  * @param params
  * @returns {AxiosPromise}
  */
-export function webHookRecord(params) {
+export function systemInfo(params) {
     return request({
-        url:  '/webHook_record',
+        url:  '/system/info',
         method: 'get',
         params: params
     })
 }
+

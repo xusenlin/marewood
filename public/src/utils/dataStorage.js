@@ -13,16 +13,6 @@ export function setUserInfo(user){
     return user
 }
 
-export function setPermissions(permissionsArr){
-    Storage.set(Config.permissionsKey,permissionsArr);
-    return permissionsArr
-}
-
-export function hasPermissions(permissionsKey){
-    let permissionsArr = Storage.get(Config.permissionsKey,[]);
-    if(permissionsArr.indexOf('*') !== -1){return true;}
-    return permissionsArr.indexOf(permissionsKey) !== -1;
-}
 
 export function getToken() {
     return Storage.get(Config.tokenKey)
@@ -32,11 +22,19 @@ export function setToken(token) {
     return Storage.set(Config.tokenKey, token)
 }
 
+
+export function getSystemInfo(key = null) {
+    let systemInfo = Storage.get(Config.systemInfoKey);
+    if(key)return systemInfo.hasOwnProperty(key) ? systemInfo[key] : null;
+    return systemInfo
+}
+
+export function setSystemInfo(info) {
+    Storage.set(Config.systemInfoKey,info);
+    return info
+}
+
 export function removeToken() {
     return Storage.remove(Config.tokenKey)
 }
 
-
-export function isLogin() {
-    return (getToken() || '').length > 5
-}

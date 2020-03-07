@@ -8,18 +8,15 @@ import Announcement from '@material-ui/icons/Announcement';
 import LinkIcon from '@material-ui/icons/Link'
 import LockOpenIcon from '@material-ui/icons/LockOpen'
 import SaveAltIcon from '@material-ui/icons/SaveAlt'
-import Comment from '@material-ui/icons/Comment'
 import {
     Dialog, DialogContent, DialogTitle, DialogContentText, Tooltip,
     DialogActions, Button, IconButton, Fab, Paper, TableRow, TableHead, TableCell, TableBody, Table
 } from '@material-ui/core';
-import HelperTooltips from '../../components/helperTooltips'
-import ApiUrl from '../../config/url.js'
 import RepositoryStatus from './repositoryStatus'
-import DependStatus from './dependStatus'
 import Edit from './edit'
-import {repositories, destroy,dependentSupport,dependentReinstall} from '../../api/repository'
+import {repositories, destroy, gitPull} from '../../api/repository'
 import Snackbar from '../../components/snackbar/index'
+import { getSystemInfo } from "../../utils/dataStorage"
 
 const styles = theme => ({
     root: {
@@ -45,7 +42,7 @@ class RepositoryTable extends React.Component {
             tableData: [],
             destroyDialogShow: false,
             editShow: false,
-            dependentSupport:[]
+            dependentSupport: getSystemInfo("DependTools")
         };
         this.destroyId = 0; //记录当前要删除的id
         this.timeout = null;
@@ -53,9 +50,6 @@ class RepositoryTable extends React.Component {
 
     componentDidMount() {
         this.getTableData()
-        dependentSupport().then(r=>{
-            this.setState({dependentSupport:r})
-        }).catch(()=>{})
     }
     componentWillUnmount() {
         if(this.timeout)clearTimeout(this.timeout);
@@ -67,7 +61,7 @@ class RepositoryTable extends React.Component {
             this.setState({tableData: r});
 
             for (let i = 0; i < r.length; i++) {
-                if (r[i].Status === 0 || r[i].DependStatus === 0) {
+                if (r[i].Status === 0) {
                     this.timeout = setTimeout(()=>{
                         this.getTableData()
                     },5000);
@@ -87,17 +81,13 @@ class RepositoryTable extends React.Component {
         this.setState({destroyDialogShow: false})
     }
 
-    reinstallDepend(row){
+    updateRepository(row){
         if(row.Status !== 1){
             Snackbar.warning("仓库状态不正常，无法重新安装依赖");
             return
         }
-        if(row.DependStatus === 0){
-            Snackbar.warning("依赖还在处理中，等待处理完成再次尝试");
-            return
-        }
-        dependentReinstall({id:row.ID}).then(r=>{
-            Snackbar.success("后台重新安装依赖中");
+        gitPull({id:row.ID}).then(r=>{
+            Snackbar.success("后台执行Git Pull 命令中");
             this.getTableData()
         }).catch(()=>{})
     }
@@ -134,17 +124,12 @@ class RepositoryTable extends React.Component {
                                 <TableCell>ID</TableCell>
                                 <TableCell align="left">仓库名字</TableCell>
                                 <TableCell align="left">克隆状态</TableCell>
-                                <TableCell align="left">依赖状态</TableCell>
                                 <TableCell align="left">仓库权限</TableCell>
                                 <TableCell align="left">终端信息</TableCell>
-                                <TableCell align="left">依赖终端信息</TableCell>
                                 <TableCell align="left">备注</TableCell>
                                 <TableCell align="left">仓库地址</TableCell>
-                                <TableCell align="left">依赖安装工具</TableCell>
-                                <TableCell align="left">webHook密钥</TableCell>
-                                <TableCell align="left">webHook地址</TableCell>
-                                {/*<TableCell align="left">创建时间</TableCell>*/}
-                                <TableCell align="left">操作 <HelperTooltips help="删除/重新处理依赖/提交记录"/> </TableCell>
+                                <TableCell align="left">依赖工具</TableCell>
+                                <TableCell align="left">操作</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -158,9 +143,7 @@ class RepositoryTable extends React.Component {
                                     <TableCell align="left">
                                         <RepositoryStatus status={row.Status}/>
                                     </TableCell>
-                                    <TableCell align="left">
-                                        <DependStatus status={row.DependStatus}/>
-                                    </TableCell>
+
                                     <TableCell align="left">
                                         {
                                             row.UserName && row.Password ? (
@@ -195,17 +178,7 @@ class RepositoryTable extends React.Component {
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
-                                    <TableCell align="left">
-                                        <Tooltip title={
-                                            <div style={{whiteSpace: "pre-wrap"}}>
-                                                {row.DependTerminalInfo}
-                                            </div>
-                                        } interactive>
-                                            <IconButton color="primary">
-                                                <Computer/>
-                                            </IconButton>
-                                        </Tooltip>
-                                    </TableCell>
+
                                     <TableCell align="left">
                                         <Tooltip title={row.Desc} interactive>
                                             <IconButton color="primary">
@@ -223,21 +196,18 @@ class RepositoryTable extends React.Component {
                                     <TableCell align="center">
                                         <span className="depend-tools">{(row.DependTools).toUpperCase()}</span>
                                     </TableCell>
-                                    <TableCell align="left">{row.WebHookSecret}</TableCell>
-                                    <TableCell align="left">{ApiUrl}/web_hook?id={row.ID}</TableCell>
-                                    {/*<TableCell align="left">{row.CreatedAt}</TableCell>*/}
-                                    <TableCell align="left">
-                                        <IconButton color="primary"
-                                                    onClick={this.destroyDialogOpen.bind(this, row.ID)}>
-                                            <DeleteIcon/>
-                                        </IconButton>
-                                        <IconButton color="primary" onClick={this.reinstallDepend.bind(this,row)}>
-                                            <SaveAltIcon/>
-                                        </IconButton>
-                                        <IconButton color="primary"
-                                                    onClick={()=>{this.props.history.push({pathname:'webHookRecord',query:{id:row.ID}})}}>
-                                            <Comment/>
-                                        </IconButton>
+                                    <TableCell align="center">
+                                        <Tooltip title="删除仓库" interactive>
+                                            <IconButton color="primary"
+                                                        onClick={this.destroyDialogOpen.bind(this, row.ID)}>
+                                                <DeleteIcon/>
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Git Pull" interactive>
+                                            <IconButton color="primary" onClick={this.updateRepository.bind(this,row)}>
+                                                <SaveAltIcon/>
+                                            </IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                 </TableRow>
                             ))}

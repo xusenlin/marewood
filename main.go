@@ -22,8 +22,6 @@ func main() {
 	defer database.DB.Close()
 
 	r := routes.InitRouter()
-
-
 	if err := r.Run(":" + os.Getenv("HTTP_PORT")); err != nil {
 		panic(err)
 	}

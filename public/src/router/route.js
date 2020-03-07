@@ -1,7 +1,6 @@
 import Dashboard from '../views/dashboard';
 import Category from '../views/category';
 import Repository from '../views/repository';
-import WebHookRecord from '../views/webHookRecord/index'
 import Job from '../views/job';
 
 import CategoryIcon from '@material-ui/icons/Category';
@@ -50,11 +49,7 @@ export default [
         path:'/folder',
         isMenu:true,
         icon:FolderOpenIcon,
-        component:Job
+        component:Dashboard
     },
-    {
-        title:'仓库更新记录',
-        path:'/webHookRecord',
-        component:WebHookRecord
-    },
+
 ]

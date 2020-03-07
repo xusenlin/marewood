@@ -6,7 +6,8 @@ export default {
     timeout: 5000,
     requestRetry:4,
     requestRetryDelay:800,
-    siteName: 'FEAutoDeploy',
-    userInfoKey:'FEAutoDeploy_USER_INFO',//添加前缀（FEAutoDeploy）可以在一个域名下存在多个应用
-    tokenKey: 'FEAutoDeploy_ACCESS_TOKEN',
+    siteName: "FEAutoDeploy",
+    systemInfoKey: "FEAutoDeploy_SYSTEM_INFO",
+    userInfoKey:"FEAutoDeploy_USER_INFO",//添加前缀（FEAutoDeploy）可以在一个域名下存在多个应用
+    tokenKey: "FEAutoDeploy_ACCESS_TOKEN",
 }
