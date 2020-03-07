@@ -87,6 +87,7 @@ class RepositoryTable extends React.Component {
             Snackbar.warning("仓库状态不正常，无法执行Git Pull 命令");
             return
         }
+        Snackbar.info("命令已经发送，请等待");
         gitPull({id:row.ID}).then(r=>{
             Snackbar.success(r);
             // this.getTableData()
