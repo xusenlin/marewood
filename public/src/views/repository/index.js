@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RestoreFromTrash from '@material-ui/icons/RestoreFromTrash';
+import DeviceHub from '@material-ui/icons/DeviceHub';
 import LockIcon from '@material-ui/icons/Lock';
 import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
@@ -133,14 +134,14 @@ class RepositoryTable extends React.Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
-                                <TableCell align="left">仓库名字</TableCell>
-                                <TableCell align="left">克隆状态</TableCell>
-                                <TableCell align="left">仓库权限</TableCell>
-                                <TableCell align="left">终端信息</TableCell>
-                                <TableCell align="left">备注</TableCell>
-                                <TableCell align="left">仓库地址</TableCell>
-                                <TableCell align="left">依赖工具</TableCell>
-                                <TableCell align="left">操作</TableCell>
+                                <TableCell align="center">仓库名字</TableCell>
+                                <TableCell align="center">克隆状态</TableCell>
+                                <TableCell align="center">仓库权限</TableCell>
+                                <TableCell align="center">终端信息</TableCell>
+                                <TableCell align="center">备注</TableCell>
+                                <TableCell align="center">仓库地址</TableCell>
+                                <TableCell align="center">依赖工具</TableCell>
+                                <TableCell align="center">操作</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -150,12 +151,12 @@ class RepositoryTable extends React.Component {
                                     <TableCell component="th" scope="row">
                                         {row.ID}
                                     </TableCell>
-                                    <TableCell align="left">{row.Name}</TableCell>
-                                    <TableCell align="left">
+                                    <TableCell align="center">{row.Name}</TableCell>
+                                    <TableCell align="center">
                                         <RepositoryStatus status={row.Status}/>
                                     </TableCell>
 
-                                    <TableCell align="left">
+                                    <TableCell align="center">
                                         {
                                             row.UserName && row.Password ? (
                                                 <Tooltip title={
@@ -178,7 +179,7 @@ class RepositoryTable extends React.Component {
                                             )
                                         }
                                     </TableCell>
-                                    <TableCell align="left">
+                                    <TableCell align="center">
                                         <Tooltip title={
                                             <div style={{whiteSpace: "pre-wrap"}}>
                                                 {row.TerminalInfo}
@@ -190,14 +191,14 @@ class RepositoryTable extends React.Component {
                                         </Tooltip>
                                     </TableCell>
 
-                                    <TableCell align="left">
+                                    <TableCell align="center">
                                         <Tooltip title={row.Desc} interactive>
                                             <IconButton color="primary">
                                                 <Announcement/>
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
-                                    <TableCell align="left">
+                                    <TableCell align="center">
                                         <Tooltip title={row.Url} interactive>
                                             <IconButton color="primary">
                                                 <LinkIcon/>
@@ -222,6 +223,11 @@ class RepositoryTable extends React.Component {
                                         <Tooltip title="删除依赖" interactive>
                                             <IconButton color="primary" onClick={this.deleteRepositoryDepend.bind(this,row)}>
                                                 <RestoreFromTrash/>
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="查看分支" interactive>
+                                            <IconButton color="primary" onClick={this.deleteRepositoryDepend.bind(this,row)}>
+                                                <DeviceHub/>
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
