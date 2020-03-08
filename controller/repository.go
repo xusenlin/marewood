@@ -43,7 +43,7 @@ func RepositoryCreate(c *gin.Context) {
 	}
 
 	repository.Status = models.RepoStatusProcessing
-
+	repository.JobStatus = models.RepoJobStatusLeisured
 	if database.DB.Create(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,

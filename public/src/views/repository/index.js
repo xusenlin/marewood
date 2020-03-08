@@ -9,14 +9,15 @@ import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
 import LinkIcon from '@material-ui/icons/Link'
 import LockOpenIcon from '@material-ui/icons/LockOpen'
-import SaveAltIcon from '@material-ui/icons/SaveAlt'
 import {
     Dialog, DialogContent, DialogTitle, DialogContentText, Tooltip,
     DialogActions, Button, IconButton, Fab, Paper, TableRow, TableHead, TableCell, TableBody, Table
 } from '@material-ui/core';
 import RepositoryStatus from './repositoryStatus'
+import RepositoryJobStatus from './repositoryJobStatus'
 import Edit from './edit'
-import {repositories, destroy, gitPull,deleteDepend} from '../../api/repository'
+import HelperTooltips from "../../components/helperTooltips"
+import {repositories, destroy,deleteDepend} from '../../api/repository'
 import Snackbar from '../../components/snackbar/index'
 import { getSystemInfo } from "../../utils/dataStorage"
 
@@ -63,7 +64,8 @@ class RepositoryTable extends React.Component {
             this.setState({tableData: r});
 
             for (let i = 0; i < r.length; i++) {
-                if (r[i].Status === 0) {
+                if (r[i].Status === 0 || (r[i].JobStatus === 1 && r[i].Status === 1 )) {
+                    //仓库正在克隆当中  或者 （一个正常的仓库很繁忙）的情况就会刷新
                     this.timeout = setTimeout(()=>{
                         this.getTableData()
                     },5000);
@@ -81,18 +83,6 @@ class RepositoryTable extends React.Component {
 
     destroyDialogClose() {
         this.setState({destroyDialogShow: false})
-    }
-
-    updateRepository(row){
-        if(row.Status !== 1){
-            Snackbar.warning("仓库状态不正常，无法执行Git Pull 命令");
-            return
-        }
-        Snackbar.info("命令已经发送，请等待");
-        gitPull({id:row.ID}).then(r=>{
-            Snackbar.success(r);
-            // this.getTableData()
-        }).catch(()=>{})
     }
     deleteRepositoryDepend(row){
         if(row.Status !== 1){
@@ -136,6 +126,10 @@ class RepositoryTable extends React.Component {
                                 <TableCell>ID</TableCell>
                                 <TableCell align="center">仓库名字</TableCell>
                                 <TableCell align="center">克隆状态</TableCell>
+                                <TableCell align="center">
+                                    工作状态
+                                    <HelperTooltips help="当前工作目录正在执行其他部署任务，资源被占用" />
+                                </TableCell>
                                 <TableCell align="center">仓库权限</TableCell>
                                 <TableCell align="center">终端信息</TableCell>
                                 <TableCell align="center">备注</TableCell>
@@ -146,7 +140,6 @@ class RepositoryTable extends React.Component {
                         </TableHead>
                         <TableBody>
                             {this.state.tableData.map(row => (
-
                                 <TableRow key={row.ID}>
                                     <TableCell component="th" scope="row">
                                         {row.ID}
@@ -155,7 +148,9 @@ class RepositoryTable extends React.Component {
                                     <TableCell align="center">
                                         <RepositoryStatus status={row.Status}/>
                                     </TableCell>
-
+                                    <TableCell align="center">
+                                        <RepositoryJobStatus status={row.JobStatus} />
+                                    </TableCell>
                                     <TableCell align="center">
                                         {
                                             row.UserName && row.Password ? (
@@ -213,11 +208,6 @@ class RepositoryTable extends React.Component {
                                             <IconButton color="primary"
                                                         onClick={this.destroyDialogOpen.bind(this, row.ID)}>
                                                 <DeleteIcon/>
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Git Pull" interactive>
-                                            <IconButton color="primary" onClick={this.updateRepository.bind(this,row)}>
-                                                <SaveAltIcon/>
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip title="删除依赖" interactive>
