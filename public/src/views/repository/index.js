@@ -201,7 +201,7 @@ class RepositoryTable extends React.Component {
                                         </Tooltip>
                                     </TableCell>
                                     <TableCell align="center">
-                                        <span className="depend-tools">{(row.DependTools).toUpperCase()}</span>
+                                        <span className="tag">{(row.DependTools).toUpperCase()}</span>
                                     </TableCell>
                                     <TableCell align="center">
                                         <Tooltip title="删除仓库" interactive>

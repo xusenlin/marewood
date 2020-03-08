@@ -6,7 +6,7 @@ import (
 )
 
 //webHook 触发任务
-func RepositoryUpdate(c *gin.Context) {
+func JobWebHook(c *gin.Context) {
 
 	repositoryId := c.Query("id")
 

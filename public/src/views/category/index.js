@@ -3,10 +3,9 @@ import {withStyles} from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
-    Table,TableRow,TableBody,TableHead,TableCell,Paper,Fab,IconButton,Button,
-    Dialog,DialogTitle,DialogContent,DialogContentText,DialogActions
+    Table, TableRow, TableBody, TableHead, TableCell, Paper, Fab, IconButton, Button,
+    Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Tooltip
 } from '@material-ui/core';
-import HelperTooltips from "../../components/helperTooltips";
 import EditCategory from './edit.js'
 import {categories,destroy} from '../../api/category.js'
 import Snackbar from "../../components/snackbar";
@@ -89,7 +88,7 @@ class CategoryTable extends React.Component {
                                 <TableCell align="left">任务数量</TableCell>
                                 <TableCell align="left">备注</TableCell>
                                 <TableCell align="left">创建时间</TableCell>
-                                <TableCell align="left">操作<HelperTooltips help="删除"/></TableCell>
+                                <TableCell align="left">操作</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -103,9 +102,11 @@ class CategoryTable extends React.Component {
                                     <TableCell align="left">{row.Desc}</TableCell>
                                     <TableCell align="left">{row.CreatedAt}</TableCell>
                                     <TableCell align="left">
-                                        <IconButton edge="start" color="primary" onClick={this.destroyDialogOpen.bind(this,row.ID)}>
-                                            <DeleteIcon />
-                                        </IconButton>
+                                        <Tooltip title="删除分类">
+                                            <IconButton edge="start" color="primary" onClick={this.destroyDialogOpen.bind(this,row.ID)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                 </TableRow>
                             ))}

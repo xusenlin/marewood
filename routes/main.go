@@ -27,7 +27,7 @@ func InitRouter() *gin.Engine {
 			c.Redirect(http.StatusMovedPermanently, "/public")
 		})
 
-		r.POST(config.Cfg.WebHookUrl, controller.RepositoryUpdate) //WebHook仓库更新 待测试验证
+		r.POST(config.Cfg.WebHookUrl, controller.JobWebHook)
 	}
 
 
@@ -46,11 +46,11 @@ func InitRouter() *gin.Engine {
 		v1.GET("/categories", controller.CategoryFindAll)
 		v1.POST("/category/create", controller.CategoryCreate)
 		v1.GET("/category/delete", controller.CategoryDestroy)
-		//v1.POST("/category/update", Controllers.CategoryUpdate)
 
-		////依赖相关
-		//v1.GET("/dependent_support", controller.DependentSupport)
-		//v1.GET("/dependent_reinstall", controller.ReinstallDepend)
+		//任务
+		v1.GET("/jobs", controller.JobFindAll)
+		v1.GET("/jobs_find", controller.JobFindByCategoryId)
+
 	}
 
 	return r

@@ -11,7 +11,7 @@ func CategoryFindAll(c *gin.Context) {
 
 	var result []models.Category
 
-	if database.DB.Order("created_at desc").Find(&result).Error != nil {
+	if database.DB.Find(&result).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   database.DB.Error.Error(),
