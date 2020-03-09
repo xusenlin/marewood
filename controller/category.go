@@ -41,6 +41,8 @@ func CategoryCreate(c *gin.Context) {
 		return
 	}
 
+	category.JobQuantity = 0
+	
 	if database.DB.Create(&category).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,

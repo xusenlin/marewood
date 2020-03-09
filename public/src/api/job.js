@@ -25,3 +25,16 @@ export function jobsFind(params) {
         params: params
     })
 }
+
+/**
+ * 任务创建
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function create(params) {
+    return request({
+        url:  '/job/create',
+        method: 'post',
+        data: params
+    })
+}

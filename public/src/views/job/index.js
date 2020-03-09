@@ -6,6 +6,7 @@ import {
 import {jobsFind} from '../../api/job'
 import {categories} from '../../api/category'
 import CategoriesTable from "./categoriesTable"
+import Edit from "./edit"
 import AddIcon from '@material-ui/icons/Add';
 
 
@@ -33,8 +34,14 @@ class Jobs extends React.Component {
         this.state = {
             category:0,
             categories:[],
-            jobs:[]
+            jobs:[],
+            editDialog:{
+                show:false,
+                categoryId:0,
+                categoryName:""
+            }
         };
+        this.timeoutId = null;
     }
 
     componentDidMount() {
@@ -50,12 +57,49 @@ class Jobs extends React.Component {
     }
     setTabAndJobsByCategoryId(index = 0){
         let categoryId = this.state.categories[index].ID;
+        if(this.timeoutId){
+            clearTimeout(this.timeoutId)
+        }
         jobsFind({id:categoryId}).then(r=>{
             this.setState({category:index,jobs:r});
+            for (let i = 0; i < r.length; i++) {
+                if (r[i].Status === 3) {
+                    this.timeoutId = setTimeout(()=>{
+                        this.setTabAndJobsByCategoryId(index)
+                    },5000);
+                    return
+                }
+            }
         }).catch(()=>{})
     }
     editDialogShow() {
-        // this.setState({editShow: true})
+        let category = this.state.categories[this.state.category];
+        this.setState({
+            editDialog: {
+                show: true,
+                categoryId: category.ID,
+                categoryName:category.Name
+            }
+        })
+    }
+    createSuccess() {
+        this.setTabAndJobsByCategoryId(this.state.category)
+        this.setState({
+            editDialog: {
+                show: false,
+                categoryId: 0,
+                categoryName:""
+            }
+        });
+    }
+    createClose() {
+        this.setState({
+            editDialog: {
+                show: false,
+                categoryId: 0,
+                categoryName:""
+            }
+        });
     }
     render() {
         const {classes} = this.props;
@@ -80,6 +124,12 @@ class Jobs extends React.Component {
                 <Fab color="primary" className={classes.fab} aria-label="add" onClick={this.editDialogShow.bind(this)}>
                     <AddIcon/>
                 </Fab>
+                <Edit show={this.state.editDialog.show}
+                      categoryId={this.state.editDialog.categoryId}
+                      categoryName={this.state.editDialog.categoryName}
+                      handleClose={this.createClose.bind(this)}
+                      createSuccess={this.createSuccess.bind(this)}
+                />
             </div>
         );
     }

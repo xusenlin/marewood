@@ -4,6 +4,7 @@ import (
 	"FEDeployService/database"
 	"FEDeployService/models"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"net/http"
 )
 
@@ -48,4 +49,50 @@ func JobFindByCategoryId(c *gin.Context) {
 		"msg":    "查询成功",
 	})
 
+}
+
+func JobCreate(c *gin.Context) {
+
+	var job models.Job
+
+	if err := c.ShouldBindJSON(&job); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
+
+	job.RunQuantity = 0
+	job.Branch = "master"
+	job.Status = models.JobStatusLeisured
+
+	if database.DB.Create(&job).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+
+	//分类数量
+	if database.DB.Model(&models.Category{}).
+		Where("id = ?", job.CategoryId).
+		UpdateColumn("job_quantity", gorm.Expr("job_quantity + ?", 1)).
+		Error != nil{
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+	}
+
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   "",
+		"msg":    "创建任务成功",
+	})
 }

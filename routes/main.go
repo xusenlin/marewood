@@ -50,6 +50,7 @@ func InitRouter() *gin.Engine {
 		//任务
 		v1.GET("/jobs", controller.JobFindAll)
 		v1.GET("/jobs_find", controller.JobFindByCategoryId)
+		v1.POST("/job/create", controller.JobCreate)
 
 	}
 

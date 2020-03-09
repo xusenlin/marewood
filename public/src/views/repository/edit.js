@@ -56,7 +56,7 @@ class Edit extends React.Component {
                             autoFocus value={this.state.password} margin="dense" id="password"
                             onChange={this.textFieldChange.bind(this,'password')} label="密码" type="password" fullWidth
                         />
-                        <InputLabel >依赖安装工具</InputLabel>
+                        <InputLabel style={{marginTop:10,fontSize:"12px"}}>依赖安装工具</InputLabel>
                         <Select
                             style={{width:"100%"}}
                             value={this.state.dependTools}
@@ -70,7 +70,7 @@ class Edit extends React.Component {
                         </Select>
                         <TextField
                             required
-                            margin="dense" value={this.state.desc} id="desc" multiline rows={2}
+                            margin="dense" value={this.state.desc} id="desc" multiline rows={6}
                             onChange={this.textFieldChange.bind(this,'desc')} label="仓库描述" type="text" fullWidth
                         />
                     </DialogContent>

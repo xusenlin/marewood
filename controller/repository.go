@@ -12,13 +12,28 @@ func RepositoryFindAll(c *gin.Context) {
 
 	var result []models.Repository
 
-	if database.DB.Order("created_at desc").Find(&result).Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    database.DB.Error.Error(),
-		})
-		return
+	isNormal := c.Query("isNormal")
+
+	if isNormal == "1" {
+		if database.DB.Order("created_at desc").
+			Where("status = ?",models.RepoStatusSuccess).
+			Find(&result).Error != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status": false,
+				"data":   "",
+				"msg":    database.DB.Error.Error(),
+			})
+			return
+		}
+	}else {
+		if database.DB.Order("created_at desc").Find(&result).Error != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status": false,
+				"data":   "",
+				"msg":    database.DB.Error.Error(),
+			})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{

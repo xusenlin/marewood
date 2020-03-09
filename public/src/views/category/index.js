@@ -98,7 +98,7 @@ class CategoryTable extends React.Component {
                                         {row.ID}
                                     </TableCell>
                                     <TableCell align="left">{row.Name}</TableCell>
-                                    <TableCell align="left">{ 10 }</TableCell>
+                                    <TableCell align="left">{ row.JobQuantity }</TableCell>
                                     <TableCell align="left">{row.Desc}</TableCell>
                                     <TableCell align="left">{row.CreatedAt}</TableCell>
                                     <TableCell align="left">

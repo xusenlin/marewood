@@ -11,7 +11,7 @@ import {
 import JobStatus from "./jobStatus"
 import HelperTooltips from "../../components/helperTooltips";
 import SwitchBranchDialog from "./switchBranchDialog"
-
+import Snackbar from '../../components/snackbar/index'
 
 const styles = theme => ({
     table: {
@@ -39,10 +39,18 @@ class CategoriesTable extends React.Component {
     componentWillUnmount() {
 
     }
-    runJob(jobId){
-        alert(jobId)
+    runJob(row){
+        if(row.Status === 3){
+            Snackbar.warning("任务正在打包，请稍等");
+            return
+        }
+        alert(row.ID)
     }
     openSwitchBranchDialog(row){
+        if(row.Status === 3){
+            Snackbar.warning("任务正在打包，请稍等");
+            return
+        }
         this.setState({
             switchBranchDialog:{
                 id:row.ID,
@@ -150,12 +158,11 @@ class CategoriesTable extends React.Component {
                                         </Tooltip>
                                         <Tooltip title="运行任务" interactive>
                                             <IconButton color="primary"
-                                                        onClick={this.runJob.bind(this, row.ID)}>
+                                                        onClick={this.runJob.bind(this, row)}>
                                                 <PlayCircleFilled/>
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
-
                                 </TableRow>
                             ))
                         }
