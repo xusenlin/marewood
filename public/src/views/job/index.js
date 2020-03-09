@@ -1,11 +1,13 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {
-    Tab,Tabs,Paper
+    Tab, Tabs, Paper, Fab
 } from '@material-ui/core';
 import {jobsFind} from '../../api/job'
 import {categories} from '../../api/category'
 import CategoriesTable from "./categoriesTable"
+import AddIcon from '@material-ui/icons/Add';
+
 
 
 const styles = theme => ({
@@ -52,6 +54,9 @@ class Jobs extends React.Component {
             this.setState({category:index,jobs:r});
         }).catch(()=>{})
     }
+    editDialogShow() {
+        // this.setState({editShow: true})
+    }
     render() {
         const {classes} = this.props;
         return (
@@ -72,6 +77,9 @@ class Jobs extends React.Component {
                     </Tabs>
                     <CategoriesTable tableData={this.state.jobs} />
                 </Paper>
+                <Fab color="primary" className={classes.fab} aria-label="add" onClick={this.editDialogShow.bind(this)}>
+                    <AddIcon/>
+                </Fab>
             </div>
         );
     }

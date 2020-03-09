@@ -3,7 +3,6 @@ import {withStyles} from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RestoreFromTrash from '@material-ui/icons/RestoreFromTrash';
-import DeviceHub from '@material-ui/icons/DeviceHub';
 import LockIcon from '@material-ui/icons/Lock';
 import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
@@ -213,11 +212,6 @@ class RepositoryTable extends React.Component {
                                         <Tooltip title="删除依赖" interactive>
                                             <IconButton color="primary" onClick={this.deleteRepositoryDepend.bind(this,row)}>
                                                 <RestoreFromTrash/>
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="查看分支" interactive>
-                                            <IconButton color="primary" onClick={this.deleteRepositoryDepend.bind(this,row)}>
-                                                <DeviceHub/>
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
