@@ -14,6 +14,10 @@ import JobStatus from "./jobStatus"
 import HelperTooltips from "../../components/helperTooltips";
 import SwitchBranchDialog from "./switchBranchDialog"
 import Snackbar from '../../components/snackbar/index'
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpenIcon from '@material-ui/icons/LockOpen'
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 const styles = theme => ({
     table: {
@@ -88,6 +92,7 @@ class CategoriesTable extends React.Component {
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
+                            <TableCell>加密</TableCell>
                             <TableCell align="center">任务名称</TableCell>
                             <TableCell align="center">任务状态</TableCell>
                             <TableCell align="center">
@@ -117,8 +122,23 @@ class CategoriesTable extends React.Component {
                         {
                             this.props.tableData.map(row => (
                                 <TableRow key={row.ID}>
+                                    <TableCell align="center">{row.ID}</TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.ID}
+                                        {
+                                            row.PassWord ? (
+                                                <Tooltip title="任务被加密" interactive>
+                                                    <IconButton color="primary">
+                                                        <LockIcon/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            ) : (
+                                                <Tooltip title="任务公开" interactive>
+                                                    <IconButton color="primary">
+                                                        <LockOpenIcon/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            )
+                                        }
                                     </TableCell>
                                     <TableCell align="center" style={{fontSize:"12px"}}>{row.Name}</TableCell>
                                     <TableCell align="center">
@@ -185,6 +205,12 @@ class CategoriesTable extends React.Component {
                                             <IconButton color="primary"
                                                         onClick={this.runJob.bind(this, row)}>
                                                 <PlayCircleFilled/>
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="删除任务" interactive>
+                                            <IconButton color="primary"
+                                                        onClick={this.runJob.bind(this, row)}>
+                                                <DeleteIcon/>
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>

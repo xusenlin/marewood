@@ -4,10 +4,10 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RestoreFromTrash from '@material-ui/icons/RestoreFromTrash';
 import LockIcon from '@material-ui/icons/Lock';
+import LockOpenIcon from '@material-ui/icons/LockOpen'
 import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
 import LinkIcon from '@material-ui/icons/Link'
-import LockOpenIcon from '@material-ui/icons/LockOpen'
 import {
     Dialog, DialogContent, DialogTitle, DialogContentText, Tooltip,
     DialogActions, Button, IconButton, Fab, Paper, TableRow, TableHead, TableCell, TableBody, Table
@@ -23,7 +23,7 @@ import { getSystemInfo } from "../../utils/dataStorage"
 const styles = theme => ({
     root: {
         width: '100%',
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(1),
         overflowX: 'auto',
     },
     table: {

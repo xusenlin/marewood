@@ -3,6 +3,7 @@ package controller
 import (
 	"FEDeployService/config"
 	"FEDeployService/database"
+	"FEDeployService/helper"
 	"FEDeployService/models"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -69,6 +70,10 @@ func JobCreate(c *gin.Context) {
 	job.RunQuantity = 0
 	job.Branch = "master"
 	job.Status = models.JobStatusLeisured
+	if job.PassWord != ""{
+		job.PassWord = helper.DigestString(job.PassWord)
+	}
+
 
 	if database.DB.Create(&job).Error != nil {
 		c.JSON(http.StatusOK, gin.H{

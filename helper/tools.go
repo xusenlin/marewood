@@ -1,6 +1,8 @@
 package helper
 
 import (
+	"crypto/md5"
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -16,7 +18,9 @@ func RandSeq(n int) string {
 	return string(b)
 }
 
-
+func DigestString(s string) string {
+	return fmt.Sprintf("%x", md5.Sum([]byte(s)))
+}
 
 func BuildDependCmd(tools string) (name string, arg string) {
 	switch tools {
