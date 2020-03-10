@@ -15,6 +15,20 @@ export function gitPull(params) {
     })
 }
 
+/**
+ * 通过仓库 ID 获取分支
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function gitBranch(params) {
+    return request({
+        url:  '/repository/git_branch',
+        method: 'get',
+        params: params
+    })
+}
+
+
 
 /**
  * 删除仓库依赖

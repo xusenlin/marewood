@@ -1,7 +1,7 @@
 import React from 'react';
 import {CircularProgress, IconButton, Tooltip} from "@material-ui/core";
 
-const STATUS = ["我要闲出病来了","我太难了，非常忙"];
+const STATUS = ["给我安排任务吧，现在空闲🤗","资源被占用，非常忙😤"];
 
 class RepositoryJobStatus extends React.Component {
     constructor(props) {

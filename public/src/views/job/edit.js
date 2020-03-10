@@ -64,25 +64,25 @@ class Edit extends React.Component {
                         </Select>
 
                         <TextField
+                            required
                             autoFocus value={this.state.buildDir} margin="dense" id="buildDir"
                             onChange={this.textFieldChange.bind(this,'buildDir')} label="打包目录" type="text" fullWidth
                         />
                         <TextField
+                            required
                             autoFocus value={this.state.buildCommand} margin="dense" id="buildCommand"
                             onChange={this.textFieldChange.bind(this,'buildCommand')} label="打包命令" type="text" fullWidth
                         />
 
                         <TextField
                             autoFocus value={this.state.password} margin="dense" id="password"
-                            onChange={this.textFieldChange.bind(this,'password')} label="密码" type="password" fullWidth
+                            onChange={this.textFieldChange.bind(this,'password')} label="任务加密" type="password" fullWidth
                         />
                         <TextField
-                            required
                             margin="dense" value={this.state.successScript} id="desc" multiline rows={6}
-                            onChange={this.textFieldChange.bind(this,'successScript')} label="打包成功执行的命令" type="text" fullWidth
+                            onChange={this.textFieldChange.bind(this,'successScript')} label="打包成功执行的命令（用户权限模块没有完成，现在不会运行）" type="text" fullWidth
                         />
                         <TextField
-                            required
                             margin="dense" value={this.state.desc} id="desc" multiline rows={6}
                             onChange={this.textFieldChange.bind(this,'desc')} label="任务描述" type="text" fullWidth
                         />

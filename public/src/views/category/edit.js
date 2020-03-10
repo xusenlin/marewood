@@ -50,7 +50,6 @@ class EditCategory extends React.Component {
                             fullWidth
                         />
                         <TextField
-                            required
                             margin="dense"
                             value={this.state.desc}
                             id="desc"

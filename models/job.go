@@ -18,6 +18,7 @@ type Job struct {
 	Url           string                           //访问目录，只有状态成功才返回
 	RunQuantity   int    `gorm:"default:0"`
 	CategoryId    int    `gorm:"index",binding:"required"`
+	WebHookUrl    string
 	RepositoryId  int    `gorm:"index",binding:"required"`
 	BuildDir      string `binding:"required"` //打包的目录,默认是dist
 	BuildCommand  string `binding:"required"` //打包命令，npm run build 可以读取package.json供选择

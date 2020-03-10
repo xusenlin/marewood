@@ -6,6 +6,7 @@ import (
 	"errors"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 
@@ -81,4 +82,30 @@ func DeleteRepository(url string) error {
 		return removeErr
 	}
 	return  nil
+}
+
+func GetBranchByRepositoryUrl(url string) ([]string, error) {
+	repositoryName, err := helper.GetRepositoryNameByUrl(url)
+	if err != nil {
+		return []string{}, err
+	}
+
+	repositoryDir := config.Cfg.RepositoryDir + "/" + repositoryName
+
+	file, err := os.Stat(repositoryDir)
+
+	if err != nil || !file.IsDir() {
+		return []string{}, errors.New("找不到仓库目录=>" + repositoryDir)
+	}
+
+	cmd := exec.Command("git", "branch","-r")
+	cmd.Dir = repositoryDir
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return []string{}, err
+	}
+	branch := strings.Split(strings.Trim(strings.ReplaceAll(string(out)," ",""),"\n"), "\n")
+
+	return branch[1:], nil
 }

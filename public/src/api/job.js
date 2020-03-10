@@ -38,3 +38,17 @@ export function create(params) {
         data: params
     })
 }
+
+
+/**
+ * 修改任务分支
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function updateBranch(params) {
+    return request({
+        url:  '/job/update_branch',
+        method: 'get',
+        params: params
+    })
+}

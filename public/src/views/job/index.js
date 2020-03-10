@@ -83,7 +83,7 @@ class Jobs extends React.Component {
         })
     }
     createSuccess() {
-        this.setTabAndJobsByCategoryId(this.state.category)
+        this.setTabAndJobsByCategoryId(this.state.category);
         this.setState({
             editDialog: {
                 show: false,
@@ -119,7 +119,7 @@ class Jobs extends React.Component {
                             ))
                         }
                     </Tabs>
-                    <CategoriesTable tableData={this.state.jobs} />
+                    <CategoriesTable tableData={this.state.jobs} refresh={this.setTabAndJobsByCategoryId.bind(this,this.state.category)}/>
                 </Paper>
                 <Fab color="primary" className={classes.fab} aria-label="add" onClick={this.editDialogShow.bind(this)}>
                     <AddIcon/>

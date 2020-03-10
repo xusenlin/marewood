@@ -1,6 +1,8 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import LinkIcon from '@material-ui/icons/Link'
+import LinkOffIcon from '@material-ui/icons/LinkOff'
+import UsbIcon from '@material-ui/icons/Usb'
 import Computer from '@material-ui/icons/Computer';
 import Announcement from '@material-ui/icons/Announcement';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
@@ -28,7 +30,7 @@ class CategoriesTable extends React.Component {
             switchBranchDialog:{
                 id:0,
                 show:false,
-                selectedValue:"master"
+                repositoryId:0,
             }
         };
     }
@@ -55,17 +57,28 @@ class CategoriesTable extends React.Component {
             switchBranchDialog:{
                 id:row.ID,
                 show:true,
-                selectedValue:row.Branch
+                repositoryId:row.RepositoryId
             }
         })
     }
-    closeSwitchBranchDialog(selectedValue){
-        let oldVal = this.state.switchBranchDialog;
-        this.setState({switchBranchDialog:{
-                id:oldVal.id,
+    switchSuccess(){
+        this.setState({
+            switchBranchDialog:{
+                id:0,
                 show:false,
-                selectedValue:oldVal.selectedValue
-            }})
+                repositoryId:0
+            }
+        });
+        this.props.refresh();
+    }
+    closeSwitchBranchDialog(){
+        this.setState({
+            switchBranchDialog:{
+                id:0,
+                show:false,
+                repositoryId:0
+            }
+        })
     }
     render() {
         const {classes} = this.props;
@@ -83,7 +96,11 @@ class CategoriesTable extends React.Component {
                             </TableCell>
                             <TableCell align="center">
                                 访问地址
-                                <HelperTooltips help="任务状态成功(1)时可访问页面"/>
+                                <HelperTooltips help="打包成功时可访问的页面🤓"/>
+                            </TableCell>
+                            <TableCell align="center">
+                                WebHook
+                                <HelperTooltips help="触发任务的钩子，目前没有使用队列，如果任务资源被占用则无法打包"/>
                             </TableCell>
                             <TableCell align="center">终端信息</TableCell>
                             <TableCell align="center">
@@ -103,17 +120,25 @@ class CategoriesTable extends React.Component {
                                     <TableCell component="th" scope="row">
                                         {row.ID}
                                     </TableCell>
-                                    <TableCell align="center">{row.Name}</TableCell>
+                                    <TableCell align="center" style={{fontSize:"12px"}}>{row.Name}</TableCell>
                                     <TableCell align="center">
                                         <JobStatus status={row.Status} />
                                     </TableCell>
                                     <TableCell align="center">{row.Branch}</TableCell>
                                     <TableCell align="center">
-                                        <Tooltip title={row.Url} interactive>
+                                        <Tooltip title={row.Status !== 1 ? "没有打包成功之前是不能访问的" : row.Url} interactive>
                                             <IconButton color="primary">
-                                                <LinkIcon/>
+                                                { row.Status !== 1 ? <LinkOffIcon/>: <LinkIcon/>}
                                             </IconButton>
                                         </Tooltip>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <Tooltip title={ row.WebHookUrl } interactive>
+                                            <IconButton color="primary">
+                                                <UsbIcon/>
+                                            </IconButton>
+                                        </Tooltip>
+
                                     </TableCell>
                                     <TableCell align="center">
                                         <Tooltip title={
@@ -170,9 +195,10 @@ class CategoriesTable extends React.Component {
                 </Table>
                 <SwitchBranchDialog
                     jobId={this.state.switchBranchDialog.id}
-                    selectedValue={this.state.switchBranchDialog.selectedValue}
+                    repositoryId={this.state.switchBranchDialog.repositoryId}
                     open={this.state.switchBranchDialog.show}
-                    onClose={this.closeSwitchBranchDialog.bind(this)} />
+                    onClose={this.closeSwitchBranchDialog.bind(this)}
+                    switchSuccess={this.switchSuccess.bind(this)}/>
             </div>
         );
     }

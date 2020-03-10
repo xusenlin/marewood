@@ -198,3 +198,44 @@ func RepositoryDeleteDepend(c *gin.Context)  {
 		"msg":    "执行成功",
 	})
 }
+
+func RepositoryBranch(c *gin.Context)  {
+	var repository models.Repository
+	id := c.Query("id")
+
+	if database.DB.First( &repository , id ).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+
+	if repository.Status != models.RepoStatusSuccess {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "此任务关联的仓库已经不可使用，请先尝试修复此仓库",
+		})
+		return
+	}
+
+	branch,err := serviceRepository.GetBranchByRepositoryUrl(repository.Url)
+
+	if  err!= nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   branch,
+		"msg":    "执行成功",
+	})
+
+}

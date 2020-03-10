@@ -1,11 +1,13 @@
 package controller
 
 import (
+	"FEDeployService/config"
 	"FEDeployService/database"
 	"FEDeployService/models"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"net/http"
+	"strconv"
 )
 
 func JobFindAll(c *gin.Context) {
@@ -76,6 +78,16 @@ func JobCreate(c *gin.Context) {
 		})
 		return
 	}
+	webHookUrl := config.Cfg.WebHookUrl + "?id=" + strconv.Itoa(int(job.ID))
+
+	if database.DB.Model(&job).UpdateColumn("web_hook_url",webHookUrl).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
 
 	//分类数量
 	if database.DB.Model(&models.Category{}).
@@ -94,5 +106,30 @@ func JobCreate(c *gin.Context) {
 		"status": true,
 		"data":   "",
 		"msg":    "创建任务成功",
+	})
+}
+
+func JobUpdateBranch(c *gin.Context)  {
+
+	var job models.Job
+
+	id := c.Query("id")
+	branch := c.Query("branch")
+
+	if database.DB.Model(&job).
+		Where("id = ?", id).
+		UpdateColumn("branch", branch).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   database.DB.Error.Error(),
+			"msg":    "数据库更新出错",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   branch,
+		"msg":    "更新成功",
 	})
 }
