@@ -138,3 +138,22 @@ func JobUpdateBranch(c *gin.Context)  {
 		"msg":    "更新成功",
 	})
 }
+
+func JobDestroy(c *gin.Context) {
+
+	id := c.Query("id")
+
+	if database.DB.Where("id = ?",id).Delete(&models.Job{}).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   id,
+		"msg":    "删除成功",
+	})
+}

@@ -5,6 +5,7 @@ import (
 	"FEDeployService/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func CategoryFindAll(c *gin.Context) {
@@ -61,24 +62,32 @@ func CategoryCreate(c *gin.Context) {
 
 func CategoryDestroy(c *gin.Context) {
 
-	var category models.Category
 	id := c.Query("id")
 
-	if true {//这里后面要根据此分类是否被使用来确认分类是否能被删除
+	var jobCount int
+
+	if database.DB.Model(&models.Job{}).Where("category_id = ?", id).Count(&jobCount).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   id,
-			"msg":    "无法删除，还有任务在使用此分类",
+			"msg":    database.DB.Error.Error(),
+		})
+	}
+
+	if jobCount > 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   jobCount,
+			"msg":    "无法删除，还有" + strconv.Itoa(jobCount) + "个任务在使用此分类",
 		})
 		return
 	}
 
-
-	if database.DB.Where("id = ?", id).Delete(&category).Error != nil {
+	if database.DB.Where("id = ?", id ).Delete(&models.Category{}).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
-			"msg":    "数据库删除出错",
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
 		})
 		return
 	}

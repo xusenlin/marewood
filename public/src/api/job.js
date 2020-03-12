@@ -52,3 +52,16 @@ export function updateBranch(params) {
         params: params
     })
 }
+
+/**
+ * 删除
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function destroy(params) {
+    return request({
+        url:  '/job/delete',
+        method: 'get',
+        params: params
+    })
+}

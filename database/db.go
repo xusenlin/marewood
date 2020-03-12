@@ -19,6 +19,8 @@ func InitDb()  {
 		panic("failed to connect database")
 	}
 
+	DB.LogMode(true)
+
 	DB.AutoMigrate(&models.SysSetting{},&models.Category{},&models.Repository{},&models.Job{})
 
 	if DB.Error != nil {

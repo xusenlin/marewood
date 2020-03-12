@@ -8,7 +8,17 @@ import Announcement from '@material-ui/icons/Announcement';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import DeviceHub from '@material-ui/icons/DeviceHub';
 import {
-    TableRow, TableHead, TableCell, TableBody, Table, Tooltip, IconButton
+    TableRow,
+    TableHead,
+    TableCell,
+    TableBody,
+    Table,
+    Tooltip,
+    IconButton,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions, Button, Dialog
 } from '@material-ui/core';
 import JobStatus from "./jobStatus"
 import HelperTooltips from "../../components/helperTooltips";
@@ -17,6 +27,7 @@ import Snackbar from '../../components/snackbar/index'
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen'
 import DeleteIcon from '@material-ui/icons/Delete';
+import {destroy} from "../../api/job";
 
 
 const styles = theme => ({
@@ -31,12 +42,14 @@ class CategoriesTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            destroyDialogShow:false,
             switchBranchDialog:{
                 id:0,
                 show:false,
                 repositoryId:0,
             }
         };
+        this.destroyId = 0;
     }
 
     componentDidMount() {
@@ -84,6 +97,21 @@ class CategoriesTable extends React.Component {
             }
         })
     }
+    destroyDialogOpen(id){
+        this.destroyId = id;
+        this.setState({destroyDialogShow:true})
+    }
+
+    destroyDialogClose () {
+        this.setState({destroyDialogShow:false})
+    }
+    destroyConfirm () {
+        destroy({id:this.destroyId}).then(r=>{
+            Snackbar.success("删除成功！");
+            this.setState({destroyDialogShow:false});
+            this.props.refresh()
+        }).catch(()=>{})
+    }
     render() {
         const {classes} = this.props;
         return (
@@ -91,14 +119,15 @@ class CategoriesTable extends React.Component {
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>加密</TableCell>
+                            <TableCell align="center">ID</TableCell>
+                            <TableCell align="center">加密</TableCell>
                             <TableCell align="center">任务名称</TableCell>
                             <TableCell align="center">任务状态</TableCell>
                             <TableCell align="center">
                                 当前分支
                                 <HelperTooltips help="当前任务分支，如有需要请先切换分支"/>
                             </TableCell>
+                            <TableCell align="center">运行次数</TableCell>
                             <TableCell align="center">
                                 访问地址
                                 <HelperTooltips help="打包成功时可访问的页面🤓"/>
@@ -123,7 +152,7 @@ class CategoriesTable extends React.Component {
                             this.props.tableData.map(row => (
                                 <TableRow key={row.ID}>
                                     <TableCell align="center">{row.ID}</TableCell>
-                                    <TableCell component="th" scope="row">
+                                    <TableCell align="center">
                                         {
                                             row.PassWord ? (
                                                 <Tooltip title="任务被加密" interactive>
@@ -145,6 +174,7 @@ class CategoriesTable extends React.Component {
                                         <JobStatus status={row.Status} />
                                     </TableCell>
                                     <TableCell align="center">{row.Branch}</TableCell>
+                                    <TableCell align="center">{row.RunQuantity}</TableCell>
                                     <TableCell align="center">
                                         <Tooltip title={row.Status !== 1 ? "没有打包成功之前是不能访问的" : row.Url} interactive>
                                             <IconButton color="primary">
@@ -209,7 +239,7 @@ class CategoriesTable extends React.Component {
                                         </Tooltip>
                                         <Tooltip title="删除任务" interactive>
                                             <IconButton color="primary"
-                                                        onClick={this.runJob.bind(this, row)}>
+                                                        onClick={this.destroyDialogOpen.bind(this,row.ID)}>
                                                 <DeleteIcon/>
                                             </IconButton>
                                         </Tooltip>
@@ -225,6 +255,27 @@ class CategoriesTable extends React.Component {
                     open={this.state.switchBranchDialog.show}
                     onClose={this.closeSwitchBranchDialog.bind(this)}
                     switchSuccess={this.switchSuccess.bind(this)}/>
+                <Dialog
+                    open={this.state.destroyDialogShow}
+                    onClose={this.destroyDialogClose.bind(this)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"确认删除分类?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            你确认要删除这个分支？
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.destroyDialogClose.bind(this)} color="primary">
+                            关闭
+                        </Button>
+                        <Button onClick={this.destroyConfirm.bind(this)} color="secondary" autoFocus>
+                            确认
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }

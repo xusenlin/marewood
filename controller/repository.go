@@ -6,6 +6,7 @@ import (
 	"FEDeployService/service/serviceRepository"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func RepositoryFindAll(c *gin.Context) {
@@ -94,20 +95,31 @@ func RepositoryCreate(c *gin.Context) {
 }
 
 func RepositoryDestroy(c *gin.Context) {
-	var repository models.Repository
 
 	id := c.Query("id")
 
-	if true {//这里后面要根据此仓库是否被使用来确认仓库是否能被删除
+	var jobCount int
+
+	if database.DB.Model(&models.Job{}).Where("repository_id = ?", id).Count(&jobCount).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   id,
-			"msg":    "无法删除，还有任务在使用此仓库",
+			"msg":    database.DB.Error.Error(),
+		})
+	}
+
+	if jobCount > 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   jobCount,
+			"msg":    "无法删除，还有" + strconv.Itoa(jobCount) + "个任务在使用此仓库",
 		})
 		return
 	}
 
-	if database.DB.Where("id = ?", id).Delete(&repository).Error != nil {
+	var repository models.Repository
+
+	if database.DB.First(&repository, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -115,7 +127,8 @@ func RepositoryDestroy(c *gin.Context) {
 		})
 		return
 	}
-	//删除仓库目录
+
+	//删除仓库目录,如果后面需要从垃圾箱恢复仓库，那么应该提供相应的操作来重新克隆
 	err := serviceRepository.DeleteRepository(repository.Url)
 
 	if  err!= nil {
@@ -126,6 +139,16 @@ func RepositoryDestroy(c *gin.Context) {
 		})
 		return
 	}
+
+	if database.DB.Delete(&repository).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
