@@ -52,6 +52,7 @@ func InitRouter() *gin.Engine {
 		v1.POST("/job/create", controller.JobCreate)
 		v1.GET("/job/update_branch", controller.JobUpdateBranch)
 		v1.GET("/job/delete", controller.JobDestroy)
+		v1.GET("/job/run", controller.JobRun)
 
 	}
 

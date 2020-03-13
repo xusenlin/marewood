@@ -5,6 +5,7 @@ import (
 	"FEDeployService/database"
 	"FEDeployService/helper"
 	"FEDeployService/models"
+	"FEDeployService/service/serviceJob"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"net/http"
@@ -156,4 +157,81 @@ func JobDestroy(c *gin.Context) {
 		"data":   id,
 		"msg":    "删除成功",
 	})
+}
+
+/**
+流程
+仓库是否忙碌->仓库状态是否正常->加密验证->任务状态进行中->更新仓库状态为繁忙->响应->更新代码->切换分支->
+更新代码->安装依赖->打包->创建目录并复制代码->更新Url->
+更新运行次数->更新任务状态->更新仓库状态为空闲->（执行附加脚本，暂不做）->更新终端信息。
+ */
+func JobRun(c *gin.Context)  {
+
+	jobId := c.Query("id")
+	password := c.Query("password")
+	var job models.Job
+	var repository models.Repository
+
+	if database.DB.First(&job ,jobId).Error != nil{
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+	if database.DB.First(&repository ,job.RepositoryId).Error != nil{
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+	if repository.Status != models.RepoStatusSuccess {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "仓库已经损坏，请尝试修复对应仓库",
+		})
+		return
+	}
+	if repository.Password != "" && repository.Password != helper.DigestString(password){
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "密码不对",
+		})
+		return
+	}
+	if repository.JobStatus != models.RepoJobStatusLeisured {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "仓库资源已经被占用",
+		})
+		return
+	}
+	//任务状态和仓库的任务状态
+	repository.JobStatus = models.RepoJobStatusBusy
+	job.Status = models.JobStatusProcessing
+
+	if database.DB.Save(&repository).Save(&job).Error != nil{
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+
+	//go
+	go serviceJob.JobRun(&job,&repository)
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   "已经进入后台打包",
+		"msg":    "",
+	})
+
 }

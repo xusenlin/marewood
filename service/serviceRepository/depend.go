@@ -5,32 +5,13 @@ import (
 	"FEDeployService/helper"
 	"errors"
 	"os"
-	"os/exec"
 )
 
 func InstallDepend(url string , dependTools string) (string, error) {
 
-	repositoryName, err := helper.GetRepositoryNameByUrl(url)
-	if err != nil {
-		return "", err
-	}
+	cmd,arg := helper.BuildDependCmd(dependTools)
 
-	repositoryDir := config.Cfg.RepositoryDir + "/" + repositoryName
-
-	file, err := os.Stat(repositoryDir)
-
-	if err != nil || !file.IsDir() {
-		return "", errors.New("找不到仓库目录=>" + repositoryDir)
-	}
-
-	cmd := exec.Command(helper.BuildDependCmd(dependTools))
-	cmd.Dir = repositoryDir
-
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return "", err
-	}
-	return string(out), nil
+	return runCmdOnRepositoryDir(url,cmd,arg)
 }
 
 func DeleteDepend(url string) error {
