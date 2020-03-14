@@ -142,7 +142,29 @@ func JobDestroy(c *gin.Context) {
 
 	id := c.Query("id")
 
-	if database.DB.Where("id = ?", id).Delete(&models.Job{}).Error != nil {
+	var job models.Job
+
+	if database.DB.First(&job, id).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+		return
+	}
+
+	if database.DB.Model(&models.Category{}).
+		Where("id = ?", job.CategoryId).
+		UpdateColumn("job_quantity", gorm.Expr("job_quantity - ?", 1)).
+		Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    database.DB.Error.Error(),
+		})
+	}
+
+	if database.DB.Delete(&job).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",

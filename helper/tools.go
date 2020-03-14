@@ -54,10 +54,7 @@ func FileIsExisted(filename string) bool {
 
 func MakeDir(dir string) error {
 	if !FileIsExisted(dir) {
-		if err := os.MkdirAll(dir, os.ModePerm); err != nil {
-			fmt.Println("MakeDir failed:", err)
-			return err
-		}
+		return os.MkdirAll(dir, os.ModePerm)
 	}
 	return nil
 }
@@ -65,11 +62,8 @@ func MakeDir(dir string) error {
 func RemoveDir(dir string) error {
 
 	if !IsDir(dir) {
-		return  errors.New("找不到目录,无法执行删除")
+		return  errors.New("没有发现目录,无法执行删除")
 	}
 
-	if err := os.RemoveAll(dir);err != nil {
-		return err
-	}
-	return  nil
+	return  os.RemoveAll(dir)
 }

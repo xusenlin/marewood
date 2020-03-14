@@ -128,6 +128,7 @@ func RepositoryDestroy(c *gin.Context) {
 		return
 	}
 
+
 	//删除仓库目录,如果后面需要从垃圾箱恢复仓库，那么应该提供相应的操作来重新克隆
 	err := serviceRepository.DeleteRepository(repository.Url)
 

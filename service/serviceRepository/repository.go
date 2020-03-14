@@ -50,18 +50,11 @@ func DeleteRepository(url string) error {
 
 	repoDir := config.Cfg.RepositoryDir + "/" + repositoryName
 
-	file, err := os.Stat(repoDir)
-
-	if err != nil || !file.IsDir() {
-		return  errors.New("找不到仓库目录,无法删除仓库")
+	if !helper.IsDir(repoDir) {
+		return nil
 	}
 
-	removeErr := os.RemoveAll(repoDir)
-
-	if removeErr != nil {
-		return removeErr
-	}
-	return  nil
+	return  os.RemoveAll(repoDir)
 }
 
 func GetBranchByRepositoryUrl(url string) ([]string, error) {
@@ -71,7 +64,10 @@ func GetBranchByRepositoryUrl(url string) ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
-	branch := strings.Split(strings.Trim(strings.ReplaceAll(string(out)," ",""),"\n"), "\n")
+
+	deleteOrigin := strings.ReplaceAll(string(out),"origin/","")
+
+	branch := strings.Split(strings.Trim(strings.ReplaceAll(deleteOrigin," ",""),"\n"), "\n")
 
 	return branch[1:], nil
 }
@@ -96,9 +92,7 @@ func RunCmdOnRepositoryDir(repositoryUrl string ,cmdName string, arg ...string) 
 
 	repositoryDir := config.Cfg.RepositoryDir + "/" + repositoryName
 
-	file, err := os.Stat(repositoryDir)
-
-	if err != nil || !file.IsDir() {
+	if !helper.IsDir(repositoryDir){
 		return "", errors.New("找不到仓库目录=>" + repositoryDir)
 	}
 
@@ -107,7 +101,7 @@ func RunCmdOnRepositoryDir(repositoryUrl string ,cmdName string, arg ...string) 
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return "", err
+		return "", errors.New(cmdName + "命令意外退出=>\n" + string(out))
 	}
 	return string(out), nil
 }

@@ -20,49 +20,43 @@ func JobRun(job *models.Job, repository *models.Repository) {
 	var terminalOut string
 	out, err := serviceRepository.GitPullByRepositoryUrl(repository.Url)
 	if err != nil {
-		jobRunError(job, err.Error())
+		jobRunError(job, repository,err.Error())
 		return
 	}
-	fmt.Println("已经 git pull 成功")
 	terminalOut += out
 	out, err = serviceRepository.GitCheckout(repository.Url, job.Branch)
 	if err != nil {
-		jobRunError(job, err.Error())
+		jobRunError(job, repository,err.Error())
 		return
 	}
-	fmt.Println("已经 切换分支 成功")
 	terminalOut += out
 	out, err = serviceRepository.GitPullByRepositoryUrl(repository.Url)
 	if err != nil {
-		jobRunError(job, err.Error())
+		jobRunError(job, repository,err.Error())
 		return
 	}
-	fmt.Println("已经 git pull 成功")
 	terminalOut += out
 
 	out, err = serviceRepository.InstallDepend(repository.Url, repository.DependTools)
 	if err != nil {
-		jobRunError(job, err.Error())
+		jobRunError(job, repository,err.Error())
 		return
 	}
-	fmt.Println("已经 安装依赖 成功")
 	terminalOut += out
 
 	out, err = serviceRepository.RunBuild(repository.Url, job.BuildCommand)
 	if err != nil {
-		jobRunError(job, err.Error())
+		jobRunError(job, repository,err.Error())
 		return
 	}
-	fmt.Println("已经 打包 成功")
 	terminalOut += out
 
 	//创建目录并复制代码
 	out, err = CopyBuildResultToWebRootDir(int(job.ID), repository.Url, job.BuildDir)
 	if err != nil {
-		jobRunError(job, err.Error())
+		jobRunError(job,repository, err.Error())
 		return
 	}
-	fmt.Println("已经 复制代码到访问目录 成功")
 	terminalOut += out
 
 	database.DB.Model(&job).
@@ -74,12 +68,13 @@ func JobRun(job *models.Job, repository *models.Repository) {
 	database.DB.Model(&repository).
 		Update("job_status", models.RepoJobStatusLeisured)
 
-	fmt.Println("已经 更新任务状态 成功")
 }
 
-func jobRunError(job *models.Job, errOut string) {
+func jobRunError(job *models.Job, repository *models.Repository, errOut string) {
 	fmt.Println("jobRunError::",errOut)
 	database.DB.Model(&job).Update("status", models.JobStatusFail).Update("terminal_info", errOut)
+	database.DB.Model(&repository).Update("job_status", models.RepoJobStatusLeisured)
+
 }
 
 func CopyBuildResultToWebRootDir(jobId int, repositoryUrl string, buildDir string) (string, error) {
@@ -91,14 +86,9 @@ func CopyBuildResultToWebRootDir(jobId int, repositoryUrl string, buildDir strin
 		}
 	}
 
-	distDirArg := "./" + buildDir + "/*"
+	distDirArg := "./" + buildDir + "/"
 	destinationArg := destination + "/"
 
-	out, err := serviceRepository.RunCmdOnRepositoryDir(
+	return serviceRepository.RunCmdOnRepositoryDir(
 		repositoryUrl, "cp", "-rf", distDirArg, destinationArg)
-
-	if err != nil {
-		return "", err
-	}
-	return out, nil
 }

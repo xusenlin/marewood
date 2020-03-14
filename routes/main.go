@@ -21,7 +21,7 @@ func InitRouter() *gin.Engine {
 			c.JSON(http.StatusOK, gin.H{"message": "pong"})
 		})
 
-		r.Static("/public", config.Cfg.WebRootDir)
+		r.Static(config.Cfg.WebsUrl, config.Cfg.WebRootDir)
 		r.Static("/public", config.Cfg.ClientDir)
 
 		r.GET("/", func(c *gin.Context) {

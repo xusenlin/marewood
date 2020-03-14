@@ -65,3 +65,16 @@ export function destroy(params) {
         params: params
     })
 }
+
+/**
+ * 运行任务
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function RunJob(params) {
+    return request({
+        url:  '/job/run',
+        method: 'get',
+        params: params
+    })
+}

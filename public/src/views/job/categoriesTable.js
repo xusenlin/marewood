@@ -27,7 +27,7 @@ import Snackbar from '../../components/snackbar/index'
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen'
 import DeleteIcon from '@material-ui/icons/Delete';
-import {destroy} from "../../api/job";
+import {destroy,RunJob} from "../../api/job";
 
 
 const styles = theme => ({
@@ -63,7 +63,14 @@ class CategoriesTable extends React.Component {
             Snackbar.warning("任务正在打包，请稍等");
             return
         }
-        alert(row.ID)
+        if(row.PassWord !== ""){
+            Snackbar.warning("任务有密码，未做");
+            return
+        }
+        RunJob({id:row.ID}).then(r=>{
+            Snackbar.success("运行成功，正在打包");
+            this.props.refresh()
+        }).catch(()=>{})
     }
     openSwitchBranchDialog(row){
         if(row.Status === 3){
@@ -111,6 +118,13 @@ class CategoriesTable extends React.Component {
             this.setState({destroyDialogShow:false});
             this.props.refresh()
         }).catch(()=>{})
+    }
+    openJobUrl(row){
+        if(row.Status !== 1){
+            Snackbar.error("任务没有打包成功！");
+            return
+        }
+        window.open(row.Url)
     }
     render() {
         const {classes} = this.props;
@@ -177,7 +191,7 @@ class CategoriesTable extends React.Component {
                                     <TableCell align="center">{row.RunQuantity}</TableCell>
                                     <TableCell align="center">
                                         <Tooltip title={row.Status !== 1 ? "没有打包成功之前是不能访问的" : row.Url} interactive>
-                                            <IconButton color="primary">
+                                            <IconButton color="primary" onClick={this.openJobUrl.bind(this,row)}>
                                                 { row.Status !== 1 ? <LinkOffIcon/>: <LinkIcon/>}
                                             </IconButton>
                                         </Tooltip>
@@ -261,10 +275,10 @@ class CategoriesTable extends React.Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">{"确认删除分类?"}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{"确认删除任务?"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            你确认要删除这个分支？
+                            你确认要删除这个任务？
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>

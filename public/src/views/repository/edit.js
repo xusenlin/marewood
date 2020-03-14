@@ -69,7 +69,6 @@ class Edit extends React.Component {
                             }
                         </Select>
                         <TextField
-                            required
                             margin="dense" value={this.state.desc} id="desc" multiline rows={6}
                             onChange={this.textFieldChange.bind(this,'desc')} label="仓库描述" type="text" fullWidth
                         />
