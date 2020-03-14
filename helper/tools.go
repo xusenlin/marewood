@@ -2,8 +2,10 @@ package helper
 
 import (
 	"crypto/md5"
+	"errors"
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -33,4 +35,41 @@ func BuildDependCmd(tools string) (name string, arg string) {
 	default:
 		return "npm", "install"
 	}
+}
+func IsDir(name string) bool {
+	if info, err := os.Stat(name); err == nil {
+		return info.IsDir()
+	}
+	return false
+}
+
+
+func FileIsExisted(filename string) bool {
+	existed := true
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		existed = false
+	}
+	return existed
+}
+
+func MakeDir(dir string) error {
+	if !FileIsExisted(dir) {
+		if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+			fmt.Println("MakeDir failed:", err)
+			return err
+		}
+	}
+	return nil
+}
+
+func RemoveDir(dir string) error {
+
+	if !IsDir(dir) {
+		return  errors.New("找不到目录,无法执行删除")
+	}
+
+	if err := os.RemoveAll(dir);err != nil {
+		return err
+	}
+	return  nil
 }

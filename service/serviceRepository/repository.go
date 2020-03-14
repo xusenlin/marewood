@@ -38,7 +38,7 @@ func GitClone(gitUrl string, userName string, password string) (string, error) {
 //通过仓库url更新仓库
 func GitPullByRepositoryUrl(url string) (string, error) {
 
-	return runCmdOnRepositoryDir(url,"git", "pull")
+	return RunCmdOnRepositoryDir(url,"git", "pull")
 }
 
 func DeleteRepository(url string) error {
@@ -66,7 +66,7 @@ func DeleteRepository(url string) error {
 
 func GetBranchByRepositoryUrl(url string) ([]string, error) {
 
-	out, err := runCmdOnRepositoryDir(url,"git", "branch","-r")
+	out, err := RunCmdOnRepositoryDir(url,"git", "branch","-r")
 
 	if err != nil {
 		return []string{}, err
@@ -78,16 +78,16 @@ func GetBranchByRepositoryUrl(url string) ([]string, error) {
 
 func GitCheckout(url string ,branch string) (string, error) {
 
-	return runCmdOnRepositoryDir(url,"git", "checkout", branch)
+	return RunCmdOnRepositoryDir(url,"git", "checkout", branch)
 }
 
 //仓库URL， 构建命令 test、build、build:dev
 func RunBuild(url string , buildCmd string) (string, error) {
 
-	return runCmdOnRepositoryDir(url,"npm", "run", buildCmd)
+	return RunCmdOnRepositoryDir(url,"npm", "run", buildCmd)
 }
 
-func runCmdOnRepositoryDir(repositoryUrl string ,cmdName string, arg ...string) (string, error) {
+func RunCmdOnRepositoryDir(repositoryUrl string ,cmdName string, arg ...string) (string, error) {
 
 	repositoryName, err := helper.GetRepositoryNameByUrl(repositoryUrl)
 	if err != nil {

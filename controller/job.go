@@ -71,10 +71,9 @@ func JobCreate(c *gin.Context) {
 	job.RunQuantity = 0
 	job.Branch = "master"
 	job.Status = models.JobStatusLeisured
-	if job.PassWord != ""{
+	if job.PassWord != "" {
 		job.PassWord = helper.DigestString(job.PassWord)
 	}
-
 
 	if database.DB.Create(&job).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -86,7 +85,7 @@ func JobCreate(c *gin.Context) {
 	}
 	webHookUrl := config.Cfg.WebHookUrl + "?id=" + strconv.Itoa(int(job.ID))
 
-	if database.DB.Model(&job).UpdateColumn("web_hook_url",webHookUrl).Error != nil {
+	if database.DB.Model(&job).UpdateColumn("web_hook_url", webHookUrl).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -99,14 +98,13 @@ func JobCreate(c *gin.Context) {
 	if database.DB.Model(&models.Category{}).
 		Where("id = ?", job.CategoryId).
 		UpdateColumn("job_quantity", gorm.Expr("job_quantity + ?", 1)).
-		Error != nil{
+		Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
 			"msg":    database.DB.Error.Error(),
 		})
 	}
-
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
@@ -115,7 +113,7 @@ func JobCreate(c *gin.Context) {
 	})
 }
 
-func JobUpdateBranch(c *gin.Context)  {
+func JobUpdateBranch(c *gin.Context) {
 
 	var job models.Job
 
@@ -144,7 +142,7 @@ func JobDestroy(c *gin.Context) {
 
 	id := c.Query("id")
 
-	if database.DB.Where("id = ?",id).Delete(&models.Job{}).Error != nil {
+	if database.DB.Where("id = ?", id).Delete(&models.Job{}).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -164,15 +162,15 @@ func JobDestroy(c *gin.Context) {
 仓库是否忙碌->仓库状态是否正常->加密验证->任务状态进行中->更新仓库状态为繁忙->响应->更新代码->切换分支->
 更新代码->安装依赖->打包->创建目录并复制代码->更新Url->
 更新运行次数->更新任务状态->更新仓库状态为空闲->（执行附加脚本，暂不做）->更新终端信息。
- */
-func JobRun(c *gin.Context)  {
+*/
+func JobRun(c *gin.Context) {
 
 	jobId := c.Query("id")
 	password := c.Query("password")
 	var job models.Job
 	var repository models.Repository
 
-	if database.DB.First(&job ,jobId).Error != nil{
+	if database.DB.First(&job, jobId).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -180,7 +178,7 @@ func JobRun(c *gin.Context)  {
 		})
 		return
 	}
-	if database.DB.First(&repository ,job.RepositoryId).Error != nil{
+	if database.DB.First(&repository, job.RepositoryId).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -196,7 +194,7 @@ func JobRun(c *gin.Context)  {
 		})
 		return
 	}
-	if repository.Password != "" && repository.Password != helper.DigestString(password){
+	if repository.Password != "" && repository.Password != helper.DigestString(password) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -216,7 +214,7 @@ func JobRun(c *gin.Context)  {
 	repository.JobStatus = models.RepoJobStatusBusy
 	job.Status = models.JobStatusProcessing
 
-	if database.DB.Save(&repository).Save(&job).Error != nil{
+	if database.DB.Save(&repository).Save(&job).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -226,7 +224,7 @@ func JobRun(c *gin.Context)  {
 	}
 
 	//go
-	go serviceJob.JobRun(&job,&repository)
+	go serviceJob.JobRun(&job, &repository)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
