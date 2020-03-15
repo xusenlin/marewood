@@ -43,6 +43,7 @@ func InitRouter() *gin.Engine {
 		v1.GET("/repository/git_pull", controller.RepositoryGitPull)
 		v1.GET("/repository/git_branch", controller.RepositoryBranch)
 		v1.GET("/repository/delete_depend", controller.RepositoryDeleteDepend)
+		v1.GET("/repository/get_script", controller.RepositoryScript)
 		//任务分类
 		v1.GET("/categories", controller.CategoryFindAll)
 		v1.POST("/category/create", controller.CategoryCreate)

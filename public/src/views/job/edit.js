@@ -6,7 +6,7 @@ import {
     DialogContent,DialogTitle,Select,MenuItem
 } from '@material-ui/core';
 import {create} from '../../api/job'
-import { repositories } from '../../api/repository'
+import { repositories,getScript } from '../../api/repository'
 
 
 
@@ -22,7 +22,8 @@ class Edit extends React.Component {
             buildCommand:'build',
             password:'',
             successScript:'',
-            repositories:[]
+            repositories:[],
+            buildCommandList:{}
         };
     }
 
@@ -33,6 +34,12 @@ class Edit extends React.Component {
     }
     textFieldChange(field, event){
         this.setState({[field]:event.target.value})
+    }
+    onChangeRepository(event){
+        getScript({id:event.target.value}).then(r=>{
+            this.setState({buildCommandList:r});
+        }).catch(()=>{});
+        this.setState({repositoryId:event.target.value});
     }
     submitForm(){
         create({...this.state,categoryId:this.props.categoryId}).then(r=>{
@@ -54,7 +61,7 @@ class Edit extends React.Component {
                         <Select
                             style={{width:"100%"}}
                             value={this.state.repositoryId}
-                            onChange={this.textFieldChange.bind(this,'repositoryId')}
+                            onChange={this.onChangeRepository.bind(this)}
                         >
                             {
                                 this.state.repositories.map(r=>{
@@ -68,11 +75,19 @@ class Edit extends React.Component {
                             autoFocus value={this.state.buildDir} margin="dense" id="buildDir"
                             onChange={this.textFieldChange.bind(this,'buildDir')} label="打包目录" type="text" fullWidth
                         />
-                        <TextField
-                            required
-                            autoFocus value={this.state.buildCommand} margin="dense" id="buildCommand"
-                            onChange={this.textFieldChange.bind(this,'buildCommand')} label="打包命令" type="text" fullWidth
-                        />
+
+                        <InputLabel style={{marginTop:10,fontSize:"12px"}}>选择打包的命令</InputLabel>
+                        <Select
+                            style={{width:"100%"}}
+                            value={this.state.buildCommand}
+                            onChange={this.textFieldChange.bind(this,'buildCommand')}
+                        >
+                            {
+                                Object.keys(this.state.buildCommandList).map(key=>{
+                                    return <MenuItem key={key} value={key}>{key} => { this.state.buildCommandList[key] } </MenuItem>
+                                })
+                            }
+                        </Select>
 
                         <TextField
                             autoFocus value={this.state.password} margin="dense" id="password"

@@ -20,7 +20,7 @@ func ParsePackageJson(repositoryId string) (models.PackageJson , error)  {
 		return packageJson, errors.New("找不到json文件=>" + packageJsonFile)
 	}
 
-	file, err := ioutil.ReadFile("config.json")
+	file, err := ioutil.ReadFile(packageJsonFile)
 
 	if err != nil {
 		return packageJson, err

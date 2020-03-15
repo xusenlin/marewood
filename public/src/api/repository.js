@@ -87,3 +87,18 @@ export function create(params) {
         data: params
     })
 }
+
+
+/**
+ * 获取仓库可执行脚本
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function getScript(params) {
+    return request({
+        url:  '/repository/get_script',
+        method: 'get',
+        params: params
+    })
+}
+

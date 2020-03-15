@@ -264,5 +264,19 @@ func RepositoryBranch(c *gin.Context) {
 }
 
 func RepositoryScript(c *gin.Context) {
-	//id := c.Query("id")
+	id := c.Query("id")
+	packageJson, err := serviceRepository.ParsePackageJson(id)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   packageJson.Scripts,
+		"msg":    "",
+	})
 }
