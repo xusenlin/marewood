@@ -37,8 +37,8 @@ func init() {
 	}
 
 	Cfg.Version = 0.1
-	Cfg.AppName = "FEDeployService"
-	Cfg.AppRepository = "https://github.com/xusenlin/FEDeployService"
+	Cfg.AppName = "MareWood"
+	Cfg.AppRepository = "https://github.com/xusenlin/MareWood"
 	Cfg.DbDns = Cfg.CurrentDir + "/database.db"
 
 	Cfg.ResourcesDir = Cfg.CurrentDir + "/resources"
@@ -48,7 +48,7 @@ func init() {
 	Cfg.WebHookUrl = "/web_hook"
 	Cfg.WebsUrl = "/webs"
 	Cfg.DependTools = getDependTools()
-	Cfg.Introduction = Cfg.AppName + `是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、SQLITE、REACE、MATERIAL-UI 开发，
+	Cfg.Introduction = Cfg.AppName + ` 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、SQLITE、REACE、MATERIAL-UI 开发，
 不同于 Jenkins 的大而全，它很简单且只针对前端，你可以很灵活的配置各种部署环境。
 如果你愿意，线上发布也可以是点击一下按钮这么简单的事情,当然也可以配置 WEBHOOK，提交 GIT 代码既自动发布。
 `
