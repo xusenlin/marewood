@@ -22,7 +22,7 @@ type Job struct {
 	RepositoryId  int    `gorm:"index",binding:"required"`
 	BuildDir      string `binding:"required"` //打包的目录,默认是dist
 	BuildCommand  string `binding:"required"` //打包命令，npm run build 可以读取package.json供选择
-	PassWord      string                      //任务加密
+	Password      string                      //任务加密
 	TerminalInfo  string `gorm:"type:varchar(1000)"`
 	SuccessScript string `gorm:"type:varchar(1000)"` //打包成功运行的脚本，多个用 ; 隔开
 }

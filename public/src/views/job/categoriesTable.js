@@ -8,6 +8,7 @@ import Announcement from '@material-ui/icons/Announcement';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import DeviceHub from '@material-ui/icons/DeviceHub';
 import {
+    TextField,
     TableRow,
     TableHead,
     TableCell,
@@ -47,7 +48,12 @@ class CategoriesTable extends React.Component {
                 id:0,
                 show:false,
                 repositoryId:0,
-            }
+            },
+            runJob:{
+                id:0,
+                password:"",
+                show:false
+            },
         };
         this.destroyId = 0;
     }
@@ -63,8 +69,15 @@ class CategoriesTable extends React.Component {
             Snackbar.warning("任务正在打包，请稍等");
             return
         }
-        if(row.PassWord !== ""){
-            Snackbar.warning("任务有密码，未做");
+        if(row.Password !== ""){
+            this.setState({
+                runJob:{
+                    id:row.ID,
+                    password:"",
+                    show:true
+                }
+            });
+            //Snackbar.warning("任务有密码，未做");
             return
         }
         RunJob({id:row.ID}).then(r=>{
@@ -126,6 +139,37 @@ class CategoriesTable extends React.Component {
         }
         window.open(row.Url)
     }
+    closeJobRunDialog(){
+        this.setState({
+            runJob:{
+                id:0,
+                password:"",
+                show:false
+            }
+        });
+    }
+    jobRunDialogConfirm(){
+        let p = {
+            id:this.state.runJob.id,
+            password:this.state.runJob.password,
+        };
+        RunJob(p).then(r=>{
+            Snackbar.success("运行成功，正在后台打包");
+            this.props.refresh();
+            this.setState({
+                runJob:{
+                    id:0,
+                    password:"",
+                    show:false
+                }
+            });
+        }).catch(()=>{})
+    }
+    passwordFieldChange(event){
+        let p = this.state.runJob;
+        p.password = event.target.value;
+        this.setState({runJob:p})
+    }
     render() {
         const {classes} = this.props;
         return (
@@ -168,7 +212,7 @@ class CategoriesTable extends React.Component {
                                     <TableCell align="center">{row.ID}</TableCell>
                                     <TableCell align="center">
                                         {
-                                            row.PassWord ? (
+                                            row.Password ? (
                                                 <Tooltip title="任务被加密" interactive>
                                                     <IconButton color="primary">
                                                         <LockIcon/>
@@ -286,6 +330,32 @@ class CategoriesTable extends React.Component {
                             关闭
                         </Button>
                         <Button onClick={this.destroyConfirm.bind(this)} color="secondary" autoFocus>
+                            确认
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                {/*任务密码*/}
+                <Dialog open={this.state.runJob.show} onClose={this.closeJobRunDialog.bind(this)}>
+                    <DialogTitle id="form-dialog-title">任务密码</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            此任务是加密任务，需要你输入密码来运行。
+                        </DialogContentText>
+                        <TextField
+                            onChange={this.passwordFieldChange.bind(this)}
+                            autoFocus
+                            margin="dense"
+                            id="password"
+                            label="Job Password"
+                            type="password"
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.closeJobRunDialog.bind(this)} color="primary">
+                            关闭
+                        </Button>
+                        <Button onClick={this.jobRunDialogConfirm.bind(this)} color="primary">
                             确认
                         </Button>
                     </DialogActions>

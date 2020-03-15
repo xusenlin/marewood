@@ -7,6 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import {gitBranch} from "../../api/repository";
 import { updateBranch } from "../../api/job"
+import {DialogContentText} from "@material-ui/core";
 
 class SwitchBranchDialog extends React.Component {
     constructor(props) {
@@ -35,7 +36,9 @@ class SwitchBranchDialog extends React.Component {
         return (
             <Dialog open={this.props.open} onEntering={this.onEnteredDialog.bind(this)} onClose={this.props.onClose} aria-labelledby="dialog-title">
                 <DialogTitle id="dialog-title">切换当前任务的分支</DialogTitle>
-                <div style={{textAlign:"center"}} >{ this.state.branchList.length === 0 ? "分支无法使用": ""}</div>
+                <DialogContentText>
+                    { this.state.branchList.length === 0 ? "分支无法使用": ""}
+                </DialogContentText>
                 <List>
                     {this.state.branchList.map(branch => (
                         <ListItem button onClick={this.selectBranch.bind(this,branch)} key={branch}>

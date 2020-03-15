@@ -71,8 +71,8 @@ func JobCreate(c *gin.Context) {
 	job.RunQuantity = 0
 	job.Branch = "master"
 	job.Status = models.JobStatusLeisured
-	if job.PassWord != "" {
-		job.PassWord = helper.DigestString(job.PassWord)
+	if job.Password != "" {
+		job.Password = helper.DigestString(job.Password)
 	}
 
 	if database.DB.Create(&job).Error != nil {
@@ -216,7 +216,7 @@ func JobRun(c *gin.Context) {
 		})
 		return
 	}
-	if repository.Password != "" && repository.Password != helper.DigestString(password) {
+	if job.Password != "" && job.Password != helper.DigestString(password) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
