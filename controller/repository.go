@@ -17,7 +17,7 @@ func RepositoryFindAll(c *gin.Context) {
 
 	if isNormal == "1" {
 		if database.DB.Order("created_at desc").
-			Where("status = ?",models.RepoStatusSuccess).
+			Where("status = ?", models.RepoStatusSuccess).
 			Find(&result).Error != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
@@ -26,7 +26,7 @@ func RepositoryFindAll(c *gin.Context) {
 			})
 			return
 		}
-	}else {
+	} else {
 		if database.DB.Order("created_at desc").Find(&result).Error != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
@@ -71,7 +71,7 @@ func RepositoryCreate(c *gin.Context) {
 
 	go func() {
 		//克隆并更新记录
-		out, err := serviceRepository.GitClone(repository.Url, repository.UserName, repository.Password)
+		out, err := serviceRepository.GitClone(strconv.Itoa(int(repository.ID)), repository.Url, repository.UserName, repository.Password)
 		if err != nil {
 			database.DB.Model(&repository).
 				Where("id = ?", repository.ID).
@@ -128,17 +128,27 @@ func RepositoryDestroy(c *gin.Context) {
 		return
 	}
 
-
-	//删除仓库目录,如果后面需要从垃圾箱恢复仓库，那么应该提供相应的操作来重新克隆
-	err := serviceRepository.DeleteRepository(repository.Url)
-
-	if  err!= nil {
+	if repository.Status == models.RepoStatusProcessing {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    err.Error(),
+			"msg":    "无法删除正在克隆的仓库，请稍后再试",
 		})
 		return
+	}
+
+	if repository.Status == models.RepoStatusSuccess {
+
+		err := serviceRepository.DeleteRepository(strconv.Itoa(int(repository.ID)))
+
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status": false,
+				"data":   "",
+				"msg":    err.Error(),
+			})
+			return
+		}
 	}
 
 	if database.DB.Delete(&repository).Error != nil {
@@ -150,7 +160,6 @@ func RepositoryDestroy(c *gin.Context) {
 		return
 	}
 
-
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
 		"data":   id,
@@ -159,12 +168,12 @@ func RepositoryDestroy(c *gin.Context) {
 
 }
 
-func RepositoryGitPull(c *gin.Context)  {
+func RepositoryGitPull(c *gin.Context) {
 
 	var repository models.Repository
 	id := c.Query("id")
 
-	if database.DB.First( &repository , id ).Error != nil {
+	if database.DB.First(&repository, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -173,9 +182,9 @@ func RepositoryGitPull(c *gin.Context)  {
 		return
 	}
 
-	out,err := serviceRepository.GitPullByRepositoryUrl(repository.Url)
+	out, err := serviceRepository.GitPull(strconv.Itoa(int(repository.ID)))
 
-	if  err!= nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -191,23 +200,13 @@ func RepositoryGitPull(c *gin.Context)  {
 	})
 }
 
-func RepositoryDeleteDepend(c *gin.Context)  {
+func RepositoryDeleteDepend(c *gin.Context) {
 
-	var repository models.Repository
 	id := c.Query("id")
 
-	if database.DB.First( &repository , id ).Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    database.DB.Error.Error(),
-		})
-		return
-	}
+	err := serviceRepository.DeleteDepend(id)
 
-	err := serviceRepository.DeleteDepend(repository.Url)
-
-	if  err!= nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -223,11 +222,11 @@ func RepositoryDeleteDepend(c *gin.Context)  {
 	})
 }
 
-func RepositoryBranch(c *gin.Context)  {
+func RepositoryBranch(c *gin.Context) {
 	var repository models.Repository
 	id := c.Query("id")
 
-	if database.DB.First( &repository , id ).Error != nil {
+	if database.DB.First(&repository, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -245,9 +244,9 @@ func RepositoryBranch(c *gin.Context)  {
 		return
 	}
 
-	branch,err := serviceRepository.GetBranchByRepositoryUrl(repository.Url)
+	branch, err := serviceRepository.GetBranch(strconv.Itoa(int(repository.ID)))
 
-	if  err!= nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -262,4 +261,8 @@ func RepositoryBranch(c *gin.Context)  {
 		"msg":    "执行成功",
 	})
 
+}
+
+func RepositoryScript(c *gin.Context) {
+	//id := c.Query("id")
 }

@@ -9,9 +9,8 @@ import (
 	"strings"
 )
 
-
 //克隆仓库，userName，password可留空
-func GitClone(gitUrl string, userName string, password string) (string, error) {
+func GitClone(repositoryId string, gitUrl string, userName string, password string) (string, error) {
 
 	var cmd *exec.Cmd
 
@@ -31,72 +30,76 @@ func GitClone(gitUrl string, userName string, password string) (string, error) {
 	if err != nil {
 		return string(out), err
 	}
+	repositoryName, err := helper.GetRepositoryNameByUrl(gitUrl)
 
-	return string(out), nil
-}
-
-//通过仓库url更新仓库
-func GitPullByRepositoryUrl(url string) (string, error) {
-
-	return RunCmdOnRepositoryDir(url,"git", "pull")
-}
-
-func DeleteRepository(url string) error {
-
-	repositoryName, err := helper.GetRepositoryNameByUrl(url)
-	if err != nil {
-		return err
-	}
-
-	repoDir := config.Cfg.RepositoryDir + "/" + repositoryName
-
-	if !helper.IsDir(repoDir) {
-		return nil
-	}
-
-	return  os.RemoveAll(repoDir)
-}
-
-func GetBranchByRepositoryUrl(url string) ([]string, error) {
-
-	out, err := RunCmdOnRepositoryDir(url,"git", "branch","-r")
-
-	if err != nil {
-		return []string{}, err
-	}
-
-	deleteOrigin := strings.ReplaceAll(string(out),"origin/","")
-
-	branch := strings.Split(strings.Trim(strings.ReplaceAll(deleteOrigin," ",""),"\n"), "\n")
-
-	return branch[1:], nil
-}
-
-func GitCheckout(url string ,branch string) (string, error) {
-
-	return RunCmdOnRepositoryDir(url,"git", "checkout", branch)
-}
-
-//仓库URL， 构建命令 test、build、build:dev
-func RunBuild(url string , buildCmd string) (string, error) {
-
-	return RunCmdOnRepositoryDir(url,"npm", "run", buildCmd)
-}
-
-func RunCmdOnRepositoryDir(repositoryUrl string ,cmdName string, arg ...string) (string, error) {
-
-	repositoryName, err := helper.GetRepositoryNameByUrl(repositoryUrl)
 	if err != nil {
 		return "", err
 	}
 
 	repositoryDir := config.Cfg.RepositoryDir + "/" + repositoryName
+	newRepositoryDir := config.Cfg.RepositoryDir + "/" + repositoryId
 
-	if !helper.IsDir(repositoryDir){
+	err = os.Rename(repositoryDir, newRepositoryDir)
+	if err != nil {
+		return "", err
+	}
+
+	return string(out), nil
+}
+
+//通过仓库url更新仓库
+func GitPull(repositoryId string) (string, error) {
+
+	return RunCmdOnRepositoryDir(repositoryId, "git", "pull")
+}
+
+func DeleteRepository(repositoryId string) error {
+
+	repoDir := config.Cfg.RepositoryDir + "/" + repositoryId
+
+	if !helper.IsDir(repoDir) {
+		return nil
+	}
+
+	return os.RemoveAll(repoDir)
+}
+
+func GetBranch(repositoryId string) ([]string, error) {
+
+	out, err := RunCmdOnRepositoryDir(repositoryId, "git", "branch", "-r")
+
+	if err != nil {
+		return []string{}, err
+	}
+
+	deleteOrigin := strings.ReplaceAll(string(out), "origin/", "")
+
+	branch := strings.Split(strings.Trim(strings.ReplaceAll(deleteOrigin, " ", ""), "\n"), "\n")
+
+	return branch[1:], nil
+}
+
+func GitCheckout(repositoryId string, branch string) (string, error) {
+
+	return RunCmdOnRepositoryDir(repositoryId, "git", "checkout", branch)
+}
+
+//仓库URL， 构建命令 test、build、build:dev
+func RunBuild(repositoryId string, buildCmd string) (string, error) {
+
+	return RunCmdOnRepositoryDir(repositoryId, "npm", "run", buildCmd)
+}
+
+func RunCmdOnRepositoryDir(repositoryId string, cmdName string, arg ...string) (string, error) {
+
+
+	repositoryDir := config.Cfg.RepositoryDir + "/" + repositoryId
+
+	if !helper.IsDir(repositoryDir) {
 		return "", errors.New("找不到仓库目录=>" + repositoryDir)
 	}
 
-	cmd := exec.Command(cmdName , arg ...)
+	cmd := exec.Command(cmdName, arg ...)
 	cmd.Dir = repositoryDir
 
 	out, err := cmd.CombinedOutput()

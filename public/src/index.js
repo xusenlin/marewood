@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './assets/style/style.scss'
+import "nprogress/nprogress.css";
+import './assets/style/style.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

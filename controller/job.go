@@ -220,7 +220,7 @@ func JobRun(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    "密码不对",
+			"msg":    "任务密码不对",
 		})
 		return
 	}

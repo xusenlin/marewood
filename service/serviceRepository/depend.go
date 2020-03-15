@@ -5,23 +5,16 @@ import (
 	"FEDeployService/helper"
 )
 
-func InstallDepend(url string , dependTools string) (string, error) {
+func InstallDepend(repositoryId string, dependTools string) (string, error) {
 
-	cmd,arg := helper.BuildDependCmd(dependTools)
+	cmd, arg := helper.BuildDependCmd(dependTools)
 
-	return RunCmdOnRepositoryDir(url,cmd,arg)
+	return RunCmdOnRepositoryDir(repositoryId, cmd, arg)
 }
 
-func DeleteDepend(url string) error {
+func DeleteDepend(repositoryId string) error {
 
-	repositoryName, err := helper.GetRepositoryNameByUrl(url)
-
-	if err != nil {
-		return err
-	}
-
-	dependDir := config.Cfg.RepositoryDir + "/" + repositoryName + "/node_modules"
+	dependDir := config.Cfg.RepositoryDir + "/" + repositoryId + "/node_modules"
 
 	return helper.RemoveDir(dependDir)
 }
-
