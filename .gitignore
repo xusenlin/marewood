@@ -17,6 +17,7 @@
 
 /resources
 
+
 # Editor directories and files
 .idea
 .vscode
@@ -25,3 +26,5 @@
 *.njsproj
 *.sln
 *.sw*
+
+*.db
