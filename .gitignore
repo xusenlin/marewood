@@ -16,7 +16,7 @@
 
 
 /resources
-
+*.db
 
 # Editor directories and files
 .idea
@@ -27,4 +27,3 @@
 *.sln
 *.sw*
 
-*.db
