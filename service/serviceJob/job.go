@@ -89,7 +89,7 @@ func CopyBuildResultToWebRootDir(jobId string, repositoryId string, buildDir str
 		}
 	}
 
-	distDirArg := "./" + buildDir + "/*" //mac 不能使用*
+	distDirArg := "./" + buildDir + "/" //centos复制会有问题
 	destinationArg := destination + "/"
 
 	return serviceRepository.RunCmdOnRepositoryDir(
