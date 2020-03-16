@@ -156,8 +156,6 @@ class RepositoryTable extends React.Component {
                                                 <Tooltip title={
                                                     <div>
                                                         用户名：{row.UserName}
-                                                        <br/>
-                                                        密码：{row.Password}
                                                     </div>
                                                 } interactive>
                                                     <IconButton color="primary">
