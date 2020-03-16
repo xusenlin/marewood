@@ -7,6 +7,7 @@ import (
 	"FEDeployService/models"
 	"FEDeployService/service/serviceRepository"
 	"fmt"
+	"os"
 	"strconv"
 )
 
@@ -23,33 +24,33 @@ func JobRun(job *models.Job, repository *models.Repository) {
 
 	out, err := serviceRepository.GitPull(repositoryId)
 	if err != nil {
-		jobRunError(job, repository,err.Error())
+		jobRunError(job, repository, err.Error())
 		return
 	}
 	terminalOut += out
 	out, err = serviceRepository.GitCheckout(repositoryId, job.Branch)
 	if err != nil {
-		jobRunError(job, repository,err.Error())
+		jobRunError(job, repository, err.Error())
 		return
 	}
 	terminalOut += out
 	out, err = serviceRepository.GitPull(repositoryId)
 	if err != nil {
-		jobRunError(job, repository,err.Error())
+		jobRunError(job, repository, err.Error())
 		return
 	}
 	terminalOut += out
 
 	out, err = serviceRepository.InstallDepend(repositoryId, repository.DependTools)
 	if err != nil {
-		jobRunError(job, repository,err.Error())
+		jobRunError(job, repository, err.Error())
 		return
 	}
 	terminalOut += out
 
 	out, err = serviceRepository.RunBuild(repositoryId, job.BuildCommand)
 	if err != nil {
-		jobRunError(job, repository,err.Error())
+		jobRunError(job, repository, err.Error())
 		return
 	}
 	terminalOut += out
@@ -57,15 +58,15 @@ func JobRun(job *models.Job, repository *models.Repository) {
 	//创建目录并复制代码
 	out, err = CopyBuildResultToWebRootDir(strconv.Itoa(int(job.ID)), repositoryId, job.BuildDir)
 	if err != nil {
-		jobRunError(job,repository, err.Error())
+		jobRunError(job, repository, err.Error())
 		return
 	}
 	terminalOut += out
 
 	database.DB.Model(&job).
 		Update("status", models.JobStatusSuccess).
-		Update("url", config.Cfg.WebsUrl + "/" + strconv.Itoa(int(job.ID))).
-		Update("run_quantity", job.RunQuantity + 1).
+		Update("url", config.Cfg.WebsUrl+"/"+strconv.Itoa(int(job.ID))).
+		Update("run_quantity", job.RunQuantity+1).
 		Update("terminal_info", terminalOut)
 
 	database.DB.Model(&repository).
@@ -74,7 +75,7 @@ func JobRun(job *models.Job, repository *models.Repository) {
 }
 
 func jobRunError(job *models.Job, repository *models.Repository, errOut string) {
-	fmt.Println("jobRunError::",errOut)
+	fmt.Println("jobRunError::", errOut)
 	database.DB.Model(&job).Update("status", models.JobStatusFail).Update("terminal_info", errOut)
 	database.DB.Model(&repository).Update("job_status", models.RepoJobStatusLeisured)
 
@@ -89,9 +90,12 @@ func CopyBuildResultToWebRootDir(jobId string, repositoryId string, buildDir str
 		}
 	}
 
-	distDirArg := "./" + buildDir + "/" //centos复制会有问题
-	destinationArg := destination + "/"
+	distDirArg := "./" + buildDir
 
-	return serviceRepository.RunCmdOnRepositoryDir(
-		repositoryId, "cp", "-rf", distDirArg, destinationArg)
+	err := os.Rename(distDirArg, destination)
+
+	if err != nil {
+		return "", err
+	}
+	return "复制成功", nil
 }
