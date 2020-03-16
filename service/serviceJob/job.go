@@ -84,13 +84,13 @@ func jobRunError(job *models.Job, repository *models.Repository, errOut string) 
 func CopyBuildResultToWebRootDir(jobId string, repositoryId string, buildDir string) (string, error) {
 	destination := config.Cfg.WebRootDir + "/" + jobId
 
-	if !helper.IsDir(destination) {
-		if err := helper.MakeDir(destination); err != nil {
+	if helper.IsDir(destination) {
+		if err := helper.RemoveDir(destination); err != nil {
 			return "", err
 		}
 	}
 
-	distDirArg := "./" + buildDir
+	distDirArg := config.Cfg.RepositoryDir + "/"+ repositoryId + "/" + buildDir
 
 	err := os.Rename(distDirArg, destination)
 
