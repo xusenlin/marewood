@@ -36,6 +36,12 @@ const styles = theme => ({
         marginTop: theme.spacing(3),
         minWidth: 650,
     },
+    tooltip:{
+        maxWidth: 600,
+        maxHeight:"60vh",
+        overflowY:"auto",
+        whiteSpace: "pre-wrap"
+    }
 });
 
 
@@ -249,22 +255,14 @@ class CategoriesTable extends React.Component {
 
                                     </TableCell>
                                     <TableCell align="center">
-                                        <Tooltip title={
-                                            <div style={{whiteSpace: "pre-wrap"}}>
-                                                {row.TerminalInfo}
-                                            </div>
-                                        } interactive>
+                                        <Tooltip title={row.TerminalInfo} classes={{tooltip:classes.tooltip}} interactive>
                                             <IconButton color="primary">
                                                 <Computer/>
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
                                     <TableCell align="center">
-                                        <Tooltip title={
-                                            <div style={{whiteSpace: "pre-wrap"}}>
-                                                {row.SuccessScript}
-                                            </div>
-                                        } interactive>
+                                        <Tooltip title={row.SuccessScript} classes={{tooltip:classes.tooltip}} interactive>
                                             <IconButton color="primary">
                                                 <Computer/>
                                             </IconButton>
