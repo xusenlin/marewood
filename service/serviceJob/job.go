@@ -97,5 +97,5 @@ func CopyBuildResultToWebRootDir(jobId string, repositoryId string, buildDir str
 	if err != nil {
 		return "", err
 	}
-	return config.Cfg.AppName + ":打包成功了啊！！ 👏👏👏👏", nil
+	return config.Cfg.AppName + ":打包成功了！！ 👏👏👏👏", nil
 }

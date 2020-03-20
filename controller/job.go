@@ -38,7 +38,7 @@ func JobFindByCategoryId(c *gin.Context) {
 	var result []models.Job
 	id := c.Query("id")
 
-	if database.DB.Where("category_id = ?", id).Order("created_at desc").Find(&result).Error != nil {
+	if database.DB.Where("category_id = ?", id).Order("updated_at desc").Find(&result).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   database.DB.Error.Error(),
