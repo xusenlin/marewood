@@ -10,7 +10,7 @@ import (
 
 var DB *gorm.DB
 
-func InitDb()  {
+func InitDb() {
 	var err error
 
 	DB, err = gorm.Open("sqlite3", config.Cfg.DbDns)
@@ -21,7 +21,13 @@ func InitDb()  {
 
 	DB.LogMode(true)
 
-	DB.AutoMigrate(&models.SysSetting{},&models.Category{},&models.Repository{},&models.Job{})
+	DB.AutoMigrate(
+		&models.Job{},
+		&models.User{},
+		&models.Category{},
+		&models.Repository{},
+		//&models.SysSetting{},
+	)
 
 	if DB.Error != nil {
 		fmt.Printf("database error %v", DB.Error)

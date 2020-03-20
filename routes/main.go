@@ -31,8 +31,13 @@ func InitRouter() *gin.Engine {
 		r.POST(config.Cfg.WebHookUrl, controller.JobWebHook)
 	}
 
+	v1Public := r.Group("/v1")
+	{
+		v1Public.POST("login", controller.UserLogin)
+		v1Public.POST("register", controller.UserRegister)
+	}
 
-	v1 := r.Group("/v1")
+	v1 := r.Group("/v1").Use(middlewares.JWTAuthMiddleware())
 	{
 		//系统信息
 		v1.GET("/system/info", controller.SystemInfo)
