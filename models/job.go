@@ -11,7 +11,7 @@ const ( //任务执行状态
 
 type Job struct {
 	gorm.Model
-	Name          string `binding:"required,min=2,max=16"`
+	Name          string `binding:"required,min=2,max=20"`
 	Desc          string `gorm:"type:varchar(1000)",binding:"required,min=2,max=999"`
 	Status        int    `gorm:"default:0"`        //任务状态
 	Branch        string `gorm:"default:'master'"` //部署分支默认master，用户在部署之前随时可以修改

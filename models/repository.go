@@ -14,7 +14,7 @@ const ( //仓库工作状态
 
 type Repository struct {
 	gorm.Model
-	Name         string `binding:"required,min=2,max=16"`
+	Name         string `binding:"required,min=2,max=20"`
 	Desc         string `gorm:"type:varchar(1000)"`
 	Url          string `binding:"url"`      //仓库的地址
 	UserName     string                      //仓库是私有的话需要填写
