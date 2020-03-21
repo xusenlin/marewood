@@ -1,9 +1,8 @@
 import React from 'react';
-import {Switch, Route, Redirect} from "react-router-dom";
+import {Switch, Route, Redirect,withRouter} from "react-router-dom";
 import Drawer from '@material-ui/core/Drawer';
 import TopBar from './topBar.js'
 import RouteList from '../../router/route'
-import NotFound from '../error/404'
 import {IconButton} from "@material-ui/core";
 import './admin.scss'
 
@@ -14,24 +13,15 @@ const Layout = props => {
     const [title,setTitle] = React.useState('');
 
     React.useEffect(() => {
-        let initTitle = '404';
-        // RouteList.forEach(r=>{if(r.path === props.location.pathname ){
-        //     initTitle = r.title
-        // }});
-
-
         for (let i=0;i<RouteList.length;i++){
             let r = RouteList[i];
             if(r.path === props.location.pathname){
-                initTitle = r.title;
-                break;
+                setTitle(r.title);
+                document.title = r.title;
+                return;
             }
         }
-
-        setTitle(initTitle);
-        document.title = initTitle;
     },[props.location.pathname]);
-
 
     const openMenu = (menu)=>{
         if(menu.path === props.location.pathname) return;
@@ -71,7 +61,7 @@ const Layout = props => {
                         })
                     }
                     <Redirect exact from="/" to="/dashboard"/>
-                    <Route exact key='*' path="*" component={NotFound}/>
+                    <Redirect  to="/404" />
                 </Switch>
             </div>
         </div>
@@ -80,4 +70,4 @@ const Layout = props => {
 };
 
 
-export default Layout;
+export default withRouter(Layout);

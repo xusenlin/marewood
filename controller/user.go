@@ -22,8 +22,12 @@ func UserRegister(c *gin.Context) {
 	}
 
 	newUser.ID = 0
-	newUser.Role = models.UserRoleReporter
 	newUser.Status = models.UserStatusEnabled
+	if newUser.Username == "Admin"{
+		newUser.Role =  models.UserRoleAdminister
+	}else {
+		newUser.Role =  models.UserRoleReporter
+	}
 	newUser.Password = helper.DigestString(models.PasswordSalt + newUser.Password)
 
 	if database.DB.Save(&newUser).Error != nil {

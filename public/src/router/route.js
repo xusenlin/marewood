@@ -7,12 +7,9 @@ import CategoryIcon from '@material-ui/icons/Category';
 import HomeIcon from '@material-ui/icons/Home';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
-
-
+import PeopleIcon from '@material-ui/icons/People';
 
 //https://material.io/resources/icons/?style=baseline
-
 
 export default [
     {
@@ -45,10 +42,10 @@ export default [
         component:Job
     },
     {
-        title:'工具箱',
+        title:'用户管理',
         path:'/folder',
         isMenu:true,
-        icon:FolderOpenIcon,
+        icon:PeopleIcon,
         component:Dashboard
     },
 

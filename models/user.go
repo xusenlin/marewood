@@ -34,7 +34,7 @@ type Claims struct {
 
 type User struct {
 	gorm.Model
-	Username string `binding:"required,min=2,max=8"`
+	Username string `gorm:"unique",binding:"required,min=2,max=8"`
 	Password string `binding:"required,min=6,max=16"`
 	Role     int
 	Status   int `gorm:"default:1"`

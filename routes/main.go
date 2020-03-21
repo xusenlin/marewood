@@ -33,8 +33,8 @@ func InitRouter() *gin.Engine {
 
 	v1Public := r.Group("/v1")
 	{
-		v1Public.POST("login", controller.UserLogin)
-		v1Public.POST("register", controller.UserRegister)
+		v1Public.POST("/login", controller.UserLogin)
+		v1Public.POST("/register", controller.UserRegister)
 	}
 
 	v1 := r.Group("/v1").Use(middlewares.JWTAuthMiddleware())

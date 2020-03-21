@@ -6,8 +6,8 @@ export default {
     timeout: 10000,
     requestRetry:4,
     requestRetryDelay:800,
-    siteName: "FEAutoDeploy",
-    systemInfoKey: "FEAutoDeploy_SYSTEM_INFO",
-    userInfoKey:"FEAutoDeploy_USER_INFO",//添加前缀（FEAutoDeploy）可以在一个域名下存在多个应用
-    tokenKey: "FEAutoDeploy_ACCESS_TOKEN",
+    siteName: "MareWood",
+    systemInfoKey: "MareWood_SYSTEM_INFO",
+    userInfoKey:"MareWood_USER_INFO",
+    tokenKey: "MareWood_ACCESS_TOKEN",
 }

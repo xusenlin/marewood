@@ -25,7 +25,7 @@ class RepositoryTable extends React.Component {
         super(props);
         this.state = {
             editShow: false,
-            dependentSupport: getSystemInfo("DependTools")
+            dependentSupport: getSystemInfo("DependTools") ||[]
         };
 
     }

@@ -3,7 +3,7 @@ import Config from '../config/index.js'
 
 
 export function getUserInfo(key = null){
-    let userInfo = Storage.get(Config.userInfoKey);
+    let userInfo = Storage.get(Config.userInfoKey) || {};
     if(key)return userInfo.hasOwnProperty(key) ? userInfo[key] : null;
     return userInfo
 }
@@ -24,7 +24,7 @@ export function setToken(token) {
 
 
 export function getSystemInfo(key = null) {
-    let systemInfo = Storage.get(Config.systemInfoKey);
+    let systemInfo = Storage.get(Config.systemInfoKey)|| {};
     if(key)return systemInfo.hasOwnProperty(key) ? systemInfo[key] : null;
     return systemInfo
 }

@@ -3,6 +3,7 @@ import { AppBar,Toolbar,IconButton} from '@material-ui/core'
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Link from "@material-ui/core/Link";
 
 
 const TopBar = props => {
@@ -17,14 +18,9 @@ const TopBar = props => {
                         { props.title }
                     </Typography>
                     <div>
-                        <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            color="inherit"
-                        >
+                        <Link href="#/login">
                             <AccountCircle />
-                        </IconButton>
+                        </Link>
                     </div>
                 </Toolbar>
             </AppBar>
