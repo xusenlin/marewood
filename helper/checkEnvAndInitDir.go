@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"FEDeployService/config"
+	"MareWood/config"
 	"os"
 	"os/exec"
 )

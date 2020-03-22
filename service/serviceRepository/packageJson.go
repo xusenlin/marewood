@@ -1,9 +1,9 @@
 package serviceRepository
 
 import (
-	"FEDeployService/config"
-	"FEDeployService/helper"
-	"FEDeployService/models"
+	"MareWood/config"
+	"MareWood/helper"
+	"MareWood/models"
 	"encoding/json"
 	"errors"
 	"io/ioutil"

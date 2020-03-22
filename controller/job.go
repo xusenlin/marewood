@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"FEDeployService/config"
-	"FEDeployService/database"
-	"FEDeployService/helper"
-	"FEDeployService/models"
-	"FEDeployService/service/serviceJob"
+	"MareWood/config"
+	"MareWood/database"
+	"MareWood/helper"
+	"MareWood/models"
+	"MareWood/service/serviceJob"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"net/http"

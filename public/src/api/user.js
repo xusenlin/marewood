@@ -25,3 +25,43 @@ export function login(params) {
         data: params
     })
 }
+
+/**
+ * 用户列表
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function users(params) {
+    return request({
+        url:  '/users',
+        method: 'get',
+        params: params
+    })
+}
+
+
+/**
+ * 删除用户
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function deleteUsers(params) {
+    return request({
+        url:  '/user/delete',
+        method: 'get',
+        params: params
+    })
+}
+
+/**
+ * 删除用户
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function roleEdit(params) {
+    return request({
+        url:  '/user/role_edit',
+        method: 'get',
+        params: params
+    })
+}

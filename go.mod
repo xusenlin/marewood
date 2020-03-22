@@ -1,4 +1,4 @@
-module FEDeployService
+module MareWood
 
 go 1.12
 

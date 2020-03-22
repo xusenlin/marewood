@@ -2,6 +2,7 @@ import Dashboard from '../views/dashboard';
 import Category from '../views/category';
 import Repository from '../views/repository';
 import Job from '../views/job';
+import Users from '../views/users'
 
 import CategoryIcon from '@material-ui/icons/Category';
 import HomeIcon from '@material-ui/icons/Home';
@@ -9,7 +10,6 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 
-//https://material.io/resources/icons/?style=baseline
 
 export default [
     {
@@ -43,10 +43,10 @@ export default [
     },
     {
         title:'用户管理',
-        path:'/folder',
+        path:'/users',
         isMenu:true,
         icon:PeopleIcon,
-        component:Dashboard
+        component:Users
     },
 
 ]

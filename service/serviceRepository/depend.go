@@ -1,8 +1,8 @@
 package serviceRepository
 
 import (
-	"FEDeployService/config"
-	"FEDeployService/helper"
+	"MareWood/config"
+	"MareWood/helper"
 )
 
 func InstallDepend(repositoryId string, dependTools string) (string, error) {

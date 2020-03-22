@@ -214,7 +214,7 @@ class CategoriesTable extends React.Component {
                     <TableBody>
                         {
                             this.props.tableData.map(row => (
-                                <TableRow key={row.ID}>
+                                <TableRow key={row.ID} hover>
                                     <TableCell align="center">{row.ID}</TableCell>
                                     <TableCell align="center">
                                         {

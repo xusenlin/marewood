@@ -1,10 +1,10 @@
 package main
 
 import (
-	_ "FEDeployService/config"
-	"FEDeployService/database"
-	"FEDeployService/helper"
-	"FEDeployService/routes"
+	_ "MareWood/config"
+	"MareWood/database"
+	"MareWood/helper"
+	"MareWood/routes"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"log"
 	"os"

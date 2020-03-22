@@ -1,11 +1,11 @@
 package serviceJob
 
 import (
-	"FEDeployService/config"
-	"FEDeployService/database"
-	"FEDeployService/helper"
-	"FEDeployService/models"
-	"FEDeployService/service/serviceRepository"
+	"MareWood/config"
+	"MareWood/database"
+	"MareWood/helper"
+	"MareWood/models"
+	"MareWood/service/serviceRepository"
 	"fmt"
 	"os"
 	"strconv"

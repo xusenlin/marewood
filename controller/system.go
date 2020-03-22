@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"FEDeployService/config"
+	"MareWood/config"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

@@ -1,8 +1,8 @@
 package serviceRepository
 
 import (
-	"FEDeployService/config"
-	"FEDeployService/helper"
+	"MareWood/config"
+	"MareWood/helper"
 	"errors"
 	"os"
 	"os/exec"

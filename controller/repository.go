@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"FEDeployService/database"
-	"FEDeployService/models"
-	"FEDeployService/service/serviceRepository"
+	"MareWood/database"
+	"MareWood/models"
+	"MareWood/service/serviceRepository"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

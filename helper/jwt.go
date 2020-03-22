@@ -1,8 +1,8 @@
 package helper
 
 import (
-	"FEDeployService/config"
-	"FEDeployService/models"
+	"MareWood/config"
+	"MareWood/models"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"time"
@@ -37,5 +37,5 @@ func ParseToken(tokenString string) (*models.Claims, error) {
 	if claims, ok := token.Claims.(*models.Claims); ok && token.Valid { // 校验token
 		return claims, nil
 	}
-	return nil, errors.New("无效的 token")
+	return nil, errors.New("Token 无效 ")
 }

@@ -1,8 +1,8 @@
 package database
 
 import (
-	"FEDeployService/config"
-	"FEDeployService/models"
+	"MareWood/config"
+	"MareWood/models"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"

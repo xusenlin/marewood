@@ -93,7 +93,7 @@ class CategoryTable extends React.Component {
                         </TableHead>
                         <TableBody>
                             {this.state.tableData.map(row => (
-                                <TableRow key={row.ID}>
+                                <TableRow key={row.ID} hover>
                                     <TableCell component="th" scope="row">
                                         {row.ID}
                                     </TableCell>

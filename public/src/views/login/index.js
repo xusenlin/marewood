@@ -86,6 +86,7 @@ export default function SignIn() {
                     margin="normal"
                     required
                     fullWidth
+                    value={username}
                     onChange={usernameChange}
                     id="username"
                     label="username"
@@ -95,6 +96,7 @@ export default function SignIn() {
                   <TextField
                     variant="outlined"
                     margin="normal"
+                    value={password}
                     required
                     fullWidth
                     onChange={passwordChange}

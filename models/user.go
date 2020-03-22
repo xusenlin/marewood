@@ -12,9 +12,10 @@ const ( //用户状态
 )
 
 const ( //用户角色
-	UserRoleReporter   = 3
-	UserRoleDeveloper  = 2
-	UserRoleAdminister = 1
+	UserRoleReporter           = 4
+	UserRoleDeveloper          = 3
+	UserRoleAdminister         = 2
+	UserRoleSuperAdministrator = 1
 )
 
 const (
@@ -39,5 +40,5 @@ type User struct {
 	Role     int
 	Status   int `gorm:"default:1"`
 	Avatar   string
-	Remark   string `gorm:"type:varchar(200)"`
+	Desc     string `gorm:"type:varchar(200)"`
 }
