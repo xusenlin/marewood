@@ -8,6 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Link from "@material-ui/core/Link";
 import Role from "../../config/role"
 import { getUserInfo } from "../../utils/dataStorage"
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
 
 let UserInfo = getUserInfo();
 
@@ -35,9 +37,7 @@ const TopBar = props => {
                         { props.title }
                     </Typography>
                     <div>
-                        <IconButton onClick={handleClick} aria-controls="user-menu" aria-haspopup="true" >
-                            <Person />
-                        </IconButton>
+                        <Chip onClick={handleClick} color="primary" label={UserInfo.Username} />
                         <Menu
                             id="user-menu"
                             anchorEl={anchorEl}
@@ -45,7 +45,6 @@ const TopBar = props => {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem >{ UserInfo.Username }</MenuItem>
                             <MenuItem >{ Role[UserInfo.Role] }</MenuItem>
                             <Link href="#/login">
                                 <MenuItem >退出</MenuItem>
