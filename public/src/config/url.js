@@ -1,4 +1,4 @@
-const devApiUrl = 'http://123.56.183.84:8088';//本地开发环境
+const devApiUrl = 'http://localhost:8081';//本地开发环境
 const buildDevApiUrl = 'http://192.168.48.192:9088';//打包开发环境
 const buildDevTestApiUrl = 'http://192.168.48.192:9288';//打包开发测试环境
 const buildTestApiUrl = 'http://192.168.48.192:9188';//打包测试环境
