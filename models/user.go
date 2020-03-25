@@ -21,6 +21,7 @@ const ( //用户角色
 const (
 	PasswordSalt        = "MareWood"
 	TokenExpireDuration = time.Hour * 3
+	JwtClaimsKey 		= "JwtClaims"
 )
 
 var TokenSecret = []byte("MareWood")

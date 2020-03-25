@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"MareWood/helper"
 	"MareWood/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -8,8 +9,17 @@ import (
 
 func RoleReporter() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		role := c.GetInt("JWT_ROLE")
-		if role > models.UserRoleReporter {
+		claims, err := helper.GetJwtClaimsByContext(c)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status": false,
+				"data":   "",
+				"msg":    err.Error(),
+			})
+			c.Abort()
+			return
+		}
+		if claims.Role > models.UserRoleReporter {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
 				"data":   "",
@@ -24,8 +34,17 @@ func RoleReporter() func(c *gin.Context) {
 
 func RoleDeveloper() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		role := c.GetInt("JWT_ROLE")
-		if role > models.UserRoleDeveloper {
+		claims, err := helper.GetJwtClaimsByContext(c)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status": false,
+				"data":   "",
+				"msg":    err.Error(),
+			})
+			c.Abort()
+			return
+		}
+		if claims.Role > models.UserRoleDeveloper {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
 				"data":   "",
@@ -38,11 +57,19 @@ func RoleDeveloper() func(c *gin.Context) {
 	}
 }
 
-
 func RoleAdmin() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		role := c.GetInt("JWT_ROLE")
-		if role > models.UserRoleAdminister {
+		claims, err := helper.GetJwtClaimsByContext(c)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status": false,
+				"data":   "",
+				"msg":    err.Error(),
+			})
+			c.Abort()
+			return
+		}
+		if claims.Role > models.UserRoleAdminister {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
 				"data":   "",
@@ -57,8 +84,17 @@ func RoleAdmin() func(c *gin.Context) {
 
 func RoleSuperAdmin() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		role := c.GetInt("JWT_ROLE")
-		if role > models.UserRoleSuperAdministrator {
+		claims, err := helper.GetJwtClaimsByContext(c)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status": false,
+				"data":   "",
+				"msg":    err.Error(),
+			})
+			c.Abort()
+			return
+		}
+		if claims.Role > models.UserRoleSuperAdministrator {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
 				"data":   "",

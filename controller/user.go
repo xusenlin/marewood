@@ -84,7 +84,12 @@ func UserLogin(c *gin.Context) {
 	}
  	user.Password = "***"
 
-	token,err := helper.GenToken(user.ID,user.Username,user.Role,user.Status)
+	token,err := helper.GenToken(&models.Claims{
+		ID:user.ID,
+		Username:user.Username,
+		Role:user.Role,
+		Status:user.Status,
+	})
 
 	if  err != nil {
 		c.JSON(http.StatusOK, gin.H{
