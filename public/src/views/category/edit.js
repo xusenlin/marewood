@@ -40,7 +40,6 @@ class EditCategory extends React.Component {
                     <DialogContent>
                         <TextField
                             required
-                            autoFocus
                             value={this.state.name}
                             margin="dense"
                             id="name"

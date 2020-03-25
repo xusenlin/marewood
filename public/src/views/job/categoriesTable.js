@@ -29,19 +29,14 @@ import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen'
 import DeleteIcon from '@material-ui/icons/Delete';
 import {destroy,RunJob} from "../../api/job";
-
+import {tooltip} from "../../assets/jss/common"
 
 const styles = theme => ({
     table: {
         marginTop: theme.spacing(3),
         minWidth: 650,
     },
-    tooltip:{
-        maxWidth: 600,
-        maxHeight:"60vh",
-        overflowY:"auto",
-        whiteSpace: "pre-wrap"
-    }
+    tooltip
 });
 
 
@@ -269,7 +264,7 @@ class CategoriesTable extends React.Component {
                                         </Tooltip>
                                     </TableCell>
                                     <TableCell align="center">
-                                        <Tooltip title={row.Desc} interactive>
+                                        <Tooltip title={row.Desc} classes={{tooltip:classes.tooltip}} interactive>
                                             <IconButton color="primary">
                                                 <Announcement/>
                                             </IconButton>
