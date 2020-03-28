@@ -4,6 +4,7 @@ import Drawer from '@material-ui/core/Drawer';
 import TopBar from './topBar.js'
 import RouteList from '../../router/route'
 import {IconButton} from "@material-ui/core";
+import Config from '../../config/index'
 import './admin.scss'
 
 
@@ -17,7 +18,7 @@ const Layout = props => {
             let r = RouteList[i];
             if(r.path === props.location.pathname){
                 setTitle(r.title);
-                document.title = r.title;
+                document.title = r.title + "-" + Config.siteName;
                 return;
             }
         }
