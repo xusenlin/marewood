@@ -6,12 +6,11 @@ import (
 	"MareWood/middlewares"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"os"
 )
 
 func InitRouter() *gin.Engine {
 	// 设置gin模式
-	gin.SetMode(os.Getenv("GIN_MODE"))
+	gin.SetMode(config.Cfg.GinMode)
 
 	r := gin.Default()
 	r.Use(middlewares.Cors())

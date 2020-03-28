@@ -1,78 +1,62 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
-	"log"
+	"encoding/json"
+	"io/ioutil"
 	"os"
-	"strings"
 )
-
 type Config struct {
-	DbDns         string
-	Version       float32
-	AppName       string
-	CurrentDir    string
-	AppRepository string
-	RepositoryDir string
-	ResourcesDir  string
-	WebRootDir    string
-	ClientDir     string
-	WebHookUrl    string
-	WebsUrl       string
-	DependTools   []string
-	Introduction  string
+	userConfig
+	systemConfig
 }
 
+var systemCfg systemConfig
+var userCfg userConfig
 var Cfg Config
+
 
 func init() {
 	var err error
-	if Cfg.CurrentDir, err = os.Getwd(); err != nil {
-		log.Fatal(err)
+	if systemCfg.CurrentDir, err = os.Getwd(); err != nil {
+		panic(err)
 	}
 
-	err = godotenv.Load()
+	b, err := ioutil.ReadFile(systemCfg.CurrentDir + "/config.json")
+
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		panic(err)
 	}
 
-	Cfg.Version = 0.1
-	Cfg.AppName = "MareWood"
-	Cfg.AppRepository = "https://github.com/xusenlin/MareWood"
-	Cfg.DbDns = Cfg.CurrentDir + "/database.db"
+	if json.Unmarshal(b, &userCfg) != nil{
+		panic(err)
+	}
 
-	Cfg.ResourcesDir = Cfg.CurrentDir + "/resources"
-	Cfg.RepositoryDir = Cfg.ResourcesDir + "/repositories"
-	Cfg.WebRootDir = Cfg.ResourcesDir + "/webs"
-	Cfg.ClientDir = Cfg.CurrentDir + "/public/build"
-	Cfg.WebHookUrl = "/web_hook"
-	Cfg.WebsUrl = "/webs"
-	Cfg.DependTools = getDependTools()
-	Cfg.Introduction = Cfg.AppName + ` 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、SQLITE、REACE、MATERIAL-UI 开发，
+	systemCfg.Version = 0.1
+	systemCfg.AppName = "MareWood"
+	systemCfg.AppRepository = "https://github.com/xusenlin/MareWood"
+	systemCfg.DbDns = systemCfg.CurrentDir + "/database.db"
+	systemCfg.ResourcesDir = systemCfg.CurrentDir + "/resources"
+	systemCfg.RepositoryDir = systemCfg.ResourcesDir + "/repositories"
+	systemCfg.WebRootDir = systemCfg.ResourcesDir + "/webs"
+	systemCfg.ClientDir = systemCfg.CurrentDir + "/public/build"
+	systemCfg.WebHookUrl = "/web_hook"
+	systemCfg.WebsUrl = "/webs"
+	systemCfg.Introduction = systemCfg.AppName + ` 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、SQLITE、REACE、MATERIAL-UI 开发，
 不同于 Jenkins 的大而全，它很简单且只针对前端，你可以很灵活的配置各种部署环境。
 如果你愿意，线上发布也可以是点击一下按钮这么简单的事情,当然也可以配置 WEBHOOK，提交 GIT 代码既自动发布。
 `
-
+	Cfg.systemConfig = systemCfg
+	Cfg.userConfig = userCfg
 }
 
-func getDependTools() []string {
-	toolsStr := os.Getenv("DEPENDENT_TOOLS")
 
-	if !strings.Contains(toolsStr, "|") {
-		return []string{"npm"}
-	}
-	tools := strings.Split(toolsStr, "|")
-
-	return tools
-}
-
-func GetSysInfo() (Config, []interface{}) {
+func GetSysInfo() []interface{} {
 	type rowInfo struct {
 		Title string
 		Val   interface{}
 		Desc  string
 	}
-	return Cfg, []interface{}{
+	return []interface{}{
 		rowInfo{"名字", Cfg.AppName, "系统名字"},
 		rowInfo{"版本号", Cfg.Version, "系统版本"},
 		rowInfo{"软件目录", Cfg.CurrentDir, "软件运行的目录"},

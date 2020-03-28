@@ -1,0 +1,7 @@
+{
+  "HttpPort": "8081",
+  "GinMode": "debug",
+  "DependTools": ["npm","yarn"],
+  "LogMode": true,
+  "AddressUrl" : "http"
+}

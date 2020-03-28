@@ -7,12 +7,12 @@ import (
 )
 
 func SystemInfo(c *gin.Context) {
-	kvConfig, detailsConfig := config.GetSysInfo();
+
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
 		"data": map[string]interface{}{
-			"kvConfig":        kvConfig,
-			"detailsConfig": detailsConfig,
+			"kvConfig":        config.Cfg,
+			"detailsConfig": config.GetSysInfo(),
 		},
 		"msg": "查询成功",
 	})

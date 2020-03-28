@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"MareWood/database"
+	"MareWood/sql"
 	"MareWood/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -12,10 +12,10 @@ func CategoryFindAll(c *gin.Context) {
 
 	var result []models.Category
 
-	if database.DB.Find(&result).Error != nil {
+	if sql.DB.Find(&result).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
+			"data":   sql.DB.Error.Error(),
 			"msg":    "数据库查询出错",
 		})
 		return
@@ -44,10 +44,10 @@ func CategoryCreate(c *gin.Context) {
 
 	category.JobQuantity = 0
 	
-	if database.DB.Create(&category).Error != nil {
+	if sql.DB.Create(&category).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
+			"data":   sql.DB.Error.Error(),
 			"msg":    "数据库创建出错",
 		})
 		return
@@ -66,11 +66,11 @@ func CategoryDestroy(c *gin.Context) {
 
 	var jobCount int
 
-	if database.DB.Model(&models.Job{}).Where("category_id = ?", id).Count(&jobCount).Error != nil {
+	if sql.DB.Model(&models.Job{}).Where("category_id = ?", id).Count(&jobCount).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   id,
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 	}
 
@@ -83,11 +83,11 @@ func CategoryDestroy(c *gin.Context) {
 		return
 	}
 
-	if database.DB.Where("id = ?", id ).Delete(&models.Category{}).Error != nil {
+	if sql.DB.Where("id = ?", id ).Delete(&models.Category{}).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}

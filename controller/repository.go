@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"MareWood/database"
+	"MareWood/sql"
 	"MareWood/models"
 	"MareWood/service/serviceRepository"
 	"github.com/gin-gonic/gin"
@@ -16,22 +16,22 @@ func RepositoryFindAll(c *gin.Context) {
 	isNormal := c.Query("isNormal")
 
 	if isNormal == "1" {
-		if database.DB.Order("created_at desc").
+		if sql.DB.Order("created_at desc").
 			Where("status = ?", models.RepoStatusSuccess).
 			Find(&result).Error != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
 				"data":   "",
-				"msg":    database.DB.Error.Error(),
+				"msg":    sql.DB.Error.Error(),
 			})
 			return
 		}
 	} else {
-		if database.DB.Order("created_at desc").Find(&result).Error != nil {
+		if sql.DB.Order("created_at desc").Find(&result).Error != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
 				"data":   "",
-				"msg":    database.DB.Error.Error(),
+				"msg":    sql.DB.Error.Error(),
 			})
 			return
 		}
@@ -60,11 +60,11 @@ func RepositoryCreate(c *gin.Context) {
 
 	repository.Status = models.RepoStatusProcessing
 	repository.JobStatus = models.RepoJobStatusLeisured
-	if database.DB.Create(&repository).Error != nil {
+	if sql.DB.Create(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
@@ -73,14 +73,14 @@ func RepositoryCreate(c *gin.Context) {
 		//克隆并更新记录
 		out, err := serviceRepository.GitClone(strconv.Itoa(int(repository.ID)), repository.Url, repository.UserName, repository.Password)
 		if err != nil {
-			database.DB.Model(&repository).
+			sql.DB.Model(&repository).
 				Where("id = ?", repository.ID).
 				Update("status", models.RepoStatusFail).
 				Update("terminal_info", out)
 			return
 		}
 
-		database.DB.Model(&repository).
+		sql.DB.Model(&repository).
 			Where("id = ?", repository.ID).
 			Update("status", models.RepoStatusSuccess).
 			Update("terminal_info", out)
@@ -100,11 +100,11 @@ func RepositoryDestroy(c *gin.Context) {
 
 	var jobCount int
 
-	if database.DB.Model(&models.Job{}).Where("repository_id = ?", id).Count(&jobCount).Error != nil {
+	if sql.DB.Model(&models.Job{}).Where("repository_id = ?", id).Count(&jobCount).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   id,
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 	}
 
@@ -119,11 +119,11 @@ func RepositoryDestroy(c *gin.Context) {
 
 	var repository models.Repository
 
-	if database.DB.First(&repository, id).Error != nil {
+	if sql.DB.First(&repository, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
@@ -151,11 +151,11 @@ func RepositoryDestroy(c *gin.Context) {
 		}
 	}
 
-	if database.DB.Delete(&repository).Error != nil {
+	if sql.DB.Delete(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
@@ -173,11 +173,11 @@ func RepositoryGitPull(c *gin.Context) {
 	var repository models.Repository
 	id := c.Query("id")
 
-	if database.DB.First(&repository, id).Error != nil {
+	if sql.DB.First(&repository, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
@@ -226,11 +226,11 @@ func RepositoryBranch(c *gin.Context) {
 	var repository models.Repository
 	id := c.Query("id")
 
-	if database.DB.First(&repository, id).Error != nil {
+	if sql.DB.First(&repository, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}

@@ -1,4 +1,4 @@
-package database
+package sql
 
 import (
 	"MareWood/config"
@@ -19,7 +19,7 @@ func InitDb() {
 		panic("failed to connect database")
 	}
 
-	DB.LogMode(true)
+	DB.LogMode(config.Cfg.LogMode)
 
 	DB.AutoMigrate(
 		&models.Job{},

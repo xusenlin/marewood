@@ -2,7 +2,7 @@ package serviceJob
 
 import (
 	"MareWood/config"
-	"MareWood/database"
+	"MareWood/sql"
 	"MareWood/helper"
 	"MareWood/models"
 	"MareWood/service/serviceRepository"
@@ -63,21 +63,21 @@ func JobRun(job *models.Job, repository *models.Repository) {
 	}
 	terminalOut += out
 
-	database.DB.Model(&job).
+	sql.DB.Model(&job).
 		Update("status", models.JobStatusSuccess).
 		Update("url", config.Cfg.WebsUrl+"/"+strconv.Itoa(int(job.ID))).
 		Update("run_quantity", job.RunQuantity+1).
 		Update("terminal_info", terminalOut)
 
-	database.DB.Model(&repository).
+	sql.DB.Model(&repository).
 		Update("job_status", models.RepoJobStatusLeisured)
 
 }
 
 func jobRunError(job *models.Job, repository *models.Repository, errOut string) {
 	fmt.Println("jobRunError::", errOut)
-	database.DB.Model(&job).Update("status", models.JobStatusFail).Update("terminal_info", errOut)
-	database.DB.Model(&repository).Update("job_status", models.RepoJobStatusLeisured)
+	sql.DB.Model(&job).Update("status", models.JobStatusFail).Update("terminal_info", errOut)
+	sql.DB.Model(&repository).Update("job_status", models.RepoJobStatusLeisured)
 
 }
 

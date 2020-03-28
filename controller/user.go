@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"MareWood/database"
+	"MareWood/sql"
 	"MareWood/helper"
 	"MareWood/models"
 	"github.com/gin-gonic/gin"
@@ -22,7 +22,7 @@ func UserRegister(c *gin.Context) {
 	}
 
 
-	if !database.DB.Where("username = ?", newUser.Username).First(&models.User{}).RecordNotFound() {
+	if !sql.DB.Where("username = ?", newUser.Username).First(&models.User{}).RecordNotFound() {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -40,11 +40,11 @@ func UserRegister(c *gin.Context) {
 	}
 	newUser.Password = helper.DigestString(models.PasswordSalt + newUser.Password)
 
-	if database.DB.Save(&newUser).Error != nil {
+	if sql.DB.Save(&newUser).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
@@ -71,7 +71,7 @@ func UserLogin(c *gin.Context) {
  	password := helper.DigestString(models.PasswordSalt + user.Password)
 
 
-	if database.DB.
+	if sql.DB.
 		Where("username = ? AND password = ?", user.Username, password).
  		First(&user).RecordNotFound() {
 
@@ -117,10 +117,10 @@ func UserFindAll(c *gin.Context)  {
 
 	var users []models.User
 
-	if database.DB.Find(&users).Error != nil {
+	if sql.DB.Find(&users).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
+			"data":   sql.DB.Error.Error(),
 			"msg":    "数据库查询出错",
 		})
 		return
@@ -137,7 +137,7 @@ func UserDestroy(c *gin.Context) {
 
 	id := c.Query("id")
 
-	if !database.DB.
+	if !sql.DB.
 		Where("id = ? AND role = ?", id ,models.UserRoleSuperAdministrator).
 		First(&models.User{}).RecordNotFound() {
 		c.JSON(http.StatusOK, gin.H{
@@ -148,11 +148,11 @@ func UserDestroy(c *gin.Context) {
 		return
 	}
 
-	if database.DB.Where("id = ?", id ).Delete(&models.User{}).Error != nil {
+	if sql.DB.Where("id = ?", id ).Delete(&models.User{}).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
@@ -171,11 +171,11 @@ func UserRoleEdit(c *gin.Context) {
 	isUp := c.Query("isUp")
 	var user models.User
 
-	if database.DB.First(&user,id).Error != nil {
+	if sql.DB.First(&user,id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
@@ -212,11 +212,11 @@ func UserRoleEdit(c *gin.Context) {
 	}
 
 
-	if database.DB.Save(&user).Error != nil {
+	if sql.DB.Save(&user).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}

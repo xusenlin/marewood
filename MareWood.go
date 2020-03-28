@@ -1,13 +1,11 @@
 package main
 
 import (
-	_ "MareWood/config"
-	"MareWood/database"
+	"MareWood/config"
 	"MareWood/helper"
 	"MareWood/routes"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"MareWood/sql"
 	"log"
-	"os"
 )
 
 
@@ -18,11 +16,13 @@ func main() {
 		log.Printf("请安装git和node以及在.env配置里所有前端依赖安装工具")
 		log.Fatal(err)
 	}
-	database.InitDb()
-	defer database.DB.Close()
+
+
+	sql.InitDb()
+	defer sql.DB.Close()
 
 	r := routes.InitRouter()
-	if err := r.Run(":" + os.Getenv("HTTP_PORT")); err != nil {
+	if err := r.Run(":" + config.Cfg.HttpPort ); err != nil {
 		panic(err)
 	}
 }

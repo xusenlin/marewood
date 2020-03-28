@@ -2,7 +2,7 @@ package controller
 
 import (
 	"MareWood/config"
-	"MareWood/database"
+	"MareWood/sql"
 	"MareWood/helper"
 	"MareWood/models"
 	"MareWood/service/serviceJob"
@@ -16,10 +16,10 @@ func JobFindAll(c *gin.Context) {
 
 	var result []models.Job
 
-	if database.DB.Order("created_at desc").Find(&result).Error != nil {
+	if sql.DB.Order("created_at desc").Find(&result).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
+			"data":   sql.DB.Error.Error(),
 			"msg":    "数据库查询出错",
 		})
 		return
@@ -38,10 +38,10 @@ func JobFindByCategoryId(c *gin.Context) {
 	var result []models.Job
 	id := c.Query("id")
 
-	if database.DB.Where("category_id = ?", id).Order("updated_at desc").Find(&result).Error != nil {
+	if sql.DB.Where("category_id = ?", id).Order("updated_at desc").Find(&result).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
+			"data":   sql.DB.Error.Error(),
 			"msg":    "数据库查询出错",
 		})
 		return
@@ -75,34 +75,34 @@ func JobCreate(c *gin.Context) {
 		job.Password = helper.DigestString(job.Password)
 	}
 
-	if database.DB.Create(&job).Error != nil {
+	if sql.DB.Create(&job).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
 	webHookUrl := config.Cfg.WebHookUrl + "?id=" + strconv.Itoa(int(job.ID))
 
-	if database.DB.Model(&job).UpdateColumn("web_hook_url", webHookUrl).Error != nil {
+	if sql.DB.Model(&job).UpdateColumn("web_hook_url", webHookUrl).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
 
 	//分类数量
-	if database.DB.Model(&models.Category{}).
+	if sql.DB.Model(&models.Category{}).
 		Where("id = ?", job.CategoryId).
 		UpdateColumn("job_quantity", gorm.Expr("job_quantity + ?", 1)).
 		Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 	}
 
@@ -120,12 +120,12 @@ func JobUpdateBranch(c *gin.Context) {
 	id := c.Query("id")
 	branch := c.Query("branch")
 
-	if database.DB.Model(&job).
+	if sql.DB.Model(&job).
 		Where("id = ?", id).
 		UpdateColumn("branch", branch).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   database.DB.Error.Error(),
+			"data":   sql.DB.Error.Error(),
 			"msg":    "数据库更新出错",
 		})
 		return
@@ -144,31 +144,31 @@ func JobDestroy(c *gin.Context) {
 
 	var job models.Job
 
-	if database.DB.First(&job, id).Error != nil {
+	if sql.DB.First(&job, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
 
-	if database.DB.Model(&models.Category{}).
+	if sql.DB.Model(&models.Category{}).
 		Where("id = ?", job.CategoryId).
 		UpdateColumn("job_quantity", gorm.Expr("job_quantity - ?", 1)).
 		Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 	}
 
-	if database.DB.Delete(&job).Error != nil {
+	if sql.DB.Delete(&job).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
@@ -192,19 +192,19 @@ func JobRun(c *gin.Context) {
 	var job models.Job
 	var repository models.Repository
 
-	if database.DB.First(&job, jobId).Error != nil {
+	if sql.DB.First(&job, jobId).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
-	if database.DB.First(&repository, job.RepositoryId).Error != nil {
+	if sql.DB.First(&repository, job.RepositoryId).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
@@ -236,11 +236,11 @@ func JobRun(c *gin.Context) {
 	repository.JobStatus = models.RepoJobStatusBusy
 	job.Status = models.JobStatusProcessing
 
-	if database.DB.Save(&repository).Save(&job).Error != nil {
+	if sql.DB.Save(&repository).Save(&job).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    database.DB.Error.Error(),
+			"msg":    sql.DB.Error.Error(),
 		})
 		return
 	}
