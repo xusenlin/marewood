@@ -1,21 +1,19 @@
 package controller
 
 import (
-	"MareWood/sql"
 	"MareWood/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
 
 func CategoryFindAll(c *gin.Context) {
 
-	var result []models.Category
+	result,err := new(models.Category).CategoryFindAll()
 
-	if sql.DB.Find(&result).Error != nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   sql.DB.Error.Error(),
+			"data":   err.Error(),
 			"msg":    "数据库查询出错",
 		})
 		return
@@ -42,12 +40,12 @@ func CategoryCreate(c *gin.Context) {
 		return
 	}
 
-	category.JobQuantity = 0
-	
-	if sql.DB.Create(&category).Error != nil {
+	err := category.Create()
+
+	if  err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   sql.DB.Error.Error(),
+			"data":   err.Error(),
 			"msg":    "数据库创建出错",
 		})
 		return
@@ -64,30 +62,13 @@ func CategoryDestroy(c *gin.Context) {
 
 	id := c.Query("id")
 
-	var jobCount int
+	err := new(models.Category).Destroy(id)
 
-	if sql.DB.Model(&models.Job{}).Where("category_id = ?", id).Count(&jobCount).Error != nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   id,
-			"msg":    sql.DB.Error.Error(),
-		})
-	}
-
-	if jobCount > 0 {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   jobCount,
-			"msg":    "无法删除，还有" + strconv.Itoa(jobCount) + "个任务在使用此分类",
-		})
-		return
-	}
-
-	if sql.DB.Where("id = ?", id ).Delete(&models.Category{}).Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    sql.DB.Error.Error(),
+			"msg":    err.Error(),
 		})
 		return
 	}

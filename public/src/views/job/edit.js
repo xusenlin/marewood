@@ -16,7 +16,7 @@ class Edit extends React.Component {
       desc: '',
       repositoryId: '',
       buildDir: 'dist',
-      buildCommand: 'build',
+      buildCommand: '',
       password: '',
       successScript: '',
       repositories: [],

@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"MareWood/sql"
 	"MareWood/helper"
 	"MareWood/models"
+	"MareWood/service/serviceUser"
+	"MareWood/sql"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -84,7 +85,7 @@ func UserLogin(c *gin.Context) {
 	}
  	user.Password = "***"
 
-	token,err := helper.GenToken(&models.Claims{
+	token,err := serviceUser.GenToken(&models.Claims{
 		ID:user.ID,
 		Username:user.Username,
 		Role:user.Role,

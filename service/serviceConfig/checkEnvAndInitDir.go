@@ -1,4 +1,4 @@
-package helper
+package serviceConfig
 
 import (
 	"MareWood/config"

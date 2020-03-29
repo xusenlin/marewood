@@ -1,15 +1,15 @@
 package middlewares
 
 import (
-	"MareWood/helper"
 	"MareWood/models"
+	"MareWood/service/serviceUser"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func RoleReporter() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		claims, err := helper.GetJwtClaimsByContext(c)
+		claims, err := serviceUser.GetJwtClaimsByContext(c)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
@@ -34,7 +34,7 @@ func RoleReporter() func(c *gin.Context) {
 
 func RoleDeveloper() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		claims, err := helper.GetJwtClaimsByContext(c)
+		claims, err := serviceUser.GetJwtClaimsByContext(c)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
@@ -59,7 +59,7 @@ func RoleDeveloper() func(c *gin.Context) {
 
 func RoleAdmin() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		claims, err := helper.GetJwtClaimsByContext(c)
+		claims, err := serviceUser.GetJwtClaimsByContext(c)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
@@ -84,7 +84,7 @@ func RoleAdmin() func(c *gin.Context) {
 
 func RoleSuperAdmin() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		claims, err := helper.GetJwtClaimsByContext(c)
+		claims, err := serviceUser.GetJwtClaimsByContext(c)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,

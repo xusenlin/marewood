@@ -2,8 +2,6 @@ package sql
 
 import (
 	"MareWood/config"
-	"MareWood/models"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -20,16 +18,4 @@ func InitDb() {
 	}
 
 	DB.LogMode(config.Cfg.LogMode)
-
-	DB.AutoMigrate(
-		&models.Job{},
-		&models.User{},
-		&models.Category{},
-		&models.Repository{},
-		//&models.SysSetting{},
-	)
-
-	if DB.Error != nil {
-		fmt.Printf("database error %v", DB.Error)
-	}
 }

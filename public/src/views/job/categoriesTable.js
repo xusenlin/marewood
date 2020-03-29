@@ -30,6 +30,9 @@ import LockOpenIcon from '@material-ui/icons/LockOpen'
 import DeleteIcon from '@material-ui/icons/Delete';
 import {destroy,RunJob} from "../../api/job";
 import {tooltip} from "../../assets/jss/common"
+import { getSystemInfo } from "../../utils/dataStorage"
+
+const AddressUrl = getSystemInfo("AddressUrl");
 
 const styles = theme => ({
     table: {
@@ -138,7 +141,7 @@ class CategoriesTable extends React.Component {
             Snackbar.error("任务没有打包成功！");
             return
         }
-        window.open(row.Url)
+        window.open(AddressUrl + row.Url)
     }
     closeJobRunDialog(){
         this.setState({
@@ -193,7 +196,7 @@ class CategoriesTable extends React.Component {
                             </TableCell>
                             <TableCell align="center">
                                 WebHook
-                                <HelperTooltips help="触发任务的钩子，目前没有使用队列，如果任务资源被占用则无法打包"/>
+                                <HelperTooltips help="触发任务的钩子，如果此任务仓库资源被占用则无法打包"/>
                             </TableCell>
                             <TableCell align="center">终端信息</TableCell>
                             <TableCell align="center">
@@ -235,7 +238,15 @@ class CategoriesTable extends React.Component {
                                     <TableCell align="center">{row.Branch}</TableCell>
                                     <TableCell align="center">{row.RunQuantity}</TableCell>
                                     <TableCell align="center">
-                                        <Tooltip title={row.Status !== 1 ? "没有打包成功之前是不能访问的" : row.Url} interactive>
+                                        <Tooltip
+                                            style={{padding:10}}
+                                            title={
+                                                row.Status !== 1 ? "没有打包成功之前是不能访问的" :
+                                                    <React.Fragment>
+                                                        <a target="_blank" rel="noopener noreferrer" href={ AddressUrl + row.Url }>{ AddressUrl + row.Url }</a>
+                                                    </React.Fragment>
+                                            }
+                                            interactive>
                                             <IconButton color="primary" onClick={this.openJobUrl.bind(this,row)}>
                                                 { row.Status !== 1 ? <LinkOffIcon/>: <LinkIcon/>}
                                             </IconButton>

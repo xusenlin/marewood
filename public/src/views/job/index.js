@@ -47,6 +47,10 @@ class Jobs extends React.Component {
     componentDidMount() {
 
         categories().then(r=>{
+            if (r.length === 0){
+                alert("请先新建分类");
+                return
+            }
             this.setState({categories:r},()=>{
                 this.setTabAndJobsByCategoryId(0)
             });

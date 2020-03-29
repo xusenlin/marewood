@@ -5,4 +5,5 @@ type userConfig struct {
 	HttpPort    string
 	DependTools []string
 	LogMode     bool
+	AddressUrl  string
 }

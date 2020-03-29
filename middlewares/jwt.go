@@ -1,8 +1,8 @@
 package middlewares
 
 import (
-	"MareWood/helper"
 	"MareWood/models"
+	"MareWood/service/serviceUser"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -20,7 +20,7 @@ func JWTAuth() func(c *gin.Context) {
 			c.Abort()
 			return
 		}
-		claims, err := helper.ParseToken(token)
+		claims, err := serviceUser.ParseToken(token)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,

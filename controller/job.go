@@ -1,25 +1,22 @@
 package controller
 
 import (
-	"MareWood/config"
-	"MareWood/sql"
 	"MareWood/helper"
 	"MareWood/models"
 	"MareWood/service/serviceJob"
+	"MareWood/sql"
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"net/http"
-	"strconv"
 )
 
 func JobFindAll(c *gin.Context) {
 
-	var result []models.Job
+	result,err := new(models.Job).FindAll()
 
-	if sql.DB.Order("created_at desc").Find(&result).Error != nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   sql.DB.Error.Error(),
+			"data":   err.Error(),
 			"msg":    "数据库查询出错",
 		})
 		return
@@ -35,13 +32,14 @@ func JobFindAll(c *gin.Context) {
 
 func JobFindByCategoryId(c *gin.Context) {
 
-	var result []models.Job
 	id := c.Query("id")
 
-	if sql.DB.Where("category_id = ?", id).Order("updated_at desc").Find(&result).Error != nil {
+	result,err := new(models.Job).FindByCategoryId(id)
+
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   sql.DB.Error.Error(),
+			"data":   err.Error(),
 			"msg":    "数据库查询出错",
 		})
 		return
@@ -58,8 +56,9 @@ func JobFindByCategoryId(c *gin.Context) {
 func JobCreate(c *gin.Context) {
 
 	var job models.Job
+	err := c.ShouldBindJSON(&job)
 
-	if err := c.ShouldBindJSON(&job); err != nil {
+	if  err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -68,41 +67,24 @@ func JobCreate(c *gin.Context) {
 		return
 	}
 
-	job.RunQuantity = 0
-	job.Branch = "master"
-	job.Status = models.JobStatusLeisured
-	if job.Password != "" {
-		job.Password = helper.DigestString(job.Password)
-	}
-
-	if sql.DB.Create(&job).Error != nil {
+	err = job.Create()
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    sql.DB.Error.Error(),
-		})
-		return
-	}
-	webHookUrl := config.Cfg.WebHookUrl + "?id=" + strconv.Itoa(int(job.ID))
-
-	if sql.DB.Model(&job).UpdateColumn("web_hook_url", webHookUrl).Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    sql.DB.Error.Error(),
+			"msg":    err.Error(),
 		})
 		return
 	}
 
+
+	err = new(models.Category).CategoryJobQuantityIncrement(job.CategoryId)
 	//分类数量
-	if sql.DB.Model(&models.Category{}).
-		Where("id = ?", job.CategoryId).
-		UpdateColumn("job_quantity", gorm.Expr("job_quantity + ?", 1)).
-		Error != nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    sql.DB.Error.Error(),
+			"msg":    err.Error(),
 		})
 	}
 
@@ -115,14 +97,12 @@ func JobCreate(c *gin.Context) {
 
 func JobUpdateBranch(c *gin.Context) {
 
-	var job models.Job
-
 	id := c.Query("id")
 	branch := c.Query("branch")
 
-	if sql.DB.Model(&job).
-		Where("id = ?", id).
-		UpdateColumn("branch", branch).Error != nil {
+	err := new(models.Job).UpdateBranch(id,branch)
+
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   sql.DB.Error.Error(),
@@ -142,33 +122,12 @@ func JobDestroy(c *gin.Context) {
 
 	id := c.Query("id")
 
-	var job models.Job
-
-	if sql.DB.First(&job, id).Error != nil {
+	err := new(models.Job).Destroy(id)
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    sql.DB.Error.Error(),
-		})
-		return
-	}
-
-	if sql.DB.Model(&models.Category{}).
-		Where("id = ?", job.CategoryId).
-		UpdateColumn("job_quantity", gorm.Expr("job_quantity - ?", 1)).
-		Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    sql.DB.Error.Error(),
-		})
-	}
-
-	if sql.DB.Delete(&job).Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    sql.DB.Error.Error(),
+			"msg":    err.Error(),
 		})
 		return
 	}

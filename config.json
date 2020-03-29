@@ -3,5 +3,5 @@
   "GinMode": "debug",
   "DependTools": ["npm","yarn"],
   "LogMode": true,
-  "AddressUrl" : "http"
+  "AddressUrl" : "http://localhost:8081"
 }
