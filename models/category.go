@@ -15,7 +15,7 @@ type Category struct {
 }
 
 func (c *Category) CategoryFindAll() (categories []Category, err error) {
-	err = sql.DB.Order("created_at desc").Find(&categories).Error
+	err = sql.DB.Order("created_at asc").Find(&categories).Error
 	return
 }
 
