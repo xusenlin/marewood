@@ -1,19 +1,25 @@
 # MareWood
->MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、SQLITE、REACE、MATERIAL-UI 开发，
+>MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、SQLITE、REACE、MATERIAL-UI 开发，
 不同于 Jenkins 的大而全，它很简单且只针对前端，你可以很灵活的配置各种部署环境。
 如果你愿意，线上发布也可以是点击一下按钮这么简单的事情,当然也可以配置 WEBHOOK，提交 GIT 代码既自动发布。
 
 
+# MareWood 在做什么
+MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖，并能在同一个仓库下通过不同的任务不同的打包命令打包出多个环境下的前端资源并放在 resources\webs 下，通过任务 ID 一一对应，并提供快捷访问。
+
 
 
 # 使用
-MareWood 编译生成一个二进制文件，你只需要把这个二进制文件和客户端（前端打包的文件，在public/build下）放在服务器上启动即可，不需要在安装额外的软件。
+1.服务器请先安装 git、node、npm，建议同时安装 cnpm 和 yarn 以供选择。
 
+2.修改 config.json 来配置 MareWood 启动的端口号、域名、和支持的前端工具。
 
+3.编译 MareWood 并放入后台运行。
 
+4.客户端在 public 目录，请安装依赖并修改正式请求地址然后运行 npm run build 即可。（请求地址=> /public/src/config/url.js）
 
-# MareWood 在做什么
-MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖，并能在同一个仓库下通过不同的任务不同的打包命令打包出多个环境下的前端资源并提供快捷访问。目前麻烦的是没有使用队列，因此同一时间你只能对一个仓库执行打包操作，仓库也会被锁定。当然，同时对不同的仓库执行打包则没有任何问题，这个在一个中小团队中使用基本没什么影响。
+其他：MareWood 提供 http 访问，建议 nginx 提供 https 静态文件服务器（指向resources\webs）这样可以灵活的选择 http 或者 https 去访问打包的前端项目。
+
 
 那么，一个 React 或者 Vue 项目如何配置多个打包命令呢？
 请移步http://xusenlin.com/article?path=%2f%e5%89%8d%e7%ab%af%e5%bc%80%e5%8f%91%2fREACT%e5%92%8cVUE%e7%9a%84%e5%a4%9a%e5%a5%97%e6%89%93%e5%8c%85%e7%8e%af%e5%a2%83.md
@@ -23,34 +29,19 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 - https://github.com/xusenlin/VueMultiplePages.git
 - https://github.com/xusenlin/VueElementUiAdmin.git
 
+# 角色
 
 
 
-# PREVIEW
+
+# 预览
 
 ### Repository
-![Repository](./preview/Repository.png)
 ![Repository](./preview/仓库.png)
 ### Category
-![Category](./preview/Category.png)
 ![Category](./preview/分类.png)
 ### Job
-![Job](./preview/Job.png)
 ![Job](./preview/任务.png)
-
-
-
-
-# 接下来？？
-如果你喜欢这个项目，也可以参与进来，目前没有那么多时间，因此只完成了核心的功能，甚至连用户和权限模块都没有，当然，单元测试可能也没有，也许吧。
-项目使用起来的时候用户权限模块不能少啊，所以花了一个周末加上了。
-
-角色：
-- 超级管理员 （啥都能干，包括管理用户，提升权限和删除权限）
-- 管理员 （啥都能干，就是不能管理用户）
-- 开发者 （能创建仓库、分类、任务、拉代码、切换分支，运行打包，删除依赖等，就是不能其他删除和管理用户）
-- 项目记者（啥也不能操作，只能看，访问打包的项目）
-
 
 
 # 番外
