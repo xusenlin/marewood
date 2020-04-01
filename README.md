@@ -10,13 +10,11 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 
 
 # 使用
-1.服务器请先安装 git、node、npm，建议同时安装 cnpm 和 yarn 以供选择。
 
-2.修改 config.json 来配置 MareWood 启动的端口号、域名、和支持的前端工具。
-
-3.编译 MareWood 并放入后台运行。
-
-4.客户端在 public 目录，请安装依赖并修改正式请求地址然后运行 npm run build 即可。（请求地址=> /public/src/config/url.js）
+1. 服务器请先安装 git、node、npm，建议同时安装 cnpm 和 yarn 以供选择。
+2. 修改 config.json 来配置 MareWood 启动的端口号、域名、和支持的前端工具。
+3. 编译 MareWood 并放入后台运行。
+4. 客户端在 public 目录，请安装依赖并修改正式请求地址然后运行 npm run build 即可。（请求地址=> /public/src/config/url.js）
 
 其他：MareWood 提供 http 访问，建议 nginx 提供 https 静态文件服务器（指向resources\webs）这样可以灵活的选择 http 或者 https 去访问打包的前端项目。
 
