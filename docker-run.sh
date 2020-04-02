@@ -5,6 +5,6 @@ echo "{
   \"GinMode\": \"${GinMode}\",
   \"DependTools\": [\"npm\",\"yarn\"],
   \"LogMode\": ${LogMode},
-  \"AddressUrl\" : \"${AddressUrl}\",
-}" > /marewood/config.json
+  \"AddressUrl\" : \"${AddressUrl}\"
+}" > /marewood/data/config.json
 exec /marewood/marewood

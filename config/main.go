@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 )
+
 type Config struct {
 	userConfig
 	systemConfig
@@ -13,7 +14,6 @@ type Config struct {
 var systemCfg systemConfig
 var userCfg userConfig
 var Cfg Config
-
 
 func init() {
 	var err error
@@ -27,8 +27,13 @@ func init() {
 		panic(err)
 	}
 
-	if json.Unmarshal(b, &userCfg) != nil{
+	if json.Unmarshal(b, &userCfg) != nil {
 		panic(err)
+	}
+
+	ClientDir := os.Getenv("ClientDir")
+	if ClientDir == "" {
+		ClientDir = systemCfg.CurrentDir + "/public/build"
 	}
 
 	systemCfg.Version = 0.1
@@ -38,7 +43,7 @@ func init() {
 	systemCfg.ResourcesDir = systemCfg.CurrentDir + "/resources"
 	systemCfg.RepositoryDir = systemCfg.ResourcesDir + "/repositories"
 	systemCfg.WebRootDir = systemCfg.ResourcesDir + "/webs"
-	systemCfg.ClientDir = systemCfg.CurrentDir + "/public/build"
+	systemCfg.ClientDir = ClientDir
 	systemCfg.WebHookUrl = "/web_hook"
 	systemCfg.WebsUrl = "/webs"
 	systemCfg.Introduction = systemCfg.AppName + ` 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、SQLITE、REACE、MATERIAL-UI 开发，
@@ -48,7 +53,6 @@ func init() {
 	Cfg.systemConfig = systemCfg
 	Cfg.userConfig = userCfg
 }
-
 
 func GetSysInfo() []interface{} {
 	type rowInfo struct {

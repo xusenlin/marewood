@@ -18,8 +18,9 @@ ENV REACT_APP_API_URL=/
 RUN yarn build
 
 FROM golang:1.13-alpine as Build-pre
+WORKDIR /marewood
 COPY . /marewood
-RUN  rm -rf /marewood/public docker-run.sh
+RUN  rm -rf public docker-run.sh
 
 FROM golang:1.13-alpine as Build
 RUN apk add --no-cache git build-base
@@ -29,13 +30,14 @@ RUN  go build -mod=vendor -o marewood
 
 FROM node:lts-alpine
 RUN apk add --no-cache git
-WORKDIR /marewood
+WORKDIR /marewood/data
 COPY --from=Build /marewood/marewood /marewood/marewood
-COPY --from=FBuild //marewood-f/build /marewood/public/build
+COPY --from=FBuild /marewood-f/build /marewood/public/build
 COPY docker-run.sh /marewood/docker-run.sh
 RUN chmod +x /marewood/docker-run.sh
 ENV LogMode=true \
   GinMode=debug \
   HttpPort=8081 \
-  AddressUrl=http://localhost:8081
+  AddressUrl=http://localhost:8081 \
+  ClientDir=/marewood/public/build
 CMD [ "/marewood/docker-run.sh" ]
