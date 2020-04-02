@@ -34,4 +34,12 @@ if('production' === nodeEnv){
     }
 }
 
+if(typeof process.env.REACT_APP_API_URL === 'string'){
+    useApiUrl = process.env.REACT_APP_API_URL
+}
+
+if(useApiUrl.slice(0,4) !== 'http'){
+    useApiUrl = window.location.origin + useApiUrl
+}
+
 export default useApiUrl;
