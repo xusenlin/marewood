@@ -78,3 +78,16 @@ export function RunJob(params) {
         params: params
     })
 }
+
+/**
+ * 更新任务描述
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function UpdateDesc(params) {
+    return request({
+        url:  '/job/update_desc',
+        method: 'get',
+        params: params
+    })
+}

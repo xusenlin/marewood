@@ -69,6 +69,13 @@ func (j *Job) UpdateBranch(id string, branch string) (err error) {
 	return
 }
 
+func (j *Job) UpdateDesc(id string, desc string) (err error) {
+	err =
+		sql.DB.Model(&j).Where("id = ?", id).
+			UpdateColumn("desc", desc).Error
+	return
+}
+
 func (j *Job) Destroy(id string) (err error) {
 	err = sql.DB.First(&j, id).Error
 	if err != nil {

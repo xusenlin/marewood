@@ -138,6 +138,27 @@ func JobDestroy(c *gin.Context) {
 	})
 }
 
+func JobUpdateDesc(c *gin.Context)  {
+
+	id := c.Query("id")
+	desc := c.Query("desc")
+
+	err := new(models.Job).UpdateDesc(id,desc)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   err.Error(),
+			"msg":    "数据库更新出错",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   id,
+		"msg":    "更新成功",
+	})
+}
+
 /**
 流程
 仓库是否忙碌->仓库状态是否正常->加密验证->任务状态进行中->更新仓库状态为繁忙->响应->更新代码->切换分支->

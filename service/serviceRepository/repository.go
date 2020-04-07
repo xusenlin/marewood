@@ -76,7 +76,13 @@ func GetBranch(repositoryId string) ([]string, error) {
 
 	branch := strings.Split(strings.Trim(strings.ReplaceAll(deleteOrigin, " ", ""), "\n"), "\n")
 
-	return branch[1:], nil
+	var newBranch []string
+	for _, b := range branch {
+		if !strings.Contains(b, "HEAD") {
+			newBranch = append(newBranch, b)
+		}
+	}
+	return newBranch, nil
 }
 
 func GitCheckout(repositoryId string, branch string) (string, error) {
@@ -91,7 +97,6 @@ func RunBuild(repositoryId string, buildCmd string) (string, error) {
 }
 
 func RunCmdOnRepositoryDir(repositoryId string, cmdName string, arg ...string) (string, error) {
-
 
 	repositoryDir := config.Cfg.RepositoryDir + "/" + repositoryId
 

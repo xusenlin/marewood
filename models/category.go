@@ -25,7 +25,12 @@ func (c *Category) Create() (err error) {
 	err = sql.DB.Create(&c).Error
 	return
 }
-
+func (c *Category) UpdateDesc(id string, desc string) (err error) {
+	err =
+		sql.DB.Model(&c).Where("id = ?", id).
+			UpdateColumn("desc", desc).Error
+	return
+}
 
 func (c *Category) CategoryJobQuantityIncrement(id int) (err error) {
 	err =

@@ -48,15 +48,18 @@ func InitRouter() *gin.Engine {
 		v1.GET("/repository/git_branch", middlewares.RoleReporter(), controller.RepositoryBranch)
 		v1.GET("/repository/delete_depend", middlewares.RoleDeveloper(), controller.RepositoryDeleteDepend)
 		v1.GET("/repository/get_script", middlewares.RoleReporter(), controller.RepositoryScript)
+		v1.GET("/repository/update_desc", middlewares.RoleDeveloper(), controller.RepositoryUpdateDesc)
 		//任务分类
 		v1.GET("/categories", middlewares.RoleReporter(), controller.CategoryFindAll)
 		v1.POST("/category/create", middlewares.RoleDeveloper(), controller.CategoryCreate)
+		v1.GET("/category/update_desc", middlewares.RoleDeveloper(), controller.CategoryUpdateDesc)
 		v1.GET("/category/delete", middlewares.RoleAdmin(), controller.CategoryDestroy)
 		//任务
 		v1.GET("/jobs", middlewares.RoleReporter(), controller.JobFindAll)
 		v1.GET("/jobs_find", middlewares.RoleReporter(), controller.JobFindByCategoryId)
 		v1.POST("/job/create", middlewares.RoleDeveloper(), controller.JobCreate)
 		v1.GET("/job/update_branch", middlewares.RoleDeveloper(), controller.JobUpdateBranch)
+		v1.GET("/job/update_desc", middlewares.RoleDeveloper(), controller.JobUpdateDesc)
 		v1.GET("/job/delete", middlewares.RoleAdmin(), controller.JobDestroy)
 		v1.GET("/job/run", middlewares.RoleDeveloper(), controller.JobRun)
 		//user

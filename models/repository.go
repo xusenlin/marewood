@@ -1,6 +1,9 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"MareWood/sql"
+	"github.com/jinzhu/gorm"
+)
 
 const ( //仓库拉取状态
 	RepoStatusFail       = 2
@@ -23,4 +26,12 @@ type Repository struct {
 	JobStatus    int                         //有任务正在打包，其他任务无法执行
 	DependTools  string `binding:"required"` //依赖工具选择
 	TerminalInfo string `gorm:"type:varchar(1000)"`
+}
+
+
+func (r *Repository) UpdateDesc(id string, desc string) (err error) {
+	err =
+		sql.DB.Model(&r).Where("id = ?", id).
+			UpdateColumn("desc", desc).Error
+	return
 }

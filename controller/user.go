@@ -1,14 +1,12 @@
 package controller
 
 import (
-	"MareWood/helper"
 	"MareWood/models"
 	"MareWood/service/serviceUser"
 	"MareWood/sql"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
-
 
 func UserRegister(c *gin.Context) {
 
@@ -22,30 +20,11 @@ func UserRegister(c *gin.Context) {
 		return
 	}
 
-
-	if !sql.DB.Where("username = ?", newUser.Username).First(&models.User{}).RecordNotFound() {
+	if err := newUser.Register(); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    "用户名已经存在",
-		})
-		return
-	}
-
-	newUser.ID = 0
-	newUser.Status = models.UserStatusEnabled
-	if newUser.Username == "Admin" {
-		newUser.Role =  models.UserRoleSuperAdministrator
-	}else {
-		newUser.Role =  models.UserRoleReporter
-	}
-	newUser.Password = helper.DigestString(models.PasswordSalt + newUser.Password)
-
-	if sql.DB.Save(&newUser).Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    sql.DB.Error.Error(),
+			"msg":    err.Error(),
 		})
 		return
 	}
@@ -69,30 +48,22 @@ func UserLogin(c *gin.Context) {
 		return
 	}
 
- 	password := helper.DigestString(models.PasswordSalt + user.Password)
-
-
-	if sql.DB.
-		Where("username = ? AND password = ?", user.Username, password).
- 		First(&user).RecordNotFound() {
-
+	if err := user.Login(); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    "用户名或者密码出错",
+			"msg":    err.Error(),
 		})
 		return
 	}
- 	user.Password = "***"
-
-	token,err := serviceUser.GenToken(&models.Claims{
-		ID:user.ID,
-		Username:user.Username,
-		Role:user.Role,
-		Status:user.Status,
+	token, err := serviceUser.GenToken(&models.Claims{
+		ID:       user.ID,
+		Username: user.Username,
+		Role:     user.Role,
+		Status:   user.Status,
 	})
 
-	if  err != nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -114,7 +85,7 @@ func UserLogin(c *gin.Context) {
 
 }
 
-func UserFindAll(c *gin.Context)  {
+func UserFindAll(c *gin.Context) {
 
 	var users []models.User
 
@@ -139,7 +110,7 @@ func UserDestroy(c *gin.Context) {
 	id := c.Query("id")
 
 	if !sql.DB.
-		Where("id = ? AND role = ?", id ,models.UserRoleSuperAdministrator).
+		Where("id = ? AND role = ?", id, models.UserRoleSuperAdministrator).
 		First(&models.User{}).RecordNotFound() {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
@@ -149,7 +120,7 @@ func UserDestroy(c *gin.Context) {
 		return
 	}
 
-	if sql.DB.Where("id = ?", id ).Delete(&models.User{}).Error != nil {
+	if sql.DB.Where("id = ?", id).Delete(&models.User{}).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -172,7 +143,7 @@ func UserRoleEdit(c *gin.Context) {
 	isUp := c.Query("isUp")
 	var user models.User
 
-	if sql.DB.First(&user,id).Error != nil {
+	if sql.DB.First(&user, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -200,7 +171,7 @@ func UserRoleEdit(c *gin.Context) {
 			return
 		}
 		user.Role = user.Role - 1
-	}else {
+	} else {
 		if user.Role == models.UserRoleReporter {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
@@ -211,7 +182,6 @@ func UserRoleEdit(c *gin.Context) {
 		}
 		user.Role = user.Role + 1
 	}
-
 
 	if sql.DB.Save(&user).Error != nil {
 		c.JSON(http.StatusOK, gin.H{

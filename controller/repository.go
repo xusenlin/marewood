@@ -280,3 +280,24 @@ func RepositoryScript(c *gin.Context) {
 		"msg":    "",
 	})
 }
+
+func RepositoryUpdateDesc(c *gin.Context)  {
+
+	id := c.Query("id")
+	desc := c.Query("desc")
+
+	err := new(models.Repository).UpdateDesc(id,desc)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   err.Error(),
+			"msg":    "数据库更新出错",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   id,
+		"msg":    "更新成功",
+	})
+}

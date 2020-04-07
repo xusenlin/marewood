@@ -102,3 +102,15 @@ export function getScript(params) {
     })
 }
 
+/**
+ * 更新仓库描述
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function UpdateDesc(params) {
+    return request({
+        url:  '/repository/update_desc',
+        method: 'get',
+        params: params
+    })
+}

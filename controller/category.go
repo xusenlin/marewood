@@ -57,6 +57,26 @@ func CategoryCreate(c *gin.Context) {
 		"msg":    "创建成功",
 	})
 }
+func CategoryUpdateDesc(c *gin.Context)  {
+
+	id := c.Query("id")
+	desc := c.Query("desc")
+
+	err := new(models.Category).UpdateDesc(id,desc)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   err.Error(),
+			"msg":    "数据库更新出错",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   id,
+		"msg":    "更新成功",
+	})
+}
 
 func CategoryDestroy(c *gin.Context) {
 

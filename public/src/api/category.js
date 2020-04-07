@@ -39,3 +39,16 @@ export function create(params) {
         data: params
     })
 }
+
+/**
+ * 更新分类描述
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function UpdateDesc(params) {
+    return request({
+        url:  '/category/update_desc',
+        method: 'get',
+        params: params
+    })
+}
