@@ -74,6 +74,10 @@ func (u *User) Login() (err error) {
 		First(&u).RecordNotFound() {
 		return errors.New("用户名或者密码出错")
 	}
+	if u.Status == UserStatusDisabled {
+		return errors.New("用户被禁用")
+	}
+
 	u.Password = "***"
 
 	return nil

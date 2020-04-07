@@ -31,13 +31,38 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 
 角色目前分为超级管理员、管理员、开发者、项目记者。权限如下：
 
-- 项目记者 - 只能查看所有内容，并且可以访问打包好的
+- 项目记者 - 只能查看所有内容，并且可以访问打包好的前端项目
 - 开发者 - 拥有创建仓库、分类、任务和拉代码、切换分支、运行打包、删除依赖权限
 - 管理员 - 可以删除仓库、分类、任务
 - 超级管理员 -可以管理用户（提升和降级角色，删除用户）
 
 注：等级高的角色拥有低级角色的全部权限。用户注册默认成为项目记者，如果注册的名字是 Admin 会自动成为超级管理员，注册名字不可重复。
 
+
+# docker镜像
+感谢 @shynome提供docker镜像
+
+构建镜像步骤
+```
+# 固化依赖
+go mod vendor
+# 打包镜像
+docker build . -t marewood
+# 临时运行容器, 退出后数据不保存
+docker run --rm -ti -p 8081:8081 marewood
+# 持久化运行, 有容器卷挂载数据可以保存下来
+docker run -d --restart always -p 8081:8081 -v marewood:/marewood/data marewood
+```
+
+示例用法
+```
+docker run --rm -ti \
+  -p 8090 \
+  -e HttpPort=8090 \
+  -e AddressUrl=http://127.0.0.1:8090 \
+  -v $PWD/marewood-data:/marewood/data \
+   shynome/marewood
+```
 
 # 预览
 
