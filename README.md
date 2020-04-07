@@ -40,7 +40,7 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 
 
 # docker镜像
-感谢 @shynome提供docker镜像
+感谢 @shynome 提供docker镜像
 
 构建镜像步骤
 ```
