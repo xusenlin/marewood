@@ -58,17 +58,16 @@ func RepositoryCreate(c *gin.Context) {
 		return
 	}
 
-	repository.Status = models.RepoStatusProcessing
-	repository.JobStatus = models.RepoJobStatusLeisured
-	if sql.DB.Create(&repository).Error != nil {
+	err := repository.Create()
+
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    sql.DB.Error.Error(),
+			"msg":    err.Error(),
 		})
 		return
 	}
-
 	go func() {
 		//克隆并更新记录
 		out, err := serviceRepository.GitClone(strconv.Itoa(int(repository.ID)), repository.Url, repository.UserName, repository.Password)
@@ -137,19 +136,19 @@ func RepositoryDestroy(c *gin.Context) {
 		return
 	}
 
-	if repository.Status == models.RepoStatusSuccess {
-
-		err := serviceRepository.DeleteRepository(strconv.Itoa(int(repository.ID)))
-
-		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    err.Error(),
-			})
-			return
-		}
-	}
+	//if repository.Status == models.RepoStatusSuccess {
+	//
+	//	err := serviceRepository.DeleteRepository(strconv.Itoa(int(repository.ID)))
+	//
+	//	if err != nil {
+	//		c.JSON(http.StatusOK, gin.H{
+	//			"status": false,
+	//			"data":   "",
+	//			"msg":    err.Error(),
+	//		})
+	//		return
+	//	}
+	//}
 
 	if sql.DB.Delete(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{

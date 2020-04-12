@@ -2,6 +2,7 @@ package models
 
 import (
 	"MareWood/sql"
+	"errors"
 	"github.com/jinzhu/gorm"
 )
 
@@ -28,10 +29,22 @@ type Repository struct {
 	TerminalInfo string `gorm:"type:varchar(1000)"`
 }
 
-
 func (r *Repository) UpdateDesc(id string, desc string) (err error) {
 	err =
 		sql.DB.Model(&r).Where("id = ?", id).
 			UpdateColumn("desc", desc).Error
 	return
+}
+
+func (r *Repository) Create() error {
+
+	if !sql.DB.Where("url = ?", r.Url).First(&Repository{}).RecordNotFound() {
+		return errors.New("仓库已经存在")
+	}
+
+	r.Status = RepoStatusProcessing
+	r.JobStatus = RepoJobStatusLeisured
+
+	return sql.DB.Create(&r).Error
+
 }
