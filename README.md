@@ -1,3 +1,17 @@
+<div align=center>
+<img src="http://xusenlin.com/assets/images/marewood_logo.png" width=567" height="442" />
+</div>
+<div align=center>
+<img src="https://img.shields.io/badge/golang-1.12-blue"/>
+<img src="https://img.shields.io/badge/gin-1.4.0-lightBlue"/>
+<img src="https://img.shields.io/badge/jwt-go-3.2.0-lightBlue"/>
+<img src="https://img.shields.io/badge/gorm-1.9.11-red"/>
+<img src="https://img.shields.io/badge/react-16.9.0-brightgreen"/>
+<img src="https://img.shields.io/badge/material-ui-4.4.0-green"/>
+</div>
+
+
+
 # MareWood
 >MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、SQLITE、REACE、MATERIAL-UI 开发，
 不同于 Jenkins 的大而全，它很简单且只针对前端，你可以很灵活的配置各种部署环境。
