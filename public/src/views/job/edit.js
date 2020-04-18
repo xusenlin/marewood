@@ -40,6 +40,7 @@ class Edit extends React.Component {
 
   onChangeRepository(event) {
     getScript({id: event.target.value}).then(r => {
+      delete r.dev;
       this.setState({buildCommandList: r});
     }).catch(() => {
     });

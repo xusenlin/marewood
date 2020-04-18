@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar,Toolbar,IconButton} from '@material-ui/core'
 import Typography from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
+// import MenuIcon from '@material-ui/icons/Menu';
 // import Person from '@material-ui/icons/Person';
 import Menu from '@material-ui/core/Menu';
 import Chip from '@material-ui/core/Chip';
@@ -10,6 +10,7 @@ import Link from "@material-ui/core/Link";
 import Role from "../../config/role"
 import { getUserInfo } from "../../utils/dataStorage"
 
+const Logo = require("../../assets/img/logo.svg");
 let UserInfo = getUserInfo();
 
 
@@ -30,7 +31,10 @@ const TopBar = props => {
             <AppBar position="static" color="default">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu" onClick={ props.toggle }>
-                        <MenuIcon/>
+                        {/*<MenuIcon color="primary"/>*/}
+                        <div style={{width:24,height:24,display: 'flex'}}>
+                            <img style={{width:24}} src={Logo} alt=""/>
+                        </div>
                     </IconButton>
                     <Typography variant="h6" style={{flexGrow: 1,marginLeft:20}}>
                         { props.title }

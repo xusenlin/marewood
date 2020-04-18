@@ -36,7 +36,7 @@ func init() {
 		ClientDir = systemCfg.CurrentDir + "/public/build"
 	}
 
-	systemCfg.Version = 0.1
+	systemCfg.Version = 0.2
 	systemCfg.AppName = "MareWood"
 	systemCfg.AppRepository = "https://github.com/xusenlin/MareWood"
 	systemCfg.DbDns = systemCfg.CurrentDir + "/database.db"
