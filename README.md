@@ -1,5 +1,5 @@
 <div align=center>
-<img src="http://xusenlin.com/assets/images/marewood_logo.png" width=283.5" height="221" />
+<img src="http://xusenlin.com/assets/images/marewoodlogo.gif" width=300" height="228" />
 </div>
 <div align=center>
 <img src="https://img.shields.io/badge/golang-1.12-blue"/>
