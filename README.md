@@ -4,10 +4,10 @@
 <div align=center>
 <img src="https://img.shields.io/badge/golang-1.12-blue"/>
 <img src="https://img.shields.io/badge/gin-1.4.0-lightBlue"/>
-<img src="https://img.shields.io/badge/jwt-go-3.2.0-lightBlue"/>
+<img src="https://img.shields.io/badge/jwt go-3.2.0-lightBlue"/>
 <img src="https://img.shields.io/badge/gorm-1.9.11-red"/>
 <img src="https://img.shields.io/badge/react-16.9.0-brightgreen"/>
-<img src="https://img.shields.io/badge/material-ui-4.4.0-green"/>
+<img src="https://img.shields.io/badge/material ui-4.4.0-green"/>
 </div>
 
 
@@ -22,7 +22,6 @@
 MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖，并能在同一个仓库下通过不同的任务不同的打包命令打包出多个环境下的前端资源并放在 resources\webs 下，通过任务 ID 一一对应，并提供快捷访问。
 
 
-
 # 使用
 
 - 服务器请先安装 git、node、npm，建议同时安装 cnpm 和 yarn 以供选择。
@@ -33,8 +32,8 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 其他：MareWood 提供 http 访问，建议 nginx 提供 https 静态文件服务器（指向resources\webs）这样可以灵活的选择 http 或者 https 去访问打包的前端项目。
 
 
-那么，一个 React 或者 Vue 项目如何配置多个打包命令呢？
-请移步http://xusenlin.com/article?path=%2f%e5%89%8d%e7%ab%af%e5%bc%80%e5%8f%91%2fREACT%e5%92%8cVUE%e7%9a%84%e5%a4%9a%e5%a5%97%e6%89%93%e5%8c%85%e7%8e%af%e5%a2%83.md
+那么，一个 React 或者 Vue 项目如何配置多个打包命令呢？请移步
+http://xusenlin.com/article?path=%2f%e5%89%8d%e7%ab%af%e5%bc%80%e5%8f%91%2fREACT%e5%92%8cVUE%e7%9a%84%e5%a4%9a%e5%a5%97%e6%89%93%e5%8c%85%e7%8e%af%e5%a2%83.md
 
 如果不明白也可以参考实际的项目
 
@@ -46,7 +45,7 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 角色目前分为超级管理员、管理员、开发者、项目记者。权限如下：
 
 - 项目记者 - 只能查看所有内容，并且可以访问打包好的前端项目
-- 开发者 - 拥有创建仓库、分类、任务和拉代码、切换分支、运行打包、删除依赖权限
+- 开发者 - 拥有创建仓库、分类、任务和拉代码、切换分支、运行打包、删除依赖、裁剪分支权限
 - 管理员 - 可以删除仓库、分类、任务
 - 超级管理员 -可以管理用户（提升和降级角色，删除用户）
 
