@@ -29,6 +29,22 @@ export function gitBranch(params) {
 }
 
 
+/**
+ * 通过仓库 ID 裁剪支
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function pruneBranch(params) {
+    return request({
+        url:  '/repository/prune_branch',
+        method: 'get',
+        params: params
+    })
+}
+
+
+
+
 
 /**
  * 删除仓库依赖

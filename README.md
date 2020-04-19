@@ -1,5 +1,5 @@
 <div align=center>
-<img src="http://xusenlin.com/assets/images/marewoodlogo.gif" width=300" height="228" />
+<img src="http://xusenlin.com/assets/images/marewood/logo.svg" width=300" height="300" />
 </div>
 <div align=center>
 <img src="https://img.shields.io/badge/golang-1.12-blue"/>
@@ -54,8 +54,10 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 
 # 更新日志
 ### 未发布
-* 添加 logo
-* 禁止选择 dev 打包命令
+* 设计了 MareWood 的矢量 logo
+* 删除了读取的 dev 打包命令
+* 设置 Token 失效时间为 10H
+* 添加了裁剪分支的功能，可以手动保持和远程分支一致
 
 ### V0.2
 * 添加用户和权限控制模块

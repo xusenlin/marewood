@@ -4,6 +4,7 @@ import {
   Table, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Dialog,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import FormatClearIcon from '@material-ui/icons/FormatClear';
 import RestoreFromTrash from '@material-ui/icons/RestoreFromTrash';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen'
@@ -16,7 +17,7 @@ import HelperTooltips from "../../components/helperTooltips";
 import RepositoryStatus from "./repositoryStatus";
 import RepositoryJobStatus from "./repositoryJobStatus";
 import Snackbar from "../../components/snackbar";
-import {deleteDepend, destroy, repositories, gitPull, UpdateDesc} from "../../api/repository";
+import {deleteDepend, destroy, repositories, gitPull, UpdateDesc,pruneBranch} from "../../api/repository";
 import EditDesc from "../../components/editDesc";
 import {tooltip} from "../../assets/jss/common"
 
@@ -102,9 +103,15 @@ class RepositoryTable extends React.Component {
 
   repositoryGitPull(row) {
     gitPull({id: row.ID}).then(() => {
-      Snackbar.success("已经更新代码！");
+      Snackbar.success("已经更新代码");
     }).catch(() => {
     })
+  }
+
+  repositoryPruneBranch(row){
+    pruneBranch({id: row.ID}).then(() => {
+      Snackbar.success("分支已经裁剪");
+    }).catch(() => {})
   }
 
   clickEditDesc(row) {
@@ -233,15 +240,21 @@ class RepositoryTable extends React.Component {
                       <SaveAlt/>
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="删除仓库" interactive>
+                  <Tooltip title="裁剪分支" interactive>
                     <IconButton color="primary"
-                                onClick={this.destroyDialogOpen.bind(this, row.ID)}>
-                      <DeleteIcon/>
+                                onClick={this.repositoryPruneBranch.bind(this, row)}>
+                      <FormatClearIcon/>
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="删除依赖" interactive>
                     <IconButton color="primary" onClick={this.deleteRepositoryDepend.bind(this, row)}>
                       <RestoreFromTrash/>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="删除仓库" interactive>
+                    <IconButton color="primary"
+                                onClick={this.destroyDialogOpen.bind(this, row.ID)}>
+                      <DeleteIcon/>
                     </IconButton>
                   </Tooltip>
                 </TableCell>

@@ -222,28 +222,10 @@ func RepositoryDeleteDepend(c *gin.Context) {
 }
 
 func RepositoryBranch(c *gin.Context) {
-	var repository models.Repository
+
 	id := c.Query("id")
 
-	if sql.DB.First(&repository, id).Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    sql.DB.Error.Error(),
-		})
-		return
-	}
-
-	if repository.Status != models.RepoStatusSuccess {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    "此任务关联的仓库已经不可使用，请先尝试修复此仓库",
-		})
-		return
-	}
-
-	branch, err := serviceRepository.GetBranch(strconv.Itoa(int(repository.ID)))
+	branch, err := serviceRepository.GetBranch(id)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -258,6 +240,29 @@ func RepositoryBranch(c *gin.Context) {
 		"status": true,
 		"data":   branch,
 		"msg":    "执行成功",
+	})
+
+}
+
+func RepositoryPruneBranch(c *gin.Context) {
+
+	id := c.Query("id")
+
+	out, err := serviceRepository.PruneBranch(id)
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    out,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   "",
+		"msg":    "分支已经裁剪",
 	})
 
 }

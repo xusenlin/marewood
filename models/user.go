@@ -23,7 +23,7 @@ const ( //用户角色
 
 const (
 	PasswordSalt        = "MareWood"
-	TokenExpireDuration = time.Hour * 3
+	TokenExpireDuration = time.Hour * 10
 	JwtClaimsKey        = "JwtClaims"
 )
 

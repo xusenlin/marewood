@@ -64,7 +64,13 @@ func DeleteRepository(repositoryId string) error {
 	return os.RemoveAll(repoDir)
 }
 
+func PruneBranch(repositoryId string) (string,error) {
+	//裁剪分支
+	return RunCmdOnRepositoryDir(repositoryId, "git", "remote", "prune","origin")
+}
+
 func GetBranch(repositoryId string) ([]string, error) {
+
 
 	out, err := RunCmdOnRepositoryDir(repositoryId, "git", "branch", "-r")
 

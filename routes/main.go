@@ -46,9 +46,11 @@ func InitRouter() *gin.Engine {
 		v1.GET("/repository/delete", middlewares.RoleAdmin(), controller.RepositoryDestroy)
 		v1.GET("/repository/git_pull", middlewares.RoleDeveloper(), controller.RepositoryGitPull)
 		v1.GET("/repository/git_branch", middlewares.RoleReporter(), controller.RepositoryBranch)
+		v1.GET("/repository/prune_branch", middlewares.RoleDeveloper(), controller.RepositoryPruneBranch)
 		v1.GET("/repository/delete_depend", middlewares.RoleDeveloper(), controller.RepositoryDeleteDepend)
 		v1.GET("/repository/get_script", middlewares.RoleReporter(), controller.RepositoryScript)
 		v1.GET("/repository/update_desc", middlewares.RoleDeveloper(), controller.RepositoryUpdateDesc)
+
 		//任务分类
 		v1.GET("/categories", middlewares.RoleReporter(), controller.CategoryFindAll)
 		v1.POST("/category/create", middlewares.RoleDeveloper(), controller.CategoryCreate)
