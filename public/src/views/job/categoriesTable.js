@@ -253,10 +253,10 @@ class CategoriesTable extends React.Component {
                 <HelperTooltips help="触发任务的钩子，如果此任务仓库资源被占用则无法打包"/>
               </TableCell>
               <TableCell align="center">终端信息</TableCell>
-              <TableCell align="center">
-                附加脚本
-                <HelperTooltips help="打包成功运行的脚本，多个用 ; 隔开"/>
-              </TableCell>
+              {/*<TableCell align="center">*/}
+              {/*  附加脚本*/}
+              {/*  <HelperTooltips help="打包成功运行的脚本，多个用 ; 隔开"/>*/}
+              {/*</TableCell>*/}
               <TableCell align="center">
                 任务描述
                 <HelperTooltips help="针对任务的一些描述，比如账号、Swagger UI 地址等,点击即可修改。"/>
@@ -324,13 +324,13 @@ class CategoriesTable extends React.Component {
                       </IconButton>
                     </Tooltip>
                   </TableCell>
-                  <TableCell align="center">
-                    <Tooltip title={row.SuccessScript} classes={{tooltip: classes.tooltip}} interactive>
-                      <IconButton color="primary">
-                        <Computer/>
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
+                  {/*<TableCell align="center">*/}
+                  {/*  <Tooltip title={row.SuccessScript} classes={{tooltip: classes.tooltip}} interactive>*/}
+                  {/*    <IconButton color="primary">*/}
+                  {/*      <Computer/>*/}
+                  {/*    </IconButton>*/}
+                  {/*  </Tooltip>*/}
+                  {/*</TableCell>*/}
                   <TableCell align="center">
                     <Tooltip title={row.Desc} classes={{tooltip: classes.tooltip}} interactive>
                       <IconButton color="primary" onClick={this.clickEditDesc.bind(this, row)}>
