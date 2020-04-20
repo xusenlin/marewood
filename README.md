@@ -10,6 +10,7 @@
 <img src="https://img.shields.io/badge/material ui-4.4.0-green"/>
 </div>
 
+![Job](http://xusenlin.com/assets/images/marewood/demo.png)
 
 
 # MareWood
@@ -93,15 +94,6 @@ docker run --rm -ti \
   -v $PWD/marewood-data:/marewood/data \
    shynome/marewood
 ```
-
-# 预览
-
-### Repository
-![Repository](./preview/仓库.png)
-### Category
-![Category](./preview/分类.png)
-### Job
-![Job](./preview/任务.png)
 
 
 # 番外
