@@ -65,12 +65,17 @@ func DeleteRepository(repositoryId string) error {
 }
 
 func PruneBranch(repositoryId string) (string,error) {
+	if out ,err := GitCheckout(repositoryId,"master");err != nil{
+		return out,err
+	}
+	if out,err := GitPull(repositoryId);err != nil{
+		return out,err
+	}
 	//裁剪分支
 	return RunCmdOnRepositoryDir(repositoryId, "git", "remote", "prune","origin")
 }
 
 func GetBranch(repositoryId string) ([]string, error) {
-
 
 	out, err := RunCmdOnRepositoryDir(repositoryId, "git", "branch", "-r")
 

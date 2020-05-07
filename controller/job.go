@@ -208,7 +208,7 @@ func JobRun(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    "仓库资源已经被占用",
+			"msg":    "仓库资源已经被占用,请稍等再试",
 		})
 		return
 	}
