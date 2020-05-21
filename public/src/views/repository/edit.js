@@ -59,20 +59,6 @@ class Edit extends React.Component {
               InputLabelProps={{
                 shrink: true,
               }}
-              autoFocus value={this.state.userName} margin="dense" id="userName"
-              onChange={this.textFieldChange.bind(this, 'userName')} label="用户名" type="text" fullWidth
-            />
-            <TextField
-              InputLabelProps={{
-                shrink: true,
-              }}
-              autoFocus value={this.state.password} margin="dense" id="password"
-              onChange={this.textFieldChange.bind(this, 'password')} label="密码" type="password" fullWidth
-            />
-            <TextField
-              InputLabelProps={{
-                shrink: true,
-              }}
               select
               required value={this.state.dependTools} margin="dense" id="dependTools"
               onChange={this.textFieldChange.bind(this, 'dependTools')} label="依赖安装工具" type="text" fullWidth
@@ -83,6 +69,20 @@ class Edit extends React.Component {
                 })
               }
             </TextField>
+            <TextField
+              InputLabelProps={{
+                shrink: true,
+              }}
+              autoFocus value={this.state.userName} margin="dense" id="userName"
+              onChange={this.textFieldChange.bind(this, 'userName')} label="用户名" type="text" fullWidth
+            />
+            <TextField
+              InputLabelProps={{
+                shrink: true,
+              }}
+              autoFocus value={this.state.password} margin="dense" id="password"
+              onChange={this.textFieldChange.bind(this, 'password')} label="密码" type="password" fullWidth
+            />
             <TextField
               InputLabelProps={{
                 shrink: true,

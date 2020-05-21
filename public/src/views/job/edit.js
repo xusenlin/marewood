@@ -17,7 +17,6 @@ class Edit extends React.Component {
       repositoryId: '',
       buildDir: 'dist',
       buildCommand: '',
-      password: '',
       successScript: '',
       repositories: [],
       buildCommandList: {}
@@ -103,21 +102,21 @@ class Edit extends React.Component {
                 })
               }
             </TextField>
-            <TextField
-              InputLabelProps={{
-                shrink: true,
-              }}
-              autoFocus value={this.state.password} margin="dense" id="password"
-              onChange={this.textFieldChange.bind(this, 'password')} label="任务加密" type="password" fullWidth
-            />
-            <TextField
-              InputLabelProps={{
-                shrink: true,
-              }}
-              margin="dense" value={this.state.successScript} id="desc" multiline rows={6}
-              onChange={this.textFieldChange.bind(this, 'successScript')} label="打包成功执行的命令（用户权限模块没有完成，现在不会运行）"
-              type="text" fullWidth
-            />
+            {/*<TextField*/}
+            {/*  InputLabelProps={{*/}
+            {/*    shrink: true,*/}
+            {/*  }}*/}
+            {/*  autoFocus value={this.state.password} margin="dense" id="password"*/}
+            {/*  onChange={this.textFieldChange.bind(this, 'password')} label="任务加密" type="password" fullWidth*/}
+            {/*/>*/}
+            {/*<TextField*/}
+            {/*  InputLabelProps={{*/}
+            {/*    shrink: true,*/}
+            {/*  }}*/}
+            {/*  margin="dense" value={this.state.successScript} id="desc" multiline rows={6}*/}
+            {/*  onChange={this.textFieldChange.bind(this, 'successScript')} label="打包成功执行的命令（用户权限模块没有完成，现在不会运行）"*/}
+            {/*  type="text" fullWidth*/}
+            {/*/>*/}
             <TextField
               InputLabelProps={{
                 shrink: true,

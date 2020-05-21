@@ -2,7 +2,6 @@ package models
 
 import (
 	"MareWood/config"
-	"MareWood/helper"
 	"MareWood/sql"
 	"github.com/jinzhu/gorm"
 	"strconv"
@@ -28,7 +27,8 @@ type Job struct {
 	RepositoryId  int    `gorm:"index",binding:"required"`
 	BuildDir      string `binding:"required"` //打包的目录,默认是dist
 	BuildCommand  string `binding:"required"` //打包命令，npm run build 可以读取package.json供选择
-	Password      string                      //任务加密
+	LockUserId    int						//加锁人
+	LockPassword  string                      //任务加锁
 	TerminalInfo  string `gorm:"type:varchar(1000)"`
 	SuccessScript string `gorm:"type:varchar(1000)"` //打包成功运行的脚本，多个用 ; 隔开
 }
@@ -48,11 +48,8 @@ func (j *Job) Create() (err error) {
 	j.RunQuantity = 0
 	j.Branch = "master"
 	j.Status = JobStatusLeisured
-	if j.Password != "" {
-		j.Password = helper.DigestString(j.Password)
-	}
 	err = sql.DB.Create(&j).Error
-	if  err!= nil {
+	if err != nil {
 		return
 	}
 
@@ -62,10 +59,9 @@ func (j *Job) Create() (err error) {
 	return
 }
 
-func (j *Job) UpdateBranch(id string, branch string) (err error) {
+func (j *Job) UpdateBranch(branch string) (err error) {
 	err =
-		sql.DB.Model(&j).Where("id = ?", id).
-			UpdateColumn("branch", branch).Error
+		sql.DB.Model(&j).UpdateColumn("branch", branch).Error
 	return
 }
 
@@ -81,7 +77,7 @@ func (j *Job) Destroy(id string) (err error) {
 	if err != nil {
 		return
 	}
-	err =  new(Category).CategoryJobQuantityDecrement(j.CategoryId)
+	err = new(Category).CategoryJobQuantityDecrement(j.CategoryId)
 	if err != nil {
 		return
 	}

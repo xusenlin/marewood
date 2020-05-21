@@ -17,7 +17,7 @@ import HelperTooltips from "../../components/helperTooltips";
 import RepositoryStatus from "./repositoryStatus";
 import RepositoryJobStatus from "./repositoryJobStatus";
 import Snackbar from "../../components/snackbar";
-import {deleteDepend, destroy, repositories, gitPull, UpdateDesc,pruneBranch} from "../../api/repository";
+import {deleteDepend, destroy, gitPull, UpdateDesc,pruneBranch} from "../../api/repository";
 import EditDesc from "../../components/editDesc";
 import {tooltip} from "../../assets/jss/common"
 
@@ -33,7 +33,6 @@ class RepositoryTable extends React.Component {
     super(props);
     this.state = {
       destroyDialogShow: false,
-      tableData: [],
       editDesc: {
         id: 0,
         show: false,
@@ -41,36 +40,10 @@ class RepositoryTable extends React.Component {
       }
     };
     this.destroyId = 0; //记录当前要删除的id
-    this.timeout = null;
+
   }
 
-  componentDidMount() {
-    this.getTableData()
-  }
 
-  componentWillUnmount() {
-    if (this.timeout) clearTimeout(this.timeout);
-  }
-
-  getTableData() {
-    if (this.timeout) clearTimeout(this.timeout);
-
-    repositories().then(r => {
-      this.setState({tableData: r});
-
-      for (let i = 0; i < r.length; i++) {
-        if (r[i].Status === 0 || (r[i].JobStatus === 1 && r[i].Status === 1)) {
-          //仓库正在克隆当中  或者 （一个正常的仓库很繁忙）的情况就会刷新
-          this.timeout = setTimeout(() => {
-            this.getTableData()
-          }, 5000);
-          return
-        }
-      }
-
-    }).catch(() => {
-    })
-  }
 
   destroyDialogOpen(id) {
     this.destroyId = id;
@@ -88,7 +61,6 @@ class RepositoryTable extends React.Component {
     }
     deleteDepend({id: row.ID}).then(r => {
       Snackbar.success(r);
-      // this.getTableData()
     }).catch(() => {
     })
   }
@@ -96,7 +68,7 @@ class RepositoryTable extends React.Component {
   destroyConfirm() {
     destroy({id: this.destroyId}).then(r => {
       this.setState({destroyDialogShow: false});
-      this.getTableData()
+      this.props.refresh()
     }).catch(() => {
     })
   }
@@ -133,7 +105,7 @@ class RepositoryTable extends React.Component {
           desc: ""
         }
       });
-      this.getTableData()
+      this.props.refresh()
     }).catch(() => {
     })
   }
@@ -176,7 +148,7 @@ class RepositoryTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.tableData.map(row => (
+            {this.props.tableData.map(row => (
               <TableRow key={row.ID} hover>
                 <TableCell component="th" scope="row">
                   {row.ID}

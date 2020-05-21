@@ -54,7 +54,7 @@ class CategoriesTable extends React.Component {
         show: false,
         repositoryId: 0,
       },
-      runJob: {
+      lockPassword: {
         id: 0,
         password: "",
         show: false
@@ -75,31 +75,36 @@ class CategoriesTable extends React.Component {
   componentWillUnmount() {
 
   }
-
+  toggleLock(row){
+    this.setState({
+      lockPassword: {
+        id: row.ID,
+        password: "",
+        show: true
+      }
+    });
+  }
   runJob(row) {
     if (row.Status === 3) {
       Snackbar.warning("任务正在打包，请稍等");
       return
     }
-    if (row.Password !== "") {
-      this.setState({
-        runJob: {
-          id: row.ID,
-          password: "",
-          show: true
-        }
-      });
-      //Snackbar.warning("任务有密码，未做");
-      return
+    if (row.LockPassword !== "") {
+      Snackbar.warning("任务锁定，请先解锁");
+      return;
     }
+
     RunJob({id: row.ID}).then(r => {
       Snackbar.success("运行成功，正在打包");
       this.props.refresh()
-    }).catch(() => {
-    })
+    }).catch(() => {})
   }
 
   openSwitchBranchDialog(row) {
+    if (row.LockPassword !== "") {
+      Snackbar.warning("任务锁定，请先解锁");
+      return;
+    }
     if (row.Status === 3) {
       Snackbar.warning("任务正在打包，请稍等");
       return
@@ -159,10 +164,9 @@ class CategoriesTable extends React.Component {
     }
     window.open(AddressUrl + row.Url)
   }
-
-  closeJobRunDialog() {
+  closeLockPasswordDialog() {
     this.setState({
-      runJob: {
+      lockPassword: {
         id: 0,
         password: "",
         show: false
@@ -170,29 +174,29 @@ class CategoriesTable extends React.Component {
     });
   }
 
-  jobRunDialogConfirm() {
+  lockPasswordDialogConfirm() {
+    //这里需要修改，do
     let p = {
-      id: this.state.runJob.id,
-      password: this.state.runJob.password,
+      id: this.state.lockPassword.id,
+      password: this.state.lockPassword.password,
     };
     RunJob(p).then(r => {
       Snackbar.success("运行成功，正在后台打包");
       this.props.refresh();
       this.setState({
-        runJob: {
+        lockPassword: {
           id: 0,
           password: "",
           show: false
         }
       });
-    }).catch(() => {
-    })
+    }).catch(() => {})
   }
 
   passwordFieldChange(event) {
-    let p = this.state.runJob;
+    let p = this.state.lockPassword;
     p.password = event.target.value;
-    this.setState({runJob: p})
+    this.setState({lockPassword: p})
   }
 
   clickEditDesc(row) {
@@ -236,7 +240,7 @@ class CategoriesTable extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell align="center">ID</TableCell>
-              <TableCell align="center">加密</TableCell>
+              <TableCell align="center">加锁</TableCell>
               <TableCell align="center">任务名称</TableCell>
               <TableCell align="center">任务状态</TableCell>
               <TableCell align="center">
@@ -273,15 +277,15 @@ class CategoriesTable extends React.Component {
                   <TableCell align="center">{row.ID}</TableCell>
                   <TableCell align="center">
                     {
-                      row.Password ? (
-                        <Tooltip title="任务被加密" interactive>
-                          <IconButton color="primary">
+                      row.LockPassword ? (
+                        <Tooltip title="任务被加锁" interactive>
+                          <IconButton color="primary" onClick={this.toggleLock.bind(this, row)}>
                             <LockIcon/>
                           </IconButton>
                         </Tooltip>
                       ) : (
-                        <Tooltip title="任务公开" interactive>
-                          <IconButton color="primary">
+                        <Tooltip title="任务未加锁" interactive>
+                          <IconButton color="primary" onClick={this.toggleLock.bind(this, row)}>
                             <LockOpenIcon/>
                           </IconButton>
                         </Tooltip>
@@ -324,13 +328,6 @@ class CategoriesTable extends React.Component {
                       </IconButton>
                     </Tooltip>
                   </TableCell>
-                  {/*<TableCell align="center">*/}
-                  {/*  <Tooltip title={row.SuccessScript} classes={{tooltip: classes.tooltip}} interactive>*/}
-                  {/*    <IconButton color="primary">*/}
-                  {/*      <Computer/>*/}
-                  {/*    </IconButton>*/}
-                  {/*  </Tooltip>*/}
-                  {/*</TableCell>*/}
                   <TableCell align="center">
                     <Tooltip title={row.Desc} classes={{tooltip: classes.tooltip}} interactive>
                       <IconButton color="primary" onClick={this.clickEditDesc.bind(this, row)}>
@@ -401,28 +398,28 @@ class CategoriesTable extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-        {/*任务密码*/}
-        <Dialog open={this.state.runJob.show} onClose={this.closeJobRunDialog.bind(this)}>
-          <DialogTitle id="form-dialog-title">任务密码</DialogTitle>
+        {/*任务加锁密码*/}
+        <Dialog open={this.state.lockPassword.show} onClose={this.closeLockPasswordDialog.bind(this)}>
+          <DialogTitle id="form-dialog-title">解锁或加锁</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              此任务是加密任务，需要你输入密码来运行。
+             需要你输入密码来解锁或加锁。
             </DialogContentText>
             <TextField
               onChange={this.passwordFieldChange.bind(this)}
               autoFocus
               margin="dense"
               id="password"
-              label="Job Password"
+              label="Lock Password"
               type="password"
               fullWidth
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.closeJobRunDialog.bind(this)} color="primary">
+            <Button onClick={this.closeLockPasswordDialog.bind(this)} color="primary">
               关闭
             </Button>
-            <Button onClick={this.jobRunDialogConfirm.bind(this)} color="primary">
+            <Button onClick={this.lockPasswordDialogConfirm.bind(this)} color="primary">
               确认
             </Button>
           </DialogActions>

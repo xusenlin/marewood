@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"MareWood/helper"
 	"MareWood/models"
 	"MareWood/service/serviceJob"
 	"MareWood/sql"
@@ -100,9 +99,25 @@ func JobUpdateBranch(c *gin.Context) {
 	id := c.Query("id")
 	branch := c.Query("branch")
 
-	err := new(models.Job).UpdateBranch(id,branch)
+	var job models.Job
 
-	if err != nil {
+	if sql.DB.First(&job, id).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    sql.DB.Error.Error(),
+		})
+		return
+	}
+	if job.LockPassword != "" {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "请先解锁任务",
+		})
+		return
+	}
+	if err  := job.UpdateBranch(branch) ;err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   sql.DB.Error.Error(),
@@ -121,8 +136,26 @@ func JobUpdateBranch(c *gin.Context) {
 func JobDestroy(c *gin.Context) {
 
 	id := c.Query("id")
+	var job models.Job
 
-	err := new(models.Job).Destroy(id)
+	if sql.DB.First(&job, id).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    sql.DB.Error.Error(),
+		})
+		return
+	}
+	if job.LockPassword != "" {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "请先解锁任务",
+		})
+		return
+	}
+
+	err := job.Destroy(id)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
@@ -168,7 +201,7 @@ func JobUpdateDesc(c *gin.Context)  {
 func JobRun(c *gin.Context) {
 
 	jobId := c.Query("id")
-	password := c.Query("password")
+
 	var job models.Job
 	var repository models.Repository
 
@@ -177,6 +210,14 @@ func JobRun(c *gin.Context) {
 			"status": false,
 			"data":   "",
 			"msg":    sql.DB.Error.Error(),
+		})
+		return
+	}
+	if job.LockPassword != "" {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "请先解锁任务",
 		})
 		return
 	}
@@ -196,14 +237,7 @@ func JobRun(c *gin.Context) {
 		})
 		return
 	}
-	if job.Password != "" && job.Password != helper.DigestString(password) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    "任务密码不对",
-		})
-		return
-	}
+
 	if repository.JobStatus != models.RepoJobStatusLeisured {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
