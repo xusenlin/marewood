@@ -235,7 +235,10 @@ class CategoriesTable extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell align="center">ID</TableCell>
-              <TableCell align="center">加锁</TableCell>
+              <TableCell align="center">
+                加锁
+                <HelperTooltips help="临时锁定任务，防止别人切换分支打包"/>
+              </TableCell>
               <TableCell align="center">任务名称</TableCell>
               <TableCell align="center">任务状态</TableCell>
               <TableCell align="center">
