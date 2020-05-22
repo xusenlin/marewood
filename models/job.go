@@ -20,14 +20,14 @@ type Job struct {
 	Desc          string `gorm:"type:varchar(1000)",binding:"required,min=2,max=999"`
 	Status        int    `gorm:"default:0"`        //任务状态
 	Branch        string `gorm:"default:'master'"` //部署分支默认master，用户在部署之前随时可以修改
-	Url           string                           //访问目录，只有状态成功才返回
+	Url           string                           //访问目录
 	RunQuantity   int `gorm:"default:0"`
 	CategoryId    int `gorm:"index",binding:"required"`
 	WebHookUrl    string
 	RepositoryId  int    `gorm:"index",binding:"required"`
 	BuildDir      string `binding:"required"` //打包的目录,默认是dist
 	BuildCommand  string `binding:"required"` //打包命令，npm run build 可以读取package.json供选择
-	LockUserId    int						//加锁人
+	User          string                      //操作人，目前只有加锁用户
 	LockPassword  string                      //任务加锁
 	TerminalInfo  string `gorm:"type:varchar(1000)"`
 	SuccessScript string `gorm:"type:varchar(1000)"` //打包成功运行的脚本，多个用 ; 隔开

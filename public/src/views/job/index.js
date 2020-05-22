@@ -70,7 +70,7 @@ class Jobs extends React.Component {
                 if (r[i].Status === 3) {
                     this.timeoutId = setTimeout(()=>{
                         this.setTabAndJobsByCategoryId(index)
-                    },5000);
+                    },2000);
                     return
                 }
             }

@@ -29,7 +29,7 @@ import Snackbar from '../../components/snackbar/index'
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen'
 import DeleteIcon from '@material-ui/icons/Delete';
-import {destroy, RunJob, UpdateDesc} from "../../api/job";
+import {destroy, RunJob, UpdateDesc,jobLock} from "../../api/job";
 import {tooltip} from "../../assets/jss/common"
 import {getSystemInfo} from "../../utils/dataStorage"
 
@@ -66,14 +66,6 @@ class CategoriesTable extends React.Component {
       }
     };
     this.destroyId = 0;
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentWillUnmount() {
-
   }
   toggleLock(row){
     this.setState({
@@ -139,8 +131,12 @@ class CategoriesTable extends React.Component {
     })
   }
 
-  destroyDialogOpen(id) {
-    this.destroyId = id;
+  destroyDialogOpen(row) {
+    if (row.LockPassword !== "") {
+      Snackbar.warning("任务锁定，请先解锁");
+      return;
+    }
+    this.destroyId = row.ID;
     this.setState({destroyDialogShow: true})
   }
 
@@ -164,7 +160,7 @@ class CategoriesTable extends React.Component {
     }
     window.open(AddressUrl + row.Url)
   }
-  closeLockPasswordDialog() {
+  closeLockJobDialog() {
     this.setState({
       lockPassword: {
         id: 0,
@@ -174,14 +170,13 @@ class CategoriesTable extends React.Component {
     });
   }
 
-  lockPasswordDialogConfirm() {
-    //这里需要修改，do
+  lockJobDialogConfirm() {
     let p = {
       id: this.state.lockPassword.id,
       password: this.state.lockPassword.password,
     };
-    RunJob(p).then(r => {
-      Snackbar.success("运行成功，正在后台打包");
+    jobLock(p).then(r => {
+      Snackbar.success("操作成功！");
       this.props.refresh();
       this.setState({
         lockPassword: {
@@ -278,7 +273,7 @@ class CategoriesTable extends React.Component {
                   <TableCell align="center">
                     {
                       row.LockPassword ? (
-                        <Tooltip title="任务被加锁" interactive>
+                        <Tooltip title={'操作人：' + row.User} interactive>
                           <IconButton color="primary" onClick={this.toggleLock.bind(this, row)}>
                             <LockIcon/>
                           </IconButton>
@@ -304,7 +299,7 @@ class CategoriesTable extends React.Component {
                       title={
                         row.Status !== 1 ? "没有打包成功之前是不能访问的" :
                           <React.Fragment>
-                            <a target="_blank" rel="noopener noreferrer"
+                            <a target="_blank" rel="noopener noreferrer" style={{color:"#fff"}}
                                href={AddressUrl + row.Url}>{AddressUrl + row.Url}</a>
                           </React.Fragment>
                       }
@@ -315,7 +310,7 @@ class CategoriesTable extends React.Component {
                     </Tooltip>
                   </TableCell>
                   <TableCell align="center">
-                    <Tooltip title={AddressUrl + row.WebHookUrl} interactive>
+                    <Tooltip title={ AddressUrl + row.WebHookUrl } interactive>
                       <IconButton color="primary">
                         <UsbIcon/>
                       </IconButton>
@@ -355,7 +350,7 @@ class CategoriesTable extends React.Component {
                     </Tooltip>
                     <Tooltip title="删除任务" interactive>
                       <IconButton color="primary"
-                                  onClick={this.destroyDialogOpen.bind(this, row.ID)}>
+                                  onClick={this.destroyDialogOpen.bind(this, row)}>
                         <DeleteIcon/>
                       </IconButton>
                     </Tooltip>
@@ -399,7 +394,7 @@ class CategoriesTable extends React.Component {
           </DialogActions>
         </Dialog>
         {/*任务加锁密码*/}
-        <Dialog open={this.state.lockPassword.show} onClose={this.closeLockPasswordDialog.bind(this)}>
+        <Dialog open={this.state.lockPassword.show} onClose={this.closeLockJobDialog.bind(this)}>
           <DialogTitle id="form-dialog-title">解锁或加锁</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -411,15 +406,15 @@ class CategoriesTable extends React.Component {
               margin="dense"
               id="password"
               label="Lock Password"
-              type="password"
+              type="text"
               fullWidth
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.closeLockPasswordDialog.bind(this)} color="primary">
+            <Button onClick={this.closeLockJobDialog.bind(this)} color="primary">
               关闭
             </Button>
-            <Button onClick={this.lockPasswordDialogConfirm.bind(this)} color="primary">
+            <Button onClick={this.lockJobDialogConfirm.bind(this)} color="primary">
               确认
             </Button>
           </DialogActions>

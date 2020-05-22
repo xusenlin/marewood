@@ -64,6 +64,7 @@ func InitRouter() *gin.Engine {
 		v1.GET("/job/update_desc", middlewares.RoleDeveloper(), controller.JobUpdateDesc)
 		v1.GET("/job/delete", middlewares.RoleAdmin(), controller.JobDestroy)
 		v1.GET("/job/run", middlewares.RoleDeveloper(), controller.JobRun)
+		v1.GET("/job/lock", middlewares.RoleDeveloper(), controller.JobLock)
 		//user
 		v1.GET("/users", middlewares.RoleReporter(), controller.UserFindAll)
 		v1.GET("/user/delete", middlewares.RoleSuperAdmin(), controller.UserDestroy)

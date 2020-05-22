@@ -91,3 +91,16 @@ export function UpdateDesc(params) {
         params: params
     })
 }
+
+/**
+ * 更新任务描述
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function jobLock(params) {
+    return request({
+        url:  '/job/lock',
+        method: 'get',
+        params: params
+    })
+}

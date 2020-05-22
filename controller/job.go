@@ -3,6 +3,7 @@ package controller
 import (
 	"MareWood/models"
 	"MareWood/service/serviceJob"
+	"MareWood/service/serviceUser"
 	"MareWood/sql"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -266,6 +267,68 @@ func JobRun(c *gin.Context) {
 		"status": true,
 		"data":   "已经进入后台打包",
 		"msg":    "",
+	})
+
+}
+
+func JobLock(c *gin.Context)  {
+	id := c.Query("id")
+	password := c.Query("password")
+	claims, _ := serviceUser.GetJwtClaimsByContext(c)
+
+	var job models.Job
+	if sql.DB.First(&job, id).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    sql.DB.Error.Error(),
+		})
+		return
+	}
+	//加锁
+	if job.LockPassword == ""{
+		if sql.DB.Model(&job).
+			UpdateColumn("lock_password", password).
+			UpdateColumn("user", claims.Username).
+			Error != nil{
+			c.JSON(http.StatusOK, gin.H{
+				"status": false,
+				"data":   "",
+				"msg":    sql.DB.Error.Error(),
+			})
+			return
+		}else {
+			c.JSON(http.StatusOK, gin.H{
+				"status": true,
+				"data":   "",
+				"msg":    "任务加锁成功",
+			})
+			return
+		}
+
+	}
+	//解锁
+	if job.LockPassword != password{
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "解锁密码不正确",
+		})
+		return
+	}
+	if sql.DB.Model(&job).UpdateColumn("lock_password", "").Error != nil{
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    sql.DB.Error.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   "",
+		"msg":    "任务解锁成功",
 	})
 
 }
