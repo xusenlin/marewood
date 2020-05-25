@@ -11,7 +11,7 @@
 </div>
 
 ![Job](http://xusenlin.com/assets/images/marewood/demo.png)
-
+![Repo](http://xusenlin.com/assets/images/marewood/repo.png)
 
 # MareWood
 >MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、SQLITE、REACE、MATERIAL-UI 开发，
