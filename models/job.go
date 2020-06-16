@@ -70,14 +70,17 @@ func (j *Job) UpdateBranch(branch string) (err error) {
 	return
 }
 
-func (j *Job) UpdateFieldContent(id string, field string,fieldContent string) (err error) {
+func (j *Job) UpdateFieldContent(field string,fieldContent string) (err error) {
 	field = strings.ToLower(field)
 	if !helper.InStrArr(field,fillWhiteList) {
 		return errors.New("不能修改当前字段！")
 	}
+
+	if j.ID == 0 {
+		return errors.New("不能确定ID ")
+	}
 	err =
-		sql.DB.Model(&j).Where("id = ?", id).
-			UpdateColumn(strings.ToLower(field), fieldContent).Error
+		sql.DB.Model(&j).UpdateColumn(strings.ToLower(field), fieldContent).Error
 	return
 }
 
