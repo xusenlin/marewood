@@ -14,7 +14,7 @@
 ![Repo](http://xusenlin.com/assets/images/marewood/repo.png?v=2)
 
 # MareWood
->MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、SQLITE、REACE、MATERIAL-UI 开发，
+>MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、SQLITE、REACT、MATERIAL-UI 开发，
 不同于 Jenkins 的大而全，它很简单且只针对前端，你可以很灵活的配置各种部署环境。
 如果你愿意，线上发布也可以是点击一下按钮这么简单的事情,当然也可以配置 WEBHOOK，提交 GIT 代码既自动发布。
 
@@ -53,6 +53,7 @@ http://xusenlin.com/article?key=BzV0K2
 
 # 更新日志
 ### 未发布
+* 可以快捷修改更多的字段
 * 缩短必要时的任务查询时间，完成打包及时知道
 * 将任务密码重构为任务加锁解锁（多人协作时方便锁定任务，但是密码是透明的）
 * 修复了裁剪分支和新建仓库不刷新相关BUG

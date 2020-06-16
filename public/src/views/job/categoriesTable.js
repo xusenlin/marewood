@@ -1,6 +1,7 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import LinkIcon from '@material-ui/icons/Link'
+import EditIcon from '@material-ui/icons/Edit'
 import LinkOffIcon from '@material-ui/icons/LinkOff'
 import UsbIcon from '@material-ui/icons/Usb'
 import Computer from '@material-ui/icons/Computer';
@@ -23,17 +24,15 @@ import {
 } from '@material-ui/core';
 import JobStatus from "./jobStatus"
 import HelperTooltips from "../../components/helperTooltips";
-import EditDesc from "../../components/editDesc.js";
+import EditField from "../../components/editField.js";
 import SwitchBranchDialog from "./switchBranchDialog"
 import Snackbar from '../../components/snackbar/index'
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen'
 import DeleteIcon from '@material-ui/icons/Delete';
-import {destroy, RunJob, UpdateDesc,jobLock} from "../../api/job";
+import {destroy, RunJob, UpdateField,jobLock} from "../../api/job";
 import {tooltip} from "../../assets/jss/common"
 import {getSystemInfo} from "../../utils/dataStorage"
-
-const AddressUrl = getSystemInfo("AddressUrl");
 
 const styles = theme => ({
   table: {
@@ -59,13 +58,17 @@ class CategoriesTable extends React.Component {
         password: "",
         show: false
       },
-      editDesc: {
+      editField: {
         id: 0,
-        show: false,
-        desc: ""
+        open: false,
+        desc: "",
+        rows:1,
+        field:"",
+        fieldContent:"",
       }
     };
     this.destroyId = 0;
+    this.addressUrl = getSystemInfo("AddressUrl")
   }
   toggleLock(row){
     this.setState({
@@ -158,7 +161,7 @@ class CategoriesTable extends React.Component {
       Snackbar.error("任务没有打包成功！");
       return
     }
-    window.open(AddressUrl + row.Url)
+    window.open(this.addressUrl + row.Url)
   }
   closeLockJobDialog() {
     this.setState({
@@ -194,35 +197,48 @@ class CategoriesTable extends React.Component {
     this.setState({lockPassword: p})
   }
 
-  clickEditDesc(row) {
+  clickEditField(row,inputRows,desc,field) {
+    if (row.LockPassword !== "") {
+      Snackbar.warning("任务锁定，请先解锁");
+      return;
+    }
     this.setState({
-      editDesc: {
+      editField: {
         id: row.ID,
-        show: true,
-        desc: row.Desc
+        open: true,
+        rows:inputRows,
+        desc: desc,
+        field: field,
+        fieldContent: row[field]
       }
     });
   }
 
-  editDescSuccess(id, desc) {
-    UpdateDesc({id,desc}).then(() => {
+  editFieldSuccess(id,field, fieldContent) {
+    UpdateField({id,field,fieldContent}).then(() => {
       this.setState({
-        editDesc: {
+        editField: {
           id: 0,
-          show: false,
-          desc: ""
+          open: false,
+          rows:1,
+          desc: "",
+          field: "",
+          fieldContent: ""
         }
       });
       this.props.refresh();
     }).catch(() => {
     })
   }
-  closeEditDescDialog() {
+  closeEditFieldDialog() {
     this.setState({
-      editDesc: {
+      editField: {
         id: 0,
-        show: false,
-        desc: ""
+        open: false,
+        rows:1,
+        desc: "",
+        field: "",
+        fieldContent: ""
       }
     })
   }
@@ -290,7 +306,9 @@ class CategoriesTable extends React.Component {
                       )
                     }
                   </TableCell>
-                  <TableCell align="center" style={{fontSize: "12px"}}>{row.Name}</TableCell>
+                  <TableCell align="left" style={{fontSize: "12px"}}>
+                    <EditIcon style={{ fontSize: 14 ,marginRight:10, cursor:"pointer" }} onClick={this.clickEditField.bind(this, row,1,"标题","Name")} color="primary" /> {row.Name}
+                  </TableCell>
                   <TableCell align="center">
                     <JobStatus status={row.Status}/>
                   </TableCell>
@@ -303,7 +321,7 @@ class CategoriesTable extends React.Component {
                         row.Status !== 1 ? "没有打包成功之前是不能访问的" :
                           <React.Fragment>
                             <a target="_blank" rel="noopener noreferrer" style={{color:"#fff"}}
-                               href={AddressUrl + row.Url}>{AddressUrl + row.Url}</a>
+                               href={this.addressUrl + row.Url}>{this.addressUrl + row.Url}</a>
                           </React.Fragment>
                       }
                       interactive>
@@ -313,7 +331,7 @@ class CategoriesTable extends React.Component {
                     </Tooltip>
                   </TableCell>
                   <TableCell align="center">
-                    <Tooltip title={ AddressUrl + row.WebHookUrl } interactive>
+                    <Tooltip title={ this.addressUrl + row.WebHookUrl } interactive>
                       <IconButton color="primary">
                         <UsbIcon/>
                       </IconButton>
@@ -328,7 +346,7 @@ class CategoriesTable extends React.Component {
                   </TableCell>
                   <TableCell align="center">
                     <Tooltip title={row.Desc} classes={{tooltip: classes.tooltip}} interactive>
-                      <IconButton color="primary" onClick={this.clickEditDesc.bind(this, row)}>
+                      <IconButton color="primary" onClick={this.clickEditField.bind(this, row,8,"描述","Desc")}>
                         <Announcement/>
                       </IconButton>
                     </Tooltip>
@@ -363,12 +381,15 @@ class CategoriesTable extends React.Component {
             }
           </TableBody>
         </Table>
-        <EditDesc
-          id={this.state.editDesc.id}
-          open={this.state.editDesc.show}
-          desc={this.state.editDesc.desc}
-          onClose={this.closeEditDescDialog.bind(this)}
-          editSuccess={this.editDescSuccess.bind(this)}/>
+        <EditField
+          id={this.state.editField.id}
+          open={this.state.editField.open}
+          desc={this.state.editField.desc}
+          rows={this.state.editField.rows}
+          field={this.state.editField.field}
+          fieldContent={this.state.editField.fieldContent}
+          onClose={this.closeEditFieldDialog.bind(this)}
+          editSuccess={this.editFieldSuccess.bind(this)}/>
         <SwitchBranchDialog
           jobId={this.state.switchBranchDialog.id}
           repositoryId={this.state.switchBranchDialog.repositoryId}
@@ -425,7 +446,6 @@ class CategoriesTable extends React.Component {
       </div>
     );
   }
-
 }
 
 

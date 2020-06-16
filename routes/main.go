@@ -61,7 +61,7 @@ func InitRouter() *gin.Engine {
 		v1.GET("/jobs_find", middlewares.RoleReporter(), controller.JobFindByCategoryId)
 		v1.POST("/job/create", middlewares.RoleDeveloper(), controller.JobCreate)
 		v1.GET("/job/update_branch", middlewares.RoleDeveloper(), controller.JobUpdateBranch)
-		v1.GET("/job/update_desc", middlewares.RoleDeveloper(), controller.JobUpdateDesc)
+		v1.GET("/job/update_field", middlewares.RoleDeveloper(), controller.JobUpdateField)
 		v1.GET("/job/delete", middlewares.RoleAdmin(), controller.JobDestroy)
 		v1.GET("/job/run", middlewares.RoleDeveloper(), controller.JobRun)
 		v1.GET("/job/lock", middlewares.RoleDeveloper(), controller.JobLock)

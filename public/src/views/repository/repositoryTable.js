@@ -18,7 +18,7 @@ import RepositoryStatus from "./repositoryStatus";
 import RepositoryJobStatus from "./repositoryJobStatus";
 import Snackbar from "../../components/snackbar";
 import {deleteDepend, destroy, gitPull, UpdateDesc,pruneBranch} from "../../api/repository";
-import EditDesc from "../../components/editDesc";
+import EditField from "../../components/editField";
 import {tooltip} from "../../assets/jss/common"
 
 const styles = () => ({
@@ -234,10 +234,12 @@ class RepositoryTable extends React.Component {
             ))}
           </TableBody>
         </Table>
-        <EditDesc
+        <EditField
           id={this.state.editDesc.id}
           open={this.state.editDesc.show}
-          desc={this.state.editDesc.desc}
+          desc="描述"
+          rows={8}
+          fieldContent={this.state.editDesc.desc}
           onClose={this.closeEditDescDialog.bind(this)}
           editSuccess={this.editDescSuccess.bind(this)}/>
         <Dialog

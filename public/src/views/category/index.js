@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import EditCategory from './edit.js'
 import {categories, destroy, UpdateDesc} from '../../api/category.js'
-import EditDesc from "../../components/editDesc.js";
+import EditField from "../../components/editField.js";
 import Snackbar from "../../components/snackbar";
 import Announcement from '@material-ui/icons/Announcement';
 
@@ -186,10 +186,12 @@ class CategoryTable extends React.Component {
         <Fab color="primary" className={classes.fab} aria-label="add" onClick={this.editDialogShow.bind(this)}>
           <AddIcon/>
         </Fab>
-        <EditDesc
+        <EditField
           id={this.state.editDesc.id}
           open={this.state.editDesc.show}
-          desc={this.state.editDesc.desc}
+          desc="描述"
+          rows={8}
+          fieldContent={this.state.editDesc.desc}
           onClose={this.closeEditDescDialog.bind(this)}
           editSuccess={this.editDescSuccess.bind(this)}/>
         <EditCategory

@@ -2,9 +2,12 @@ package models
 
 import (
 	"MareWood/config"
+	"MareWood/helper"
 	"MareWood/sql"
+	"errors"
 	"github.com/jinzhu/gorm"
 	"strconv"
+	"strings"
 )
 
 const ( //任务执行状态
@@ -13,6 +16,7 @@ const ( //任务执行状态
 	JobStatusLeisured   = 0 //默认状态，空闲
 	JobStatusProcessing = 3 //正在打包状态
 )
+var fillWhiteList  = []string{"desc","name"}
 
 type Job struct {
 	gorm.Model
@@ -32,6 +36,7 @@ type Job struct {
 	TerminalInfo  string `gorm:"type:varchar(1000)"`
 	SuccessScript string `gorm:"type:varchar(1000)"` //打包成功运行的脚本，多个用 ; 隔开
 }
+
 
 func (j *Job) FindAll() (jobs []Job, err error) {
 	err = sql.DB.Order("created_at desc").Find(&jobs).Error
@@ -65,10 +70,14 @@ func (j *Job) UpdateBranch(branch string) (err error) {
 	return
 }
 
-func (j *Job) UpdateDesc(id string, desc string) (err error) {
+func (j *Job) UpdateFieldContent(id string, field string,fieldContent string) (err error) {
+	field = strings.ToLower(field)
+	if !helper.InStrArr(field,fillWhiteList) {
+		return errors.New("不能修改当前字段！")
+	}
 	err =
 		sql.DB.Model(&j).Where("id = ?", id).
-			UpdateColumn("desc", desc).Error
+			UpdateColumn(strings.ToLower(field), fieldContent).Error
 	return
 }
 

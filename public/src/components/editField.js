@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import {TextField} from "@material-ui/core";
+import PropTypes from "prop-types";
 
 
 const styles = (theme) => ({
@@ -52,24 +53,23 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 
-class EditDesc extends React.Component {
+class EditField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      desc: ""
+      fieldContent: ""
     };
   }
-
-  saveDesc() {
-    this.props.editSuccess(this.props.id, this.state.desc)
+  saveFieldContent() {
+    this.props.editSuccess(this.props.id,this.props.field, this.state.fieldContent)
   }
 
   onEnteredDialog() {
-    this.setState({desc: this.props.desc});
+    this.setState({fieldContent: this.props.fieldContent});
   }
 
   textFieldChange(event) {
-    this.setState({desc: event.target.value});
+    this.setState({fieldContent: event.target.value});
   }
 
   render() {
@@ -78,19 +78,19 @@ class EditDesc extends React.Component {
         <Dialog onClose={this.props.onClose} onEntering={this.onEnteredDialog.bind(this)}
                 aria-labelledby="customized-dialog-title" open={this.props.open}>
           <DialogTitle id="customized-dialog-title" onClose={this.props.onClose}>
-            编辑描述
+            修改{ this.props.desc }
           </DialogTitle>
           <DialogContent dividers style={{width: 600}}>
             <TextField
               InputLabelProps={{
                 shrink: true,
               }}
-              margin="dense" value={this.state.desc} id="desc" multiline rows={8}
-              onChange={this.textFieldChange.bind(this)} label="描述" type="text" fullWidth
+              margin="dense" value={this.state.fieldContent} id="desc" multiline rows={this.props.rows}
+              onChange={this.textFieldChange.bind(this)} label={this.props.desc} type="text" fullWidth
             />
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={this.saveDesc.bind(this)} color="primary">
+            <Button autoFocus onClick={this.saveFieldContent.bind(this)} color="primary">
               保存
             </Button>
           </DialogActions>
@@ -100,4 +100,19 @@ class EditDesc extends React.Component {
   }
 }
 
-export default EditDesc
+
+EditField.propTypes = {
+  id: PropTypes.number.isRequired,
+  open: PropTypes.bool.isRequired,
+  row: PropTypes.number,
+  field:PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired,
+  fieldContent: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  editSuccess: PropTypes.func.isRequired,
+};
+
+EditField.defaultProps = {
+  row:1,
+};
+export default EditField

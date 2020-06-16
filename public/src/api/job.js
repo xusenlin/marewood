@@ -84,9 +84,9 @@ export function RunJob(params) {
  * @param params
  * @returns {AxiosPromise}
  */
-export function UpdateDesc(params) {
+export function UpdateField(params) {
     return request({
-        url:  '/job/update_desc',
+        url:  '/job/update_field',
         method: 'get',
         params: params
     })

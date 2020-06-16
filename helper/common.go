@@ -43,7 +43,6 @@ func IsDir(name string) bool {
 	return false
 }
 
-
 func FileIsExisted(filename string) bool {
 	existed := true
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
@@ -62,8 +61,17 @@ func MakeDir(dir string) error {
 func RemoveDir(dir string) error {
 
 	if !IsDir(dir) {
-		return  errors.New("没有发现目录,无法执行删除")
+		return errors.New("没有发现目录,无法执行删除")
 	}
 
-	return  os.RemoveAll(dir)
+	return os.RemoveAll(dir)
+}
+
+func InStrArr(str string, arr []string) bool {
+	for _, item := range arr {
+		if item == str {
+			return true
+		}
+	}
+	return false
 }

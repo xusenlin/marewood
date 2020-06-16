@@ -11,7 +11,7 @@ import (
 
 func JobFindAll(c *gin.Context) {
 
-	result,err := new(models.Job).FindAll()
+	result, err := new(models.Job).FindAll()
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -34,7 +34,7 @@ func JobFindByCategoryId(c *gin.Context) {
 
 	id := c.Query("id")
 
-	result,err := new(models.Job).FindByCategoryId(id)
+	result, err := new(models.Job).FindByCategoryId(id)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -58,7 +58,7 @@ func JobCreate(c *gin.Context) {
 	var job models.Job
 	err := c.ShouldBindJSON(&job)
 
-	if  err != nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -76,7 +76,6 @@ func JobCreate(c *gin.Context) {
 		})
 		return
 	}
-
 
 	err = new(models.Category).CategoryJobQuantityIncrement(job.CategoryId)
 	//分类数量
@@ -118,7 +117,7 @@ func JobUpdateBranch(c *gin.Context) {
 		})
 		return
 	}
-	if err  := job.UpdateBranch(branch) ;err != nil {
+	if err := job.UpdateBranch(branch); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   sql.DB.Error.Error(),
@@ -172,17 +171,19 @@ func JobDestroy(c *gin.Context) {
 	})
 }
 
-func JobUpdateDesc(c *gin.Context)  {
+func JobUpdateField(c *gin.Context) {
 
 	id := c.Query("id")
-	desc := c.Query("desc")
+	field := c.Query("field")
+	fieldContent := c.Query("fieldContent")
 
-	err := new(models.Job).UpdateDesc(id,desc)
+	err := new(models.Job).UpdateFieldContent(id, field, fieldContent)
+
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   err.Error(),
-			"msg":    "数据库更新出错",
+			"data":   "",
+			"msg":    err.Error(),
 		})
 		return
 	}
@@ -271,7 +272,7 @@ func JobRun(c *gin.Context) {
 
 }
 
-func JobLock(c *gin.Context)  {
+func JobLock(c *gin.Context) {
 	id := c.Query("id")
 	password := c.Query("password")
 	claims, _ := serviceUser.GetJwtClaimsByContext(c)
@@ -286,18 +287,18 @@ func JobLock(c *gin.Context)  {
 		return
 	}
 	//加锁
-	if job.LockPassword == ""{
+	if job.LockPassword == "" {
 		if sql.DB.Model(&job).
 			UpdateColumn("lock_password", password).
 			UpdateColumn("user", claims.Username).
-			Error != nil{
+			Error != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": false,
 				"data":   "",
 				"msg":    sql.DB.Error.Error(),
 			})
 			return
-		}else {
+		} else {
 			c.JSON(http.StatusOK, gin.H{
 				"status": true,
 				"data":   "",
@@ -308,7 +309,7 @@ func JobLock(c *gin.Context)  {
 
 	}
 	//解锁
-	if job.LockPassword != password{
+	if job.LockPassword != password {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -316,7 +317,7 @@ func JobLock(c *gin.Context)  {
 		})
 		return
 	}
-	if sql.DB.Model(&job).UpdateColumn("lock_password", "").Error != nil{
+	if sql.DB.Model(&job).UpdateColumn("lock_password", "").Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
