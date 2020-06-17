@@ -48,6 +48,7 @@ func (j *Job) FindByCategoryId(id string) (jobs []Job, err error) {
 	return
 }
 
+
 func (j *Job) Create() (err error) {
 
 	j.RunQuantity = 0
@@ -84,6 +85,8 @@ func (j *Job) UpdateFieldContent(field string,fieldContent string) (err error) {
 	return
 }
 
+
+
 func (j *Job) Destroy(id string) (err error) {
 	err = sql.DB.First(&j, id).Error
 	if err != nil {
@@ -95,4 +98,15 @@ func (j *Job) Destroy(id string) (err error) {
 	}
 
 	return sql.DB.Delete(&j).Error
+}
+
+func GetJobs(pageNum int, pageSize int, maps interface{}) ([]*Job, error) {
+	
+	var jobs []*Job
+	err := sql.DB.Where(maps).Offset(pageNum).Limit(pageSize).Find(&jobs).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return jobs, nil
 }
