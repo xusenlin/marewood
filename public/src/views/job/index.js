@@ -25,11 +25,11 @@ const styles = theme => ({
     bottom: theme.spacing(2),
     right: theme.spacing(2),
   },
-  pagination:{
+  pagination: {
     width: '100%',
     display: "flex",
     justifyContent: "center",
-    textAlign:"center",
+    textAlign: "center",
     padding: theme.spacing(3),
   }
 });
@@ -46,7 +46,9 @@ class Jobs extends React.Component {
         show: false,
         categoryId: 0,
         categoryName: ""
-      }
+      },
+      totalPage: 1,
+      pageNum: 1
     };
     this.timeoutId = null;
   }
@@ -65,17 +67,29 @@ class Jobs extends React.Component {
     })
   }
 
+  changePagination(v, pageNum) {
+    if(pageNum === this.state.pageNum){
+      return
+    }
+    this.setTabAndJobsByCategoryId(this.state.category, pageNum)
+  }
+
   tabsChange(event, index) {
     this.setTabAndJobsByCategoryId(index)
   }
 
-  setTabAndJobsByCategoryId(index = 0) {
+  setTabAndJobsByCategoryId(index = 0, pageNum = 1, pageSize = 8) {
     let categoryId = this.state.categories[index].ID;
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
     }
-    jobsFind({id: categoryId}).then(r => {
-      this.setState({category: index, jobs: r});
+    jobsFind({categoryId, pageNum, pageSize}).then(r => {
+      this.setState({
+        category: index,
+        jobs: r.List,
+        totalPage: r.TotalPage,
+        pageNum: pageNum
+      });
       for (let i = 0; i < r.length; i++) {
         if (r[i].Status === 3) {
           this.timeoutId = setTimeout(() => {
@@ -141,7 +155,8 @@ class Jobs extends React.Component {
           <CategoriesTable tableData={this.state.jobs}
                            refresh={this.setTabAndJobsByCategoryId.bind(this, this.state.category)}/>
           <div className={classes.pagination}>
-            <Pagination count={10}  color="primary"  shape="rounded" />
+            <Pagination count={this.state.totalPage} page={this.state.pageNum}
+                        onChange={this.changePagination.bind(this)} color="primary" shape="rounded"/>
           </div>
         </Paper>
         <Fab color="primary" className={classes.fab} aria-label="add" onClick={this.editDialogShow.bind(this)}>

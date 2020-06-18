@@ -58,7 +58,7 @@ func InitRouter() *gin.Engine {
 		v1.GET("/category/delete", middlewares.RoleAdmin(), controller.CategoryDestroy)
 		//任务
 		v1.GET("/jobs", middlewares.RoleReporter(), controller.JobFindAll)
-		v1.GET("/jobs_find", middlewares.RoleReporter(), controller.JobFindByCategoryId)
+		v1.GET("/jobs_find", middlewares.RoleReporter(), controller.JobFind)
 		v1.POST("/job/create", middlewares.RoleDeveloper(), controller.JobCreate)
 		v1.GET("/job/update_branch", middlewares.RoleDeveloper(), controller.JobUpdateBranch)
 		v1.GET("/job/update_field", middlewares.RoleDeveloper(), controller.JobUpdateField)

@@ -75,3 +75,11 @@ func InStrArr(str string, arr []string) bool {
 	}
 	return false
 }
+
+func ComputeTotalPage(total, pageSize int, ) int {
+	totalPage := total / pageSize
+	if total%pageSize != 0 {
+		totalPage++
+	}
+	return totalPage
+}

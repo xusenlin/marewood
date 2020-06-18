@@ -7,6 +7,7 @@ import (
 	"MareWood/sql"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func JobFindAll(c *gin.Context) {
@@ -30,17 +31,33 @@ func JobFindAll(c *gin.Context) {
 
 }
 
-func JobFindByCategoryId(c *gin.Context) {
+func JobFind(c *gin.Context) {
 
-	id := c.Query("id")
+	categoryId, err := strconv.Atoi(c.Query("categoryId"))
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
+	pageNum, err := strconv.Atoi(c.Query("pageNum"))
+	if err != nil {
+		pageNum = 1
+	}
+	pageSize, err2 := strconv.Atoi(c.Query("pageSize"))
+	if err2 != nil {
+		pageSize = 8
+	}
 
-	result, err := new(models.Job).FindByCategoryId(id)
+	result, err := models.FindJob(pageNum, pageSize, map[string]interface{}{"category_id": categoryId})
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   err.Error(),
-			"msg":    "数据库查询出错",
+			"data":   "",
+			"msg":    err.Error(),
 		})
 		return
 	}

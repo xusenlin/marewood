@@ -97,7 +97,7 @@ class CategoryTable extends React.Component {
     });
   }
 
-  editDescSuccess(id, desc) {
+  editDescSuccess(id, field, desc) {
     UpdateDesc({id,desc}).then(() => {
       this.setState({
         editDesc: {
@@ -191,6 +191,7 @@ class CategoryTable extends React.Component {
           open={this.state.editDesc.show}
           desc="描述"
           rows={8}
+          field="desc"
           fieldContent={this.state.editDesc.desc}
           onClose={this.closeEditDescDialog.bind(this)}
           editSuccess={this.editDescSuccess.bind(this)}/>

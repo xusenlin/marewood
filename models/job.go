@@ -16,7 +16,8 @@ const ( //任务执行状态
 	JobStatusLeisured   = 0 //默认状态，空闲
 	JobStatusProcessing = 3 //正在打包状态
 )
-var fillWhiteList  = []string{"desc","name"}
+
+var fillWhiteList = []string{"desc", "name"}
 
 type Job struct {
 	gorm.Model
@@ -37,17 +38,24 @@ type Job struct {
 	SuccessScript string `gorm:"type:varchar(1000)"` //打包成功运行的脚本，多个用 ; 隔开
 }
 
+type JobPageResult struct {
+	List      []*Job
+	Total     int
+	PageNum   int
+	PageSize  int
+	TotalPage int
+}
 
 func (j *Job) FindAll() (jobs []Job, err error) {
 	err = sql.DB.Order("created_at desc").Find(&jobs).Error
 	return
 }
 
-func (j *Job) FindByCategoryId(id string) (jobs []Job, err error) {
-	err = sql.DB.Where("category_id = ?", id).Order("updated_at desc").Find(&jobs).Error
-	return
-}
-
+//func (j *Job) FindByCategoryId(id string) (jobs []Job, err error) {
+//
+//	err = sql.DB.Where("category_id = ?", id).Order("updated_at desc").Find(&jobs).Error
+//	return
+//}
 
 func (j *Job) Create() (err error) {
 
@@ -71,9 +79,9 @@ func (j *Job) UpdateBranch(branch string) (err error) {
 	return
 }
 
-func (j *Job) UpdateFieldContent(field string,fieldContent string) (err error) {
+func (j *Job) UpdateFieldContent(field string, fieldContent string) (err error) {
 	field = strings.ToLower(field)
-	if !helper.InStrArr(field,fillWhiteList) {
+	if !helper.InStrArr(field, fillWhiteList) {
 		return errors.New("不能修改当前字段！")
 	}
 
@@ -84,8 +92,6 @@ func (j *Job) UpdateFieldContent(field string,fieldContent string) (err error) {
 		sql.DB.Model(&j).UpdateColumn(strings.ToLower(field), fieldContent).Error
 	return
 }
-
-
 
 func (j *Job) Destroy(id string) (err error) {
 	err = sql.DB.First(&j, id).Error
@@ -100,10 +106,41 @@ func (j *Job) Destroy(id string) (err error) {
 	return sql.DB.Delete(&j).Error
 }
 
+func FindJob(pageNum int, pageSize int, maps interface{}) (JobPageResult, error) {
+	var result JobPageResult
+	var err error
+
+	result.List, err = GetJobs(pageNum, pageSize, maps)
+	if err != nil {
+		return result, err
+	}
+
+	result.Total, err = GetJobTotal(maps)
+	if err != nil {
+		return result, err
+	}
+	result.PageSize = pageSize
+	result.PageNum = pageNum
+
+	result.TotalPage = helper.ComputeTotalPage(result.Total, pageSize)
+
+	return result, nil
+}
+
+func GetJobTotal(maps interface{}) (int, error) {
+	var count int
+	if err := sql.DB.Model(&Job{}).Where(maps).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
 func GetJobs(pageNum int, pageSize int, maps interface{}) ([]*Job, error) {
-	
+
 	var jobs []*Job
-	err := sql.DB.Where(maps).Offset(pageNum).Limit(pageSize).Find(&jobs).Error
+	err := sql.DB.Where(maps).Order("updated_at desc").Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(&jobs).Error
+
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
