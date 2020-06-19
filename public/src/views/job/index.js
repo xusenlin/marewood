@@ -90,10 +90,10 @@ class Jobs extends React.Component {
         totalPage: r.TotalPage,
         pageNum: pageNum
       });
-      for (let i = 0; i < r.length; i++) {
-        if (r[i].Status === 3) {
+      for (let i = 0; i < r.List.length; i++) {
+        if (r.List[i].Status === 3) {
           this.timeoutId = setTimeout(() => {
-            this.setTabAndJobsByCategoryId(index)
+            this.setTabAndJobsByCategoryId(index,pageNum,pageSize)
           }, 2000);
           return
         }
