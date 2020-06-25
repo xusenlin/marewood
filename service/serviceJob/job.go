@@ -13,7 +13,7 @@ import (
 
 /**
 流程
-更新代码->切换分支->
+更新代码->检查分支->切换分支->
 更新代码->安装依赖->打包->创建目录并复制代码->更新Url->
 更新运行次数->更新任务状态->更新仓库状态为空闲->（执行附加脚本，暂不做）->更新终端信息。
 */
@@ -28,6 +28,18 @@ func JobRun(job *models.Job, repository *models.Repository) {
 		return
 	}
 	terminalOut += out
+
+	branch, err := serviceRepository.GetBranch(strconv.Itoa(int(repository.ID)))
+	if err != nil {
+		jobRunError(job, repository, err.Error())
+		return
+	}
+
+	if !helper.InStrArr(job.Branch,branch){
+		jobRunError(job, repository, "当前任务的分支已经不存在仓库里面了 :( \n 切换分支再试试吧！")
+		return
+	}
+
 	out, err = serviceRepository.GitCheckout(repositoryId, job.Branch)
 	if err != nil {
 		jobRunError(job, repository, err.Error())

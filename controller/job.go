@@ -232,8 +232,10 @@ func JobUpdateField(c *gin.Context) {
 
 /**
 流程
-仓库是否忙碌->仓库状态是否正常->加密验证->任务状态进行中->更新仓库状态为繁忙->响应->更新代码->切换分支->
-更新代码->安装依赖->打包->创建目录并复制代码->更新Url->
+任务是否加锁->仓库状态是否正常->仓库是否忙碌->
+任务状态进行中->更新仓库状态为繁忙->响应前端->
+更新代码->检查分支->切换分支->更新代码->安装依赖->
+打包->创建目录并复制代码->更新Url->
 更新运行次数->更新任务状态->更新仓库状态为空闲->（执行附加脚本，暂不做）->更新终端信息。
 */
 func JobRun(c *gin.Context) {
@@ -284,7 +286,7 @@ func JobRun(c *gin.Context) {
 		})
 		return
 	}
-	//任务状态和仓库的任务状态
+	//开始执行任务，任务状态和仓库的任务状态
 	repository.JobStatus = models.RepoJobStatusBusy
 	job.Status = models.JobStatusProcessing
 
