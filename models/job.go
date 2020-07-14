@@ -75,7 +75,7 @@ func (j *Job) Create() (err error) {
 
 func (j *Job) UpdateBranch(branch string) (err error) {
 	err =
-		sql.DB.Model(&j).UpdateColumn("branch", branch).Error
+		sql.DB.Model(&j).Update("branch", branch).Error
 	return
 }
 
@@ -89,7 +89,7 @@ func (j *Job) UpdateFieldContent(field string, fieldContent string) (err error) 
 		return errors.New("不能确定ID ")
 	}
 	err =
-		sql.DB.Model(&j).UpdateColumn(strings.ToLower(field), fieldContent).Error
+		sql.DB.Model(&j).Update(strings.ToLower(field), fieldContent).Error
 	return
 }
 
