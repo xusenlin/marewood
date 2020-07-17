@@ -38,15 +38,14 @@ export function create(params) {
     data: params
   });
 }
-
 /**
- * 更新分类描述
+ * 更新分类白名单字段
  * @param params
  * @returns {AxiosPromise}
  */
-export function UpdateDesc(params) {
+export function UpdateField(params) {
   return request({
-    url: "/category/update_desc",
+    url: "/category/update_field",
     method: "get",
     params: params
   });

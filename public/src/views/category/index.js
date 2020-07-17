@@ -1,6 +1,7 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {
   Table,
@@ -20,7 +21,7 @@ import {
   Tooltip
 } from "@material-ui/core";
 import EditCategory from "./edit.js";
-import { categories, destroy, UpdateDesc } from "../../api/category.js";
+import { categories, destroy, UpdateField } from "../../api/category.js";
 import EditField from "../../components/editField.js";
 import Snackbar from "../../components/snackbar";
 import Announcement from "@material-ui/icons/Announcement";
@@ -48,10 +49,13 @@ class CategoryTable extends React.Component {
       tableData: [],
       destroyDialogShow: false,
       editCategoryShow: false,
-      editDesc: {
+      editField: {
         id: 0,
-        show: false,
-        desc: ""
+        open: false,
+        rows: 1,
+        desc: "",
+        field: "",
+        fieldContent: ""
       }
     };
     this.destroyId = 0;
@@ -91,49 +95,47 @@ class CategoryTable extends React.Component {
   editDialogShow() {
     this.setState({ editCategoryShow: true });
   }
-
   editDialogClose() {
     this.setState({ editCategoryShow: false });
   }
-
   createCategorySuccess() {
     this.setState({ editCategoryShow: false });
     this.getTableData();
   }
 
-  clickEditDesc(row) {
+  clickEditField(row, inputRows, desc, field) {
     this.setState({
-      editDesc: {
+      editField: {
         id: row.ID,
-        show: true,
-        desc: row.Desc
+        open: true,
+        rows: inputRows,
+        desc: desc,
+        field: field,
+        fieldContent: row[field]
       }
     });
   }
-
-  editDescSuccess(id, field, desc) {
-    UpdateDesc({ id, desc })
+  editFieldSuccess(id, field, fieldContent) {
+    UpdateField({ id, field, fieldContent })
       .then(() => {
-        this.setState({
-          editDesc: {
-            id: 0,
-            show: false,
-            desc: ""
-          }
-        });
+        this.closeResetEditFieldDialog();
         this.getTableData();
       })
       .catch(() => {});
   }
-  closeEditDescDialog() {
+  closeResetEditFieldDialog() {
     this.setState({
-      editDesc: {
+      editField: {
         id: 0,
-        show: false,
-        desc: ""
+        open: false,
+        rows: 1,
+        desc: "",
+        field: "",
+        fieldContent: ""
       }
     });
   }
+
   render() {
     const { classes } = this.props;
     return (
@@ -156,7 +158,24 @@ class CategoryTable extends React.Component {
                   <TableCell component="th" scope="row">
                     {row.ID}
                   </TableCell>
-                  <TableCell align="left">{row.Name}</TableCell>
+                  <TableCell align="left">
+                    <EditIcon
+                      style={{
+                        fontSize: 14,
+                        marginRight: 10,
+                        cursor: "pointer"
+                      }}
+                      onClick={this.clickEditField.bind(
+                        this,
+                        row,
+                        1,
+                        "标题",
+                        "Name"
+                      )}
+                      color="primary"
+                    />
+                    {row.Name}
+                  </TableCell>
                   <TableCell align="left">{row.JobQuantity}</TableCell>
                   <TableCell align="left">
                     <Tooltip
@@ -166,7 +185,13 @@ class CategoryTable extends React.Component {
                     >
                       <IconButton
                         color="primary"
-                        onClick={this.clickEditDesc.bind(this, row)}
+                        onClick={this.clickEditField.bind(
+                          this,
+                          row,
+                          8,
+                          "描述",
+                          "Desc"
+                        )}
                       >
                         <Announcement />
                       </IconButton>
@@ -226,14 +251,14 @@ class CategoryTable extends React.Component {
           <AddIcon />
         </Fab>
         <EditField
-          id={this.state.editDesc.id}
-          open={this.state.editDesc.show}
-          desc="描述"
-          rows={8}
-          field="desc"
-          fieldContent={this.state.editDesc.desc}
-          onClose={this.closeEditDescDialog.bind(this)}
-          editSuccess={this.editDescSuccess.bind(this)}
+          id={this.state.editField.id}
+          open={this.state.editField.open}
+          desc={this.state.editField.desc}
+          rows={this.state.editField.rows}
+          field={this.state.editField.field}
+          fieldContent={this.state.editField.fieldContent}
+          onClose={this.closeResetEditFieldDialog.bind(this)}
+          editSuccess={this.editFieldSuccess.bind(this)}
         />
         <EditCategory
           show={this.state.editCategoryShow}

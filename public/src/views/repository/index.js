@@ -5,7 +5,8 @@ import { Fab, Paper } from "@material-ui/core";
 import Edit from "./edit";
 import Table from "./repositoryTable";
 import { getSystemInfo } from "../../utils/dataStorage";
-import { repositories } from "../../api/repository";
+import { repositoryFind } from "../../api/repository";
+import Pagination from "@material-ui/lab/Pagination";
 
 const styles = theme => ({
   root: {
@@ -17,6 +18,13 @@ const styles = theme => ({
     position: "absolute",
     bottom: theme.spacing(2),
     right: theme.spacing(2)
+  },
+  pagination: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    textAlign: "center",
+    padding: theme.spacing(3)
   }
 });
 
@@ -26,7 +34,9 @@ class RepositoryTable extends React.Component {
     this.state = {
       tableData: [],
       editShow: false,
-      dependentSupport: getSystemInfo("DependTools") || []
+      dependentSupport: getSystemInfo("DependTools") || [],
+      totalPage: 1,
+      pageNum: 1
     };
     this.timeout = null;
   }
@@ -50,11 +60,15 @@ class RepositoryTable extends React.Component {
     this.getTableData();
   }
 
-  getTableData() {
+  getTableData(pageNum = 1, pageSize = 8) {
     if (this.timeout) clearTimeout(this.timeout);
-    repositories()
+    repositoryFind({ pageNum, pageSize })
       .then(r => {
-        this.setState({ tableData: r });
+        this.setState({
+          tableData: r.List,
+          totalPage: r.TotalPage,
+          pageNum: r.PageNum
+        });
 
         for (let i = 0; i < r.length; i++) {
           if (
@@ -71,6 +85,13 @@ class RepositoryTable extends React.Component {
       })
       .catch(() => {});
   }
+
+  changePagination(v, pageNum) {
+    if (pageNum === this.state.pageNum) {
+      return;
+    }
+    this.getTableData(pageNum);
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -80,6 +101,15 @@ class RepositoryTable extends React.Component {
             tableData={this.state.tableData}
             refresh={this.getTableData.bind(this)}
           />
+          <div className={classes.pagination}>
+            <Pagination
+              count={this.state.totalPage}
+              page={this.state.pageNum}
+              onChange={this.changePagination.bind(this)}
+              color="primary"
+              shape="rounded"
+            />
+          </div>
         </Paper>
         <Fab
           color="primary"

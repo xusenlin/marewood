@@ -17,7 +17,7 @@ const ( //任务执行状态
 	JobStatusProcessing = 3 //正在打包状态
 )
 
-var fillWhiteList = []string{"desc", "name"}
+var fillWhiteListForJob = []string{"desc", "name"}
 
 type Job struct {
 	gorm.Model
@@ -47,15 +47,9 @@ type JobPageResult struct {
 }
 
 func (j *Job) FindAll() (jobs []Job, err error) {
-	err = sql.DB.Order("created_at desc").Find(&jobs).Error
+	err = sql.DB.Order("created_at desc").Select("id,name").Find(&jobs).Error
 	return
 }
-
-//func (j *Job) FindByCategoryId(id string) (jobs []Job, err error) {
-//
-//	err = sql.DB.Where("category_id = ?", id).Order("updated_at desc").Find(&jobs).Error
-//	return
-//}
 
 func (j *Job) Create() (err error) {
 
@@ -79,18 +73,23 @@ func (j *Job) UpdateBranch(branch string) (err error) {
 	return
 }
 
-func (j *Job) UpdateFieldContent(field string, fieldContent string) (err error) {
+func (j *Job) UpdateFieldContent(id string, field string, fieldContent string) (err error) {
+
 	field = strings.ToLower(field)
-	if !helper.InStrArr(field, fillWhiteList) {
+
+	if !helper.InStrArr(field, fillWhiteListForJob) {
 		return errors.New("不能修改当前字段！")
 	}
 
-	if j.ID == 0 {
-		return errors.New("不能确定ID ")
+	if err := sql.DB.First(&j, id).Error ;err != nil {
+		return err
 	}
-	err =
-		sql.DB.Model(&j).Update(strings.ToLower(field), fieldContent).Error
-	return
+	if j.LockPassword != "" {
+		return errors.New("请先解锁任务")
+	}
+
+	return sql.DB.Model(&j).Update(field, fieldContent).Error
+
 }
 
 func (j *Job) Destroy(id string) (err error) {
@@ -110,15 +109,11 @@ func FindJob(pageNum int, pageSize int, maps interface{}) (JobPageResult, error)
 	var result JobPageResult
 	var err error
 
-	result.List, err = GetJobs(pageNum, pageSize, maps)
+	result.List,result.Total, err = GetJobs(pageNum, pageSize, maps)
 	if err != nil {
 		return result, err
 	}
 
-	result.Total, err = GetJobTotal(maps)
-	if err != nil {
-		return result, err
-	}
 	result.PageSize = pageSize
 	result.PageNum = pageNum
 
@@ -127,23 +122,16 @@ func FindJob(pageNum int, pageSize int, maps interface{}) (JobPageResult, error)
 	return result, nil
 }
 
-func GetJobTotal(maps interface{}) (int, error) {
-	var count int
-	if err := sql.DB.Model(&Job{}).Where(maps).Count(&count).Error; err != nil {
-		return 0, err
-	}
-
-	return count, nil
-}
-
-func GetJobs(pageNum int, pageSize int, maps interface{}) ([]*Job, error) {
-
+func GetJobs(pageNum int, pageSize int, maps interface{}) ([]*Job,int, error) {
+	var total  int
 	var jobs []*Job
-	err := sql.DB.Where(maps).Order("updated_at desc").Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(&jobs).Error
+
+	query := sql.DB.Model(&Job{}).Where(maps).Order("updated_at desc")
+	query.Count(&total)
+	err := query.Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(&jobs).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, err
+		return jobs, 0, err
 	}
-
-	return jobs, nil
+	return jobs, total, nil
 }

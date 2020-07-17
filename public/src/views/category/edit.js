@@ -38,7 +38,7 @@ class EditCategory extends React.Component {
           onClose={this.props.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">编辑分类</DialogTitle>
+          <DialogTitle id="form-dialog-title">新增分类</DialogTitle>
           <DialogContent>
             <TextField
               required

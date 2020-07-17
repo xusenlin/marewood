@@ -36,7 +36,7 @@ func JobRun(job *models.Job, repository *models.Repository) {
 	}
 
 	if !helper.InStrArr(job.Branch,branch){
-		jobRunError(job, repository, "当前任务的分支已经不存在了 :( \n裁剪分支后切换分支再试试吧！")
+		jobRunError(job, repository, config.Cfg.AppName + ":打包失败了！！😭😭😭 \n当前任务的分支已经不存在了 :( \n请尝试裁剪分支后切换分支再试试吧！")
 		return
 	}
 

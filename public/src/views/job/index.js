@@ -85,7 +85,7 @@ class Jobs extends React.Component {
           category: index,
           jobs: r.List,
           totalPage: r.TotalPage,
-          pageNum: pageNum
+          pageNum: r.PageNum
         });
         for (let i = 0; i < r.List.length; i++) {
           if (r.List[i].Status === 3) {

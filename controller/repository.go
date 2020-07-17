@@ -15,26 +15,19 @@ func RepositoryFindAll(c *gin.Context) {
 
 	isNormal := c.Query("isNormal")
 
+	query := sql.DB.Order("created_at desc").Select("id,name")
+
 	if isNormal == "1" {
-		if sql.DB.Order("created_at desc").
-			Where("status = ?", models.RepoStatusSuccess).
-			Find(&result).Error != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    sql.DB.Error.Error(),
-			})
-			return
-		}
-	} else {
-		if sql.DB.Order("created_at desc").Find(&result).Error != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    sql.DB.Error.Error(),
-			})
-			return
-		}
+		query = query.Where("status = ?", models.RepoStatusSuccess)
+	}
+
+	if query.Find(&result).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    sql.DB.Error.Error(),
+		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -43,6 +36,35 @@ func RepositoryFindAll(c *gin.Context) {
 		"msg":    "查询成功",
 	})
 
+}
+
+func RepositoryFind(c *gin.Context)  {
+
+	pageNum, err := strconv.Atoi(c.Query("pageNum"))
+	if err != nil {
+		pageNum = 1
+	}
+	pageSize, err2 := strconv.Atoi(c.Query("pageSize"))
+	if err2 != nil {
+		pageSize = 8
+	}
+
+	result, err := models.FindRepository(pageNum, pageSize, map[string]interface{}{})
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   result,
+		"msg":    "查询成功",
+	})
 }
 
 func RepositoryCreate(c *gin.Context) {
@@ -285,20 +307,23 @@ func RepositoryScript(c *gin.Context) {
 	})
 }
 
-func RepositoryUpdateDesc(c *gin.Context)  {
+func RepositoryUpdateField(c *gin.Context)  {
 
 	id := c.Query("id")
-	desc := c.Query("desc")
+	field := c.Query("field")
+	fieldContent := c.Query("fieldContent")
 
-	err := new(models.Repository).UpdateDesc(id,desc)
+	err := new(models.Repository).UpdateFieldContent(id, field, fieldContent)
+
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   err.Error(),
-			"msg":    "数据库更新出错",
+			"data":   "",
+			"msg":    err.Error(),
 		})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
 		"data":   id,

@@ -66,6 +66,19 @@ export function repositories(params) {
 }
 
 /**
+ * 获取仓库分页
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function repositoryFind(params) {
+  return request({
+    url: "/repository_find",
+    method: "get",
+    params: params
+  });
+}
+
+/**
  * 删除仓库
  * @param params
  * @returns {AxiosPromise}
@@ -105,13 +118,13 @@ export function getScript(params) {
 }
 
 /**
- * 更新仓库描述
+ * 更新仓库白名单字段
  * @param params
  * @returns {AxiosPromise}
  */
-export function UpdateDesc(params) {
+export function UpdateField(params) {
   return request({
-    url: "/repository/update_desc",
+    url: "/repository/update_field",
     method: "get",
     params: params
   });

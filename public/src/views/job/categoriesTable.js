@@ -327,7 +327,7 @@ class CategoriesTable extends React.Component {
                       "Name"
                     )}
                     color="primary"
-                  />{" "}
+                  />
                   {row.Name}
                 </TableCell>
                 <TableCell align="center">

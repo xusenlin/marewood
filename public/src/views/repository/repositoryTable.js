@@ -15,6 +15,7 @@ import {
   Dialog
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import FormatClearIcon from "@material-ui/icons/FormatClear";
 import RestoreFromTrash from "@material-ui/icons/RestoreFromTrash";
 import LockIcon from "@material-ui/icons/Lock";
@@ -32,7 +33,7 @@ import {
   deleteDepend,
   destroy,
   gitPull,
-  UpdateDesc,
+  UpdateField,
   pruneBranch
 } from "../../api/repository";
 import EditField from "../../components/editField";
@@ -50,10 +51,13 @@ class RepositoryTable extends React.Component {
     super(props);
     this.state = {
       destroyDialogShow: false,
-      editDesc: {
+      editField: {
         id: 0,
-        show: false,
-        desc: ""
+        open: false,
+        rows: 1,
+        desc: "",
+        field: "",
+        fieldContent: ""
       }
     };
     this.destroyId = 0; //记录当前要删除的id
@@ -105,35 +109,35 @@ class RepositoryTable extends React.Component {
       .catch(() => {});
   }
 
-  clickEditDesc(row) {
+  clickEditField(row, inputRows, desc, field) {
     this.setState({
-      editDesc: {
+      editField: {
         id: row.ID,
-        show: true,
-        desc: row.Desc
+        open: true,
+        rows: inputRows,
+        desc: desc,
+        field: field,
+        fieldContent: row[field]
       }
     });
   }
-  editDescSuccess(id, field, desc) {
-    UpdateDesc({ id, desc })
+  editFieldSuccess(id, field, fieldContent) {
+    UpdateField({ id, field, fieldContent })
       .then(() => {
-        this.setState({
-          editDesc: {
-            id: 0,
-            show: false,
-            desc: ""
-          }
-        });
+        this.closeResetEditFieldDialog();
         this.props.refresh();
       })
       .catch(() => {});
   }
-  closeEditDescDialog() {
+  closeResetEditFieldDialog() {
     this.setState({
-      editDesc: {
+      editField: {
         id: 0,
-        show: false,
-        desc: ""
+        open: false,
+        rows: 1,
+        desc: "",
+        field: "",
+        fieldContent: ""
       }
     });
   }
@@ -146,6 +150,7 @@ class RepositoryTable extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
+              <TableCell align="center">仓库地址</TableCell>
               <TableCell align="center">仓库名字</TableCell>
               <TableCell align="center">克隆状态</TableCell>
               <TableCell align="center">
@@ -161,7 +166,6 @@ class RepositoryTable extends React.Component {
                 备注
                 <HelperTooltips help="点击可以修改" />
               </TableCell>
-              <TableCell align="center">仓库地址</TableCell>
               <TableCell align="center">依赖工具</TableCell>
               <TableCell align="center">操作</TableCell>
             </TableRow>
@@ -172,7 +176,31 @@ class RepositoryTable extends React.Component {
                 <TableCell component="th" scope="row">
                   {row.ID}
                 </TableCell>
-                <TableCell align="center">{row.Name}</TableCell>
+                <TableCell align="center">
+                  <Tooltip title={row.Url} interactive>
+                    <IconButton color="primary">
+                      <LinkIcon />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon
+                    style={{
+                      fontSize: 14,
+                      marginRight: 10,
+                      cursor: "pointer"
+                    }}
+                    onClick={this.clickEditField.bind(
+                      this,
+                      row,
+                      1,
+                      "标题",
+                      "Name"
+                    )}
+                    color="primary"
+                  />
+                  {row.Name}
+                </TableCell>
                 <TableCell align="center">
                   <RepositoryStatus status={row.Status} />
                 </TableCell>
@@ -216,16 +244,15 @@ class RepositoryTable extends React.Component {
                   >
                     <IconButton
                       color="primary"
-                      onClick={this.clickEditDesc.bind(this, row)}
+                      onClick={this.clickEditField.bind(
+                        this,
+                        row,
+                        8,
+                        "描述",
+                        "Desc"
+                      )}
                     >
                       <Announcement />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
-                <TableCell align="center">
-                  <Tooltip title={row.Url} interactive>
-                    <IconButton color="primary">
-                      <LinkIcon />
                     </IconButton>
                   </Tooltip>
                 </TableCell>
@@ -271,14 +298,14 @@ class RepositoryTable extends React.Component {
           </TableBody>
         </Table>
         <EditField
-          id={this.state.editDesc.id}
-          open={this.state.editDesc.show}
-          desc="描述"
-          rows={8}
-          field="desc"
-          fieldContent={this.state.editDesc.desc}
-          onClose={this.closeEditDescDialog.bind(this)}
-          editSuccess={this.editDescSuccess.bind(this)}
+          id={this.state.editField.id}
+          open={this.state.editField.open}
+          desc={this.state.editField.desc}
+          rows={this.state.editField.rows}
+          field={this.state.editField.field}
+          fieldContent={this.state.editField.fieldContent}
+          onClose={this.closeResetEditFieldDialog.bind(this)}
+          editSuccess={this.editFieldSuccess.bind(this)}
         />
         <Dialog
           open={this.state.destroyDialogShow}

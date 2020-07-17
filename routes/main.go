@@ -42,6 +42,7 @@ func InitRouter() *gin.Engine {
 		v1.GET("/system/info", middlewares.RoleReporter(), controller.SystemInfo)
 		//仓库相关
 		v1.GET("/repositories", middlewares.RoleReporter(), controller.RepositoryFindAll)
+		v1.GET("/repository_find", middlewares.RoleReporter(), controller.RepositoryFind)
 		v1.POST("/repository/create", middlewares.RoleDeveloper(), controller.RepositoryCreate)
 		v1.GET("/repository/delete", middlewares.RoleAdmin(), controller.RepositoryDestroy)
 		v1.GET("/repository/git_pull", middlewares.RoleDeveloper(), controller.RepositoryGitPull)
@@ -49,12 +50,12 @@ func InitRouter() *gin.Engine {
 		v1.GET("/repository/prune_branch", middlewares.RoleDeveloper(), controller.RepositoryPruneBranch)
 		v1.GET("/repository/delete_depend", middlewares.RoleDeveloper(), controller.RepositoryDeleteDepend)
 		v1.GET("/repository/get_script", middlewares.RoleReporter(), controller.RepositoryScript)
-		v1.GET("/repository/update_desc", middlewares.RoleDeveloper(), controller.RepositoryUpdateDesc)
+		v1.GET("/repository/update_field", middlewares.RoleDeveloper(), controller.RepositoryUpdateField)
 
 		//任务分类
 		v1.GET("/categories", middlewares.RoleReporter(), controller.CategoryFindAll)
 		v1.POST("/category/create", middlewares.RoleDeveloper(), controller.CategoryCreate)
-		v1.GET("/category/update_desc", middlewares.RoleDeveloper(), controller.CategoryUpdateDesc)
+		v1.GET("/category/update_field", middlewares.RoleDeveloper(), controller.CategoryUpdateField)
 		v1.GET("/category/delete", middlewares.RoleAdmin(), controller.CategoryDestroy)
 		//任务
 		v1.GET("/jobs", middlewares.RoleReporter(), controller.JobFindAll)

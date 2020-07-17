@@ -8,7 +8,7 @@ import (
 
 func CategoryFindAll(c *gin.Context) {
 
-	result,err := new(models.Category).CategoryFindAll()
+	result, err := new(models.Category).CategoryFindAll()
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -42,7 +42,7 @@ func CategoryCreate(c *gin.Context) {
 
 	err := category.Create()
 
-	if  err != nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   err.Error(),
@@ -57,20 +57,24 @@ func CategoryCreate(c *gin.Context) {
 		"msg":    "创建成功",
 	})
 }
-func CategoryUpdateDesc(c *gin.Context)  {
+
+func CategoryUpdateField(c *gin.Context) {
 
 	id := c.Query("id")
-	desc := c.Query("desc")
+	field := c.Query("field")
+	fieldContent := c.Query("fieldContent")
 
-	err := new(models.Category).UpdateDesc(id,desc)
+	err := new(models.Category).UpdateFieldContent(id, field, fieldContent)
+
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   err.Error(),
-			"msg":    "数据库更新出错",
+			"data":   "",
+			"msg":    err.Error(),
 		})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
 		"data":   id,

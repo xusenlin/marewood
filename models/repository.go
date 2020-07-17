@@ -1,9 +1,11 @@
 package models
 
 import (
+	"MareWood/helper"
 	"MareWood/sql"
 	"errors"
 	"github.com/jinzhu/gorm"
+	"strings"
 )
 
 const ( //仓库拉取状态
@@ -15,6 +17,8 @@ const ( //仓库工作状态
 	RepoJobStatusBusy     = 1
 	RepoJobStatusLeisured = 0
 )
+
+var fillWhiteListForRepository = []string{"desc", "name"}
 
 type Repository struct {
 	gorm.Model
@@ -29,11 +33,22 @@ type Repository struct {
 	TerminalInfo string `gorm:"type:varchar(1000)"`
 }
 
-func (r *Repository) UpdateDesc(id string, desc string) (err error) {
-	err =
-		sql.DB.Model(&r).Where("id = ?", id).
-			UpdateColumn("desc", desc).Error
-	return
+type RepositoryPageResult struct {
+	List      []*Repository
+	Total     int
+	PageNum   int
+	PageSize  int
+	TotalPage int
+}
+
+func (r *Repository) UpdateFieldContent(id string, field string, fieldContent string) (err error) {
+	field = strings.ToLower(field)
+
+	if !helper.InStrArr(field, fillWhiteListForRepository) {
+		return errors.New("不能修改当前字段！")
+	}
+
+	return sql.DB.Model(&r).Where("id = ?", id).Update(field, fieldContent).Error
 }
 
 func (r *Repository) Create() error {
@@ -47,4 +62,36 @@ func (r *Repository) Create() error {
 
 	return sql.DB.Create(&r).Error
 
+}
+
+func FindRepository(pageNum int, pageSize int, maps interface{}) (RepositoryPageResult, error) {
+	var result RepositoryPageResult
+	var err error
+
+	result.List,result.Total, err = GetRepositories(pageNum, pageSize, maps)
+	if err != nil {
+		return result, err
+	}
+
+	result.PageSize = pageSize
+	result.PageNum = pageNum
+
+	result.TotalPage = helper.ComputeTotalPage(result.Total, pageSize)
+
+	return result, nil
+}
+
+func GetRepositories(pageNum int, pageSize int, maps interface{}) ([]*Repository, int, error) {
+
+	var total int
+	var repositories []*Repository
+
+	query := sql.DB.Model(&Repository{}).Where(maps).Order("updated_at desc")
+	query.Count(&total)
+	err := query.Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(&repositories).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return repositories, 0, err
+	}
+	return repositories, total, nil
 }

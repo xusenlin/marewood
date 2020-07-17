@@ -194,26 +194,7 @@ func JobUpdateField(c *gin.Context) {
 	field := c.Query("field")
 	fieldContent := c.Query("fieldContent")
 
-	var job models.Job
-
-	if sql.DB.First(&job, id).Error != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    sql.DB.Error.Error(),
-		})
-		return
-	}
-	if job.LockPassword != "" {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    "请先解锁任务",
-		})
-		return
-	}
-
-	err := job.UpdateFieldContent(field, fieldContent)
+	err := new(models.Job).UpdateFieldContent(id,field,fieldContent)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{

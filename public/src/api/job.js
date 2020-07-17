@@ -79,7 +79,7 @@ export function RunJob(params) {
 }
 
 /**
- * 更新任务描述
+ * 更新任务白名单字段
  * @param params
  * @returns {AxiosPromise}
  */
