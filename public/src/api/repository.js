@@ -1,6 +1,4 @@
-import request from '../utils/request.js'
-
-
+import request from "../utils/request.js";
 
 /**
  * 更新仓库代码
@@ -8,11 +6,11 @@ import request from '../utils/request.js'
  * @returns {AxiosPromise}
  */
 export function gitPull(params) {
-    return request({
-        url:  '/repository/git_pull',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/repository/git_pull",
+    method: "get",
+    params: params
+  });
 }
 
 /**
@@ -21,13 +19,12 @@ export function gitPull(params) {
  * @returns {AxiosPromise}
  */
 export function gitBranch(params) {
-    return request({
-        url:  '/repository/git_branch',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/repository/git_branch",
+    method: "get",
+    params: params
+  });
 }
-
 
 /**
  * 通过仓库 ID 裁剪支
@@ -35,16 +32,12 @@ export function gitBranch(params) {
  * @returns {AxiosPromise}
  */
 export function pruneBranch(params) {
-    return request({
-        url:  '/repository/prune_branch',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/repository/prune_branch",
+    method: "get",
+    params: params
+  });
 }
-
-
-
-
 
 /**
  * 删除仓库依赖
@@ -52,15 +45,12 @@ export function pruneBranch(params) {
  * @returns {AxiosPromise}
  */
 export function deleteDepend(params) {
-    return request({
-        url:  '/repository/delete_depend',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/repository/delete_depend",
+    method: "get",
+    params: params
+  });
 }
-
-
-
 
 /**
  * 获取全部仓库
@@ -68,13 +58,12 @@ export function deleteDepend(params) {
  * @returns {AxiosPromise}
  */
 export function repositories(params) {
-    return request({
-        url:  '/repositories',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/repositories",
+    method: "get",
+    params: params
+  });
 }
-
 
 /**
  * 删除仓库
@@ -82,14 +71,12 @@ export function repositories(params) {
  * @returns {AxiosPromise}
  */
 export function destroy(params) {
-    return request({
-        url:  '/repository/delete',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/repository/delete",
+    method: "get",
+    params: params
+  });
 }
-
-
 
 /**
  * 编辑
@@ -97,13 +84,12 @@ export function destroy(params) {
  * @returns {AxiosPromise}
  */
 export function create(params) {
-    return request({
-        url:  '/repository/create',
-        method: 'post',
-        data: params
-    })
+  return request({
+    url: "/repository/create",
+    method: "post",
+    data: params
+  });
 }
-
 
 /**
  * 获取仓库可执行脚本
@@ -111,11 +97,11 @@ export function create(params) {
  * @returns {AxiosPromise}
  */
 export function getScript(params) {
-    return request({
-        url:  '/repository/get_script',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/repository/get_script",
+    method: "get",
+    params: params
+  });
 }
 
 /**
@@ -124,9 +110,9 @@ export function getScript(params) {
  * @returns {AxiosPromise}
  */
 export function UpdateDesc(params) {
-    return request({
-        url:  '/repository/update_desc',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/repository/update_desc",
+    method: "get",
+    params: params
+  });
 }

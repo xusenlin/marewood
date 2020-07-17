@@ -1,4 +1,4 @@
-import request from '../utils/request.js'
+import request from "../utils/request.js";
 
 /**
  * 获取全部任务
@@ -6,11 +6,11 @@ import request from '../utils/request.js'
  * @returns {AxiosPromise}
  */
 export function jobs(params) {
-    return request({
-        url:  '/jobs',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/jobs",
+    method: "get",
+    params: params
+  });
 }
 
 /**
@@ -19,11 +19,11 @@ export function jobs(params) {
  * @returns {AxiosPromise}
  */
 export function jobsFind(params) {
-    return request({
-        url:  '/jobs_find',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/jobs_find",
+    method: "get",
+    params: params
+  });
 }
 
 /**
@@ -32,13 +32,12 @@ export function jobsFind(params) {
  * @returns {AxiosPromise}
  */
 export function create(params) {
-    return request({
-        url:  '/job/create',
-        method: 'post',
-        data: params
-    })
+  return request({
+    url: "/job/create",
+    method: "post",
+    data: params
+  });
 }
-
 
 /**
  * 修改任务分支
@@ -46,11 +45,11 @@ export function create(params) {
  * @returns {AxiosPromise}
  */
 export function updateBranch(params) {
-    return request({
-        url:  '/job/update_branch',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/job/update_branch",
+    method: "get",
+    params: params
+  });
 }
 
 /**
@@ -59,11 +58,11 @@ export function updateBranch(params) {
  * @returns {AxiosPromise}
  */
 export function destroy(params) {
-    return request({
-        url:  '/job/delete',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/job/delete",
+    method: "get",
+    params: params
+  });
 }
 
 /**
@@ -72,11 +71,11 @@ export function destroy(params) {
  * @returns {AxiosPromise}
  */
 export function RunJob(params) {
-    return request({
-        url:  '/job/run',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/job/run",
+    method: "get",
+    params: params
+  });
 }
 
 /**
@@ -85,11 +84,11 @@ export function RunJob(params) {
  * @returns {AxiosPromise}
  */
 export function UpdateField(params) {
-    return request({
-        url:  '/job/update_field',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/job/update_field",
+    method: "get",
+    params: params
+  });
 }
 
 /**
@@ -98,9 +97,9 @@ export function UpdateField(params) {
  * @returns {AxiosPromise}
  */
 export function jobLock(params) {
-    return request({
-        url:  '/job/lock',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/job/lock",
+    method: "get",
+    params: params
+  });
 }

@@ -1,4 +1,4 @@
-import request from '../utils/request.js'
+import request from "../utils/request.js";
 
 /**
  * 获取全部分类
@@ -6,13 +6,12 @@ import request from '../utils/request.js'
  * @returns {AxiosPromise}
  */
 export function categories(params) {
-    return request({
-        url:  '/categories',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/categories",
+    method: "get",
+    params: params
+  });
 }
-
 
 /**
  * 删除分类
@@ -20,11 +19,11 @@ export function categories(params) {
  * @returns {AxiosPromise}
  */
 export function destroy(params) {
-    return request({
-        url:  '/category/delete',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/category/delete",
+    method: "get",
+    params: params
+  });
 }
 
 /**
@@ -33,11 +32,11 @@ export function destroy(params) {
  * @returns {AxiosPromise}
  */
 export function create(params) {
-    return request({
-        url:  '/category/create',
-        method: 'post',
-        data: params
-    })
+  return request({
+    url: "/category/create",
+    method: "post",
+    data: params
+  });
 }
 
 /**
@@ -46,9 +45,9 @@ export function create(params) {
  * @returns {AxiosPromise}
  */
 export function UpdateDesc(params) {
-    return request({
-        url:  '/category/update_desc',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/category/update_desc",
+    method: "get",
+    params: params
+  });
 }

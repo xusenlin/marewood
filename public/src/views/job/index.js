@@ -1,39 +1,35 @@
-import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
-import {
-  Tab, Tabs, Paper, Fab
-} from '@material-ui/core';
-import Pagination from '@material-ui/lab/Pagination';
-import {jobsFind} from '../../api/job'
-import {categories} from '../../api/category'
-import CategoriesTable from "./categoriesTable"
-import Edit from "./edit"
-import AddIcon from '@material-ui/icons/Add';
-
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { Tab, Tabs, Paper, Fab } from "@material-ui/core";
+import Pagination from "@material-ui/lab/Pagination";
+import { jobsFind } from "../../api/job";
+import { categories } from "../../api/category";
+import CategoriesTable from "./categoriesTable";
+import Edit from "./edit";
+import AddIcon from "@material-ui/icons/Add";
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     marginTop: theme.spacing(1),
-    overflowX: 'auto',
+    overflowX: "auto"
   },
   table: {
-    minWidth: 650,
+    minWidth: 650
   },
   fab: {
-    position: 'absolute',
+    position: "absolute",
     bottom: theme.spacing(2),
-    right: theme.spacing(2),
+    right: theme.spacing(2)
   },
   pagination: {
-    width: '100%',
+    width: "100%",
     display: "flex",
     justifyContent: "center",
     textAlign: "center",
-    padding: theme.spacing(3),
+    padding: theme.spacing(3)
   }
 });
-
 
 class Jobs extends React.Component {
   constructor(props) {
@@ -54,52 +50,53 @@ class Jobs extends React.Component {
   }
 
   componentDidMount() {
-
-    categories().then(r => {
-      if (r.length === 0) {
-        alert("请先新建分类");
-        return
-      }
-      this.setState({categories: r}, () => {
-        this.setTabAndJobsByCategoryId(0)
-      });
-    }).catch(() => {
-    })
+    categories()
+      .then(r => {
+        if (r.length === 0) {
+          alert("请先新建分类");
+          return;
+        }
+        this.setState({ categories: r }, () => {
+          this.setTabAndJobsByCategoryId(0);
+        });
+      })
+      .catch(() => {});
   }
 
   changePagination(v, pageNum) {
-    if(pageNum === this.state.pageNum){
-      return
+    if (pageNum === this.state.pageNum) {
+      return;
     }
-    this.setTabAndJobsByCategoryId(this.state.category, pageNum)
+    this.setTabAndJobsByCategoryId(this.state.category, pageNum);
   }
 
   tabsChange(event, index) {
-    this.setTabAndJobsByCategoryId(index)
+    this.setTabAndJobsByCategoryId(index);
   }
 
   setTabAndJobsByCategoryId(index = 0, pageNum = 1, pageSize = 8) {
     let categoryId = this.state.categories[index].ID;
     if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
+      clearTimeout(this.timeoutId);
     }
-    jobsFind({categoryId, pageNum, pageSize}).then(r => {
-      this.setState({
-        category: index,
-        jobs: r.List,
-        totalPage: r.TotalPage,
-        pageNum: pageNum
-      });
-      for (let i = 0; i < r.List.length; i++) {
-        if (r.List[i].Status === 3) {
-          this.timeoutId = setTimeout(() => {
-            this.setTabAndJobsByCategoryId(index,pageNum,pageSize)
-          }, 2000);
-          return
+    jobsFind({ categoryId, pageNum, pageSize })
+      .then(r => {
+        this.setState({
+          category: index,
+          jobs: r.List,
+          totalPage: r.TotalPage,
+          pageNum: pageNum
+        });
+        for (let i = 0; i < r.List.length; i++) {
+          if (r.List[i].Status === 3) {
+            this.timeoutId = setTimeout(() => {
+              this.setTabAndJobsByCategoryId(index, pageNum, pageSize);
+            }, 2000);
+            return;
+          }
         }
-      }
-    }).catch(() => {
-    })
+      })
+      .catch(() => {});
   }
 
   editDialogShow() {
@@ -110,7 +107,7 @@ class Jobs extends React.Component {
         categoryId: category.ID,
         categoryName: category.Name
       }
-    })
+    });
   }
 
   createSuccess() {
@@ -135,7 +132,7 @@ class Jobs extends React.Component {
   }
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <div>
         <Paper className={classes.root}>
@@ -146,33 +143,45 @@ class Jobs extends React.Component {
             centered
             onChange={this.tabsChange.bind(this)}
           >
-            {
-              this.state.categories.map(category => (
-                <Tab key={category.ID} label={category.Name}/>
-              ))
-            }
+            {this.state.categories.map(category => (
+              <Tab key={category.ID} label={category.Name} />
+            ))}
           </Tabs>
-          <CategoriesTable tableData={this.state.jobs}
-                           refresh={this.setTabAndJobsByCategoryId.bind(this, this.state.category)}/>
+          <CategoriesTable
+            tableData={this.state.jobs}
+            refresh={this.setTabAndJobsByCategoryId.bind(
+              this,
+              this.state.category
+            )}
+          />
           <div className={classes.pagination}>
-            <Pagination count={this.state.totalPage} page={this.state.pageNum}
-                        onChange={this.changePagination.bind(this)} color="primary" shape="rounded"/>
+            <Pagination
+              count={this.state.totalPage}
+              page={this.state.pageNum}
+              onChange={this.changePagination.bind(this)}
+              color="primary"
+              shape="rounded"
+            />
           </div>
         </Paper>
-        <Fab color="primary" className={classes.fab} aria-label="add" onClick={this.editDialogShow.bind(this)}>
-          <AddIcon/>
+        <Fab
+          color="primary"
+          className={classes.fab}
+          aria-label="add"
+          onClick={this.editDialogShow.bind(this)}
+        >
+          <AddIcon />
         </Fab>
-        <Edit show={this.state.editDialog.show}
-              categoryId={this.state.editDialog.categoryId}
-              categoryName={this.state.editDialog.categoryName}
-              handleClose={this.createClose.bind(this)}
-              createSuccess={this.createSuccess.bind(this)}
+        <Edit
+          show={this.state.editDialog.show}
+          categoryId={this.state.editDialog.categoryId}
+          categoryName={this.state.editDialog.categoryName}
+          handleClose={this.createClose.bind(this)}
+          createSuccess={this.createSuccess.bind(this)}
         />
       </div>
     );
   }
-
 }
 
-
-export default withStyles(styles)(Jobs)
+export default withStyles(styles)(Jobs);

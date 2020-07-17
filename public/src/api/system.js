@@ -1,4 +1,4 @@
-import request from '../utils/request.js'
+import request from "../utils/request.js";
 
 /**
  * 系统信息
@@ -6,10 +6,9 @@ import request from '../utils/request.js'
  * @returns {AxiosPromise}
  */
 export function systemInfo(params) {
-    return request({
-        url:  '/system/info',
-        method: 'get',
-        params: params
-    })
+  return request({
+    url: "/system/info",
+    method: "get",
+    params: params
+  });
 }
-

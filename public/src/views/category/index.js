@@ -1,35 +1,45 @@
-import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
 import {
-  Table, TableRow, TableBody, TableHead, TableCell, Paper, Fab, IconButton, Button,
-  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Tooltip
-} from '@material-ui/core';
-import EditCategory from './edit.js'
-import {categories, destroy, UpdateDesc} from '../../api/category.js'
+  Table,
+  TableRow,
+  TableBody,
+  TableHead,
+  TableCell,
+  Paper,
+  Fab,
+  IconButton,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Tooltip
+} from "@material-ui/core";
+import EditCategory from "./edit.js";
+import { categories, destroy, UpdateDesc } from "../../api/category.js";
 import EditField from "../../components/editField.js";
 import Snackbar from "../../components/snackbar";
-import Announcement from '@material-ui/icons/Announcement';
-
-
+import Announcement from "@material-ui/icons/Announcement";
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     marginTop: theme.spacing(1),
-    overflowX: 'auto',
+    overflowX: "auto"
   },
   table: {
-    minWidth: 650,
+    minWidth: 650
   },
   fab: {
-    position: 'absolute',
+    position: "absolute",
     bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
+    right: theme.spacing(2)
+  }
 });
-
 
 class CategoryTable extends React.Component {
   constructor(props) {
@@ -48,45 +58,49 @@ class CategoryTable extends React.Component {
   }
 
   componentDidMount() {
-    this.getTableData()
+    this.getTableData();
   }
 
   getTableData() {
-    categories().then(r => {
-      this.setState({tableData: r})
-    }).catch(() => {
-    })
+    categories()
+      .then(r => {
+        this.setState({ tableData: r });
+      })
+      .catch(() => {});
   }
 
   destroyDialogOpen(id) {
     this.destroyId = id;
-    this.setState({destroyDialogShow: true})
+    this.setState({ destroyDialogShow: true });
   }
 
   destroyDialogClose() {
-    this.setState({destroyDialogShow: false})
+    this.setState({ destroyDialogShow: false });
   }
 
   destroyConfirm() {
-    destroy({id: this.destroyId}).then(r => {
-      Snackbar.success("删除成功！");
-      this.setState({destroyDialogShow: false});
-      this.getTableData()
-    }).catch(() => {})
+    destroy({ id: this.destroyId })
+      .then(r => {
+        Snackbar.success("删除成功！");
+        this.setState({ destroyDialogShow: false });
+        this.getTableData();
+      })
+      .catch(() => {});
   }
 
   editDialogShow() {
-    this.setState({editCategoryShow: true})
+    this.setState({ editCategoryShow: true });
   }
 
   editDialogClose() {
-    this.setState({editCategoryShow: false})
+    this.setState({ editCategoryShow: false });
   }
 
   createCategorySuccess() {
-    this.setState({editCategoryShow: false});
-    this.getTableData()
+    this.setState({ editCategoryShow: false });
+    this.getTableData();
   }
+
   clickEditDesc(row) {
     this.setState({
       editDesc: {
@@ -98,16 +112,18 @@ class CategoryTable extends React.Component {
   }
 
   editDescSuccess(id, field, desc) {
-    UpdateDesc({id,desc}).then(() => {
-      this.setState({
-        editDesc: {
-          id: 0,
-          show: false,
-          desc: ""
-        }
-      });
-      this.getTableData()
-    }).catch(() => {})
+    UpdateDesc({ id, desc })
+      .then(() => {
+        this.setState({
+          editDesc: {
+            id: 0,
+            show: false,
+            desc: ""
+          }
+        });
+        this.getTableData();
+      })
+      .catch(() => {});
   }
   closeEditDescDialog() {
     this.setState({
@@ -116,10 +132,10 @@ class CategoryTable extends React.Component {
         show: false,
         desc: ""
       }
-    })
+    });
   }
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <div>
         <Paper className={classes.root}>
@@ -143,17 +159,28 @@ class CategoryTable extends React.Component {
                   <TableCell align="left">{row.Name}</TableCell>
                   <TableCell align="left">{row.JobQuantity}</TableCell>
                   <TableCell align="left">
-                    <Tooltip title={row.Desc} classes={{tooltip: classes.tooltip}} interactive>
-                      <IconButton color="primary" onClick={this.clickEditDesc.bind(this, row)}>
-                        <Announcement/>
+                    <Tooltip
+                      title={row.Desc}
+                      classes={{ tooltip: classes.tooltip }}
+                      interactive
+                    >
+                      <IconButton
+                        color="primary"
+                        onClick={this.clickEditDesc.bind(this, row)}
+                      >
+                        <Announcement />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
                   <TableCell align="left">{row.CreatedAt}</TableCell>
                   <TableCell align="left">
                     <Tooltip title="删除分类">
-                      <IconButton edge="start" color="primary" onClick={this.destroyDialogOpen.bind(this, row.ID)}>
-                        <DeleteIcon/>
+                      <IconButton
+                        edge="start"
+                        color="primary"
+                        onClick={this.destroyDialogOpen.bind(this, row.ID)}
+                      >
+                        <DeleteIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -175,16 +202,28 @@ class CategoryTable extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.destroyDialogClose.bind(this)} color="primary">
+            <Button
+              onClick={this.destroyDialogClose.bind(this)}
+              color="primary"
+            >
               关闭
             </Button>
-            <Button onClick={this.destroyConfirm.bind(this)} color="secondary" autoFocus>
+            <Button
+              onClick={this.destroyConfirm.bind(this)}
+              color="secondary"
+              autoFocus
+            >
               确认
             </Button>
           </DialogActions>
         </Dialog>
-        <Fab color="primary" className={classes.fab} aria-label="add" onClick={this.editDialogShow.bind(this)}>
-          <AddIcon/>
+        <Fab
+          color="primary"
+          className={classes.fab}
+          aria-label="add"
+          onClick={this.editDialogShow.bind(this)}
+        >
+          <AddIcon />
         </Fab>
         <EditField
           id={this.state.editDesc.id}
@@ -194,7 +233,8 @@ class CategoryTable extends React.Component {
           field="desc"
           fieldContent={this.state.editDesc.desc}
           onClose={this.closeEditDescDialog.bind(this)}
-          editSuccess={this.editDescSuccess.bind(this)}/>
+          editSuccess={this.editDescSuccess.bind(this)}
+        />
         <EditCategory
           show={this.state.editCategoryShow}
           handleClose={this.editDialogClose.bind(this)}
@@ -203,8 +243,6 @@ class CategoryTable extends React.Component {
       </div>
     );
   }
-
 }
 
-
-export default withStyles(styles)(CategoryTable)
+export default withStyles(styles)(CategoryTable);
