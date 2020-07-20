@@ -10,7 +10,7 @@
 <img src="https://img.shields.io/badge/material ui-4.9.10-green"/>
 </div>
 
-![Job](http://xusenlin.com/assets/images/marewood/v0.3.png)
+![Job](http://xusenlin.com/assets/images/marewood/v1.0.png)
 ![Repo](http://xusenlin.com/assets/images/marewood/repo.png?v=2)
 
 # MareWood
