@@ -191,19 +191,29 @@ func RepositoryDestroy(c *gin.Context) {
 
 func RepositoryGitPull(c *gin.Context) {
 
-	var repository models.Repository
 	id := c.Query("id")
+	out, err := serviceRepository.GitPull(id)
 
-	if sql.DB.First(&repository, id).Error != nil {
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    sql.DB.Error.Error(),
+			"msg":    err.Error(),
 		})
 		return
 	}
 
-	out, err := serviceRepository.GitPull(strconv.Itoa(int(repository.ID)))
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   out,
+		"msg":    "执行成功",
+	})
+}
+
+func RepositoryDiscardChange(c *gin.Context)  {
+
+	id := c.Query("id")
+	out, err := serviceRepository.DiscardChange(id)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{

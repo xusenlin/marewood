@@ -23,7 +23,7 @@
     "build:dev": "env-cmd -f .env.dev npm run build",
     "build:devtest": "env-cmd -f .env.devtest npm run build",
     "build:test": "env-cmd -f .env.test npm run build",
-    "build:release": "env-cmd -f .env.release npm run build",
+    "build:pre": "env-cmd -f .env.pre npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

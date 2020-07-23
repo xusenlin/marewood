@@ -33,9 +33,10 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 - 服务器请先安装 git、node、npm，建议同时安装 cnpm 和 yarn 以供选择。
 - 修改 config.json 来配置 MareWood 启动的端口号、域名、和支持的前端工具。
 - 编译 MareWood 并放入后台运行。
-- 客户端在 public 目录，请安装依赖并修改正式请求地址然后运行 npm run build 即可。（请求地址=> /public/src/config/url.js）
 
-其他：MareWood 提供 http 访问，建议 nginx 提供 https 静态文件服务器（指向resources\webs）这样可以灵活的选择 http 或者 https 去访问打包的前端项目。
+> 客户端在 public 目录,特殊需求可以自行修改，
+
+其他：MareWood 提供 http 访问，建议 nginx 提供 https 静态文件服务器（nginx指向resources\webs ,配置好你的 OtherAddressUrl 字段，可留空）这样可以灵活的选择 http 或者 https 去访问打包的前端项目。
 
 
 那么，一个 React 或者 Vue 项目如何配置多个打包命令呢？请移步
@@ -58,6 +59,7 @@ http://xusenlin.com/article?key=BzV0K2
 
 # 更新日志
 ### V1.0未发布
+* 添加丢弃本地仓库变动的功能 （2020-07-23）
 * 修复运行老的任务分支不存在的 BUG (2020-06-25)
 * 可以快捷修改更多字段和添加任务分页
 * 缩短必要时的任务查询时间，完成打包及时知道

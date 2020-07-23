@@ -69,7 +69,7 @@ class CategoriesTable extends React.Component {
       }
     };
     this.destroyId = 0;
-    this.addressUrl = getSystemInfo("AddressUrl");
+    this.addressUrl = getSystemInfo("OtherAddressUrl") || [];
   }
   toggleLock(row) {
     this.setState({
@@ -159,13 +159,12 @@ class CategoriesTable extends React.Component {
       })
       .catch(() => {});
   }
-
-  openJobUrl(row) {
+  openJobUrl(row, url) {
     if (row.Status !== 1) {
       Snackbar.error("任务没有打包成功！");
       return;
     }
-    window.open(this.addressUrl + row.Url);
+    window.open(url);
   }
   closeLockJobDialog() {
     this.setState({
@@ -347,10 +346,25 @@ class CategoriesTable extends React.Component {
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ color: "#fff" }}
-                            href={this.addressUrl + row.Url}
+                            href={window.location.origin + row.Url}
                           >
-                            {this.addressUrl + row.Url}
+                            {window.location.origin + row.Url}
                           </a>
+                          {this.addressUrl.map(url => {
+                            return (
+                              <React.Fragment key={url}>
+                                <br />
+                                <a
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{ color: "#fff" }}
+                                  href={url + "/" + row.ID}
+                                >
+                                  {url + "/" + row.ID}
+                                </a>
+                              </React.Fragment>
+                            );
+                          })}
                         </React.Fragment>
                       )
                     }
@@ -358,14 +372,21 @@ class CategoriesTable extends React.Component {
                   >
                     <IconButton
                       color="primary"
-                      onClick={this.openJobUrl.bind(this, row)}
+                      onClick={this.openJobUrl.bind(
+                        this,
+                        row,
+                        window.location.origin + row.WebHookUrl
+                      )}
                     >
                       {row.Status !== 1 ? <LinkOffIcon /> : <LinkIcon />}
                     </IconButton>
                   </Tooltip>
                 </TableCell>
                 <TableCell align="center">
-                  <Tooltip title={this.addressUrl + row.WebHookUrl} interactive>
+                  <Tooltip
+                    title={window.location.origin + row.WebHookUrl}
+                    interactive
+                  >
                     <IconButton color="primary">
                       <UsbIcon />
                     </IconButton>

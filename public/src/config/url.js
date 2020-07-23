@@ -1,34 +1,23 @@
-const devApiUrl = "http://localhost:8081"; //本地开发环境
-const buildDevApiUrl = "http://192.168.48.192:9088"; //打包开发环境
-const buildDevTestApiUrl = "http://192.168.48.192:9288"; //打包开发测试环境
-const buildTestApiUrl = "http://192.168.48.192:9188"; //打包测试环境
-const buildReleaseApiUrl = "http://localhost:8081"; //打包预发布环境
-const buildProApiUrl = "http://localhost:8081"; //打包正式环境
+const nodeEnv = process.env.NODE_ENV;
+const appMode = process.env.REACT_APP_MODE;
 
-let useApiUrl,
-  nodeEnv = process.env.NODE_ENV,
-  appMode = process.env.REACT_APP_MODE;
-
-if ("development" === nodeEnv) {
-  useApiUrl = devApiUrl;
-}
-
+let useApiUrl = "http://localhost:8081";
 if ("production" === nodeEnv) {
   switch (appMode) {
     case "buildDev":
-      useApiUrl = buildDevApiUrl;
+      useApiUrl = "http://192.168.48.192:9088";
       break;
     case "buildDevTest":
-      useApiUrl = buildDevTestApiUrl;
+      useApiUrl = "http://192.168.48.192:9288";
       break;
     case "buildTest":
-      useApiUrl = buildTestApiUrl;
+      useApiUrl = "http://192.168.48.192:9288";
       break;
-    case "release":
-      useApiUrl = buildReleaseApiUrl;
+    case "buildPre":
+      useApiUrl = "http://192.168.48.192:9288";
       break;
     default:
-      useApiUrl = buildProApiUrl;
+      useApiUrl = window.location.origin;
       break;
   }
 }

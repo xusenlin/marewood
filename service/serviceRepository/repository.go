@@ -47,10 +47,12 @@ func GitClone(repositoryId string, gitUrl string, userName string, password stri
 	return string(out), nil
 }
 
-//通过仓库url更新仓库
 func GitPull(repositoryId string) (string, error) {
-
 	return RunCmdOnRepositoryDir(repositoryId, "git", "pull")
+}
+
+func DiscardChange(repositoryId string) (string, error) {
+	return RunCmdOnRepositoryDir(repositoryId, "git", "checkout",".")
 }
 
 func DeleteRepository(repositoryId string) error {

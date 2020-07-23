@@ -43,6 +43,7 @@ service.interceptors.response.use(
   },
   error => {
     Snackbar.error(error.message);
+    NProgress.done();
     return Promise.reject(error);
   }
 );

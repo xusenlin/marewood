@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import FormatClearIcon from "@material-ui/icons/FormatClear";
 import RestoreFromTrash from "@material-ui/icons/RestoreFromTrash";
 import LockIcon from "@material-ui/icons/Lock";
@@ -34,7 +35,8 @@ import {
   destroy,
   gitPull,
   UpdateField,
-  pruneBranch
+  pruneBranch,
+  discardChange
 } from "../../api/repository";
 import EditField from "../../components/editField";
 import { tooltip } from "../../assets/jss/common";
@@ -83,7 +85,13 @@ class RepositoryTable extends React.Component {
       })
       .catch(() => {});
   }
-
+  discardRepoChange(row) {
+    discardChange({ id: row.ID })
+      .then(() => {
+        Snackbar.success("执行 git checkout . 成功！");
+      })
+      .catch(() => {});
+  }
   destroyConfirm() {
     destroy({ id: this.destroyId })
       .then(r => {
@@ -167,7 +175,10 @@ class RepositoryTable extends React.Component {
                 <HelperTooltips help="点击可以修改" />
               </TableCell>
               <TableCell align="center">依赖工具</TableCell>
-              <TableCell align="center">操作</TableCell>
+              <TableCell align="center">
+                操作
+                <HelperTooltips help="删除的依赖会在任务执行时重新安装/丢弃本地修改用于修复安装依赖导致yarn.lock改变无法正常运行任务" />
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -260,7 +271,7 @@ class RepositoryTable extends React.Component {
                   <span className="tag">{row.DependTools.toUpperCase()}</span>
                 </TableCell>
                 <TableCell align="center">
-                  <Tooltip title="执行 GIT PULL 命令" interactive>
+                  <Tooltip title="更新仓库" interactive>
                     <IconButton
                       color="primary"
                       onClick={this.repositoryGitPull.bind(this, row)}
@@ -274,6 +285,14 @@ class RepositoryTable extends React.Component {
                       onClick={this.repositoryPruneBranch.bind(this, row)}
                     >
                       <FormatClearIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="丢弃本地仓库变动" interactive>
+                    <IconButton
+                      color="primary"
+                      onClick={this.discardRepoChange.bind(this, row)}
+                    >
+                      <RotateLeftIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="删除依赖" interactive>

@@ -129,3 +129,16 @@ export function UpdateField(params) {
     params: params
   });
 }
+
+/**
+ * 丢弃仓库文件改动
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function discardChange(params) {
+  return request({
+    url: "/repository/discard_change",
+    method: "get",
+    params: params
+  });
+}
