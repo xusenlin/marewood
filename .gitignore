@@ -16,7 +16,6 @@
 
 /resources
 *.db
-*.map
 
 # Editor directories and files
 .idea
