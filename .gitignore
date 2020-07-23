@@ -8,7 +8,6 @@
 /coverage
 
 # production
-/build
 
 # misc
 .DS_Store
@@ -17,6 +16,7 @@
 
 /resources
 *.db
+*.map
 
 # Editor directories and files
 .idea
@@ -28,3 +28,4 @@
 *.sw*
 
 *.db
+
