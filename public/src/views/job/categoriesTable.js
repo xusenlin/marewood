@@ -375,7 +375,7 @@ class CategoriesTable extends React.Component {
                       onClick={this.openJobUrl.bind(
                         this,
                         row,
-                        window.location.origin + row.WebHookUrl
+                        window.location.origin + row.Url
                       )}
                     >
                       {row.Status !== 1 ? <LinkOffIcon /> : <LinkIcon />}
