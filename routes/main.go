@@ -28,6 +28,7 @@ func InitRouter() *gin.Engine {
 		})
 
 		r.POST(config.Cfg.WebHookUrl, controller.JobWebHook)
+		r.Any("/websocket", controller.WebsocketMsg)
 	}
 
 	v1Public := r.Group("/v1")

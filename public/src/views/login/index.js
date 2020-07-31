@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -12,7 +13,9 @@ import Container from "@material-ui/core/Container";
 import Copyright from "../../components/copyright";
 import { setToken, setUserInfo } from "../../utils/dataStorage";
 import { login } from "../../api/user";
+import { connWebsocket } from "../../utils/websocket.js";
 const Logo = require("../../assets/img/logo.svg");
+
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -33,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignIn() {
+const SignIn = props => {
   const classes = useStyles();
 
   let rememberMe = localStorage.getItem("RememberMe") === "1";
@@ -64,7 +67,9 @@ export default function SignIn() {
       .then(r => {
         setToken(r.Token);
         setUserInfo(r);
-        window.location.href = "./";
+        connWebsocket(r.Token);
+        props.history.push("/dashboard");
+        // window.location.href = "./";
         localStorage.setItem(
           "LoginInfo",
           JSON.stringify({ username, password })
@@ -143,4 +148,6 @@ export default function SignIn() {
       </Box>
     </Container>
   );
-}
+};
+
+export default withRouter(SignIn);
