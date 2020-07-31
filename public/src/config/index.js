@@ -1,7 +1,4 @@
-import ApiUrl from "./url.js";
-
 export default {
-  apiUrl: ApiUrl,
   apiPrefix: "v1",
   timeout: 10000,
   requestRetry: 4,

@@ -1,12 +1,13 @@
 import Axios from "axios";
 import NProgress from "nprogress";
+import { useApiUrl } from "../config/url.js";
 import Config from "../config/index";
 import { getToken } from "../utils/dataStorage";
 import Snackbar from "../components/snackbar/index";
 
 NProgress.configure({ showSpinner: false });
 const service = Axios.create({
-  baseURL: Config.apiUrl + "/" + Config.apiPrefix,
+  baseURL: useApiUrl + "/" + Config.apiPrefix,
   headers: {
     Accept: "*/*"
   },

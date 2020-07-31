@@ -8,17 +8,29 @@ class CustomizeSnackbar extends React.Component {
     this.state = {
       open: false,
       content: "",
-      duration: 4000,
+      duration: 3000,
       type: "info"
     };
   }
   openSnackbar(type, content, duration) {
-    this.setState({
-      open: true,
-      type: type,
-      content: content,
-      duration: duration
-    });
+    if (this.state.open) {
+      this.setState({ open: false });
+      setTimeout(() => {
+        this.setState({
+          open: true,
+          type: type,
+          content: content,
+          duration: duration
+        });
+      }, 200);
+    } else {
+      this.setState({
+        open: true,
+        type: type,
+        content: content,
+        duration: duration
+      });
+    }
   }
   handleClose() {
     this.setState({ open: false });
@@ -28,8 +40,8 @@ class CustomizeSnackbar extends React.Component {
     return (
       <Snackbar
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "right"
+          vertical: "bottom",
+          horizontal: "left"
         }}
         open={this.state.open}
         autoHideDuration={this.state.duration}

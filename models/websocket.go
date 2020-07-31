@@ -7,8 +7,8 @@ import (
 
 const (
 	MsgTypeIsNotice = iota
-	MsgTypeIsRepoBuildSuccess
-	MsgTypeIsJobBuildSuccess
+	MsgTypeIsRepoBuild
+	MsgTypeIsJobBuild
 )
 
 type ConnUser struct {
@@ -20,6 +20,7 @@ type Message struct {
 	Type            uint
 	TriggerID       uint
 	TriggerUsername string
+	NeedNotifySelf  bool
 	Message         string
 }
 
@@ -30,16 +31,16 @@ var Broadcast = make(chan Message)
 func BroadcastMessages() {
 	for {
 		msg := <-Broadcast
-		fmt.Println("=========================")
 		fmt.Println(WsClients)
-		fmt.Println("=========================")
 		for id, client := range WsClients {
-			if msg.TriggerID != id{
-				err := client.WsConn.WriteJSON(msg)
-				if err != nil {
-					client.WsConn.Close()
-					delete(WsClients, id)
-				}
+			if !msg.NeedNotifySelf && msg.TriggerID == id{
+				//如果不需要通知自己
+				continue
+			}
+			err := client.WsConn.WriteJSON(msg)
+			if err != nil {
+				client.WsConn.Close()
+				delete(WsClients, id)
 			}
 		}
 	}

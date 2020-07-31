@@ -24,7 +24,7 @@ func WebsocketMsg(c *gin.Context) {
 
 	claims, err := serviceUser.ParseToken(token)
 
-	if err != nil{
+	if err != nil {
 		return
 	}
 	//defer ws.Close()
@@ -41,7 +41,6 @@ func WebsocketMsg(c *gin.Context) {
 	//读取用户信息
 	//for {
 	//	var msg models.Message
-	//	// Read in a new message as JSON and map it to a Message object
 	//	//err := ws.ReadJSON(&msg)
 	//	//if err != nil {
 	//	//	log.Printf("error: %v", err)

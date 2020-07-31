@@ -1,7 +1,9 @@
 const nodeEnv = process.env.NODE_ENV;
 const appMode = process.env.REACT_APP_MODE;
 
-let useApiUrl = "http://localhost:8081";
+let host = "localhost:8088";
+let useApiUrl = "http://" + host;
+
 if ("production" === nodeEnv) {
   switch (appMode) {
     case "buildDev":
@@ -30,4 +32,4 @@ if (useApiUrl.slice(0, 4) !== "http") {
   useApiUrl = window.location.origin + useApiUrl;
 }
 
-export default useApiUrl;
+export { host, useApiUrl };

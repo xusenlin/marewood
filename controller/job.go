@@ -267,6 +267,16 @@ func JobRun(c *gin.Context) {
 		})
 		return
 	}
+	//
+	claims, _ := serviceUser.GetJwtClaimsByContext(c)
+	msg := models.Message{
+		Type:            models.MsgTypeIsJobBuild,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		Message:         "“" + claims.Username + "” 运行了任务“" + job.Name + "”",
+	}
+	models.Broadcast <- msg
+
 	//开始执行任务，任务状态和仓库的任务状态
 	repository.JobStatus = models.RepoJobStatusBusy
 	job.Status = models.JobStatusProcessing
@@ -281,7 +291,8 @@ func JobRun(c *gin.Context) {
 	}
 
 	//go
-	go serviceJob.JobRun(&job, &repository)
+
+	go serviceJob.JobRun(&job, &repository, claims)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
