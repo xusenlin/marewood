@@ -1,13 +1,12 @@
 import snackbar from "./snackbarInstance";
 
 let snackbarInstance;
-const notice = (type, content, duration) => {
+export const notice = (type, content, duration = 4000) => {
   if (!snackbarInstance) snackbarInstance = snackbar;
   return snackbarInstance.openSnackbar(type, content, duration);
 };
 
 export default {
-  notice,
   info(content, duration = 4000) {
     return notice("info", content, duration);
   },

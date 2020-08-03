@@ -181,6 +181,15 @@ func JobDestroy(c *gin.Context) {
 		})
 		return
 	}
+	claims, _ := serviceUser.GetJwtClaimsByContext(c)
+	msg := models.Message{
+		Type:            models.MsgTypeInfo,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		UpdateDataType:  models.UpdateDataTypeIsJobAction,
+		Message:         "“" + claims.Username + "” 删除了任务“" + job.Name + "”",
+	}
+	models.Broadcast <- msg
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
 		"data":   id,
@@ -270,9 +279,10 @@ func JobRun(c *gin.Context) {
 	//
 	claims, _ := serviceUser.GetJwtClaimsByContext(c)
 	msg := models.Message{
-		Type:            models.MsgTypeIsJobBuild,
+		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
+		UpdateDataType:  models.UpdateDataTypeIsJobAction,
 		Message:         "“" + claims.Username + "” 运行了任务“" + job.Name + "”",
 	}
 	models.Broadcast <- msg

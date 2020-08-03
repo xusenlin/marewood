@@ -59,14 +59,17 @@ class Jobs extends React.Component {
         this.setState({ categories: r }, () => {
           this.setTabAndJobsByCategoryId(0);
         });
+        window.wsFuncJob = () => {
+          this.setTabAndJobsByCategoryId(
+            this.state.category,
+            this.state.pageNum
+          );
+        };
       })
       .catch(() => {});
-    window.wsFunc = () => {
-      this.setTabAndJobsByCategoryId(this.state.category, this.state.pageNum);
-    };
   }
   componentWillUnmount() {
-    window.wsFunc = null;
+    window.wsFuncJob = null;
   }
   changePagination(v, pageNum) {
     if (pageNum === this.state.pageNum) {

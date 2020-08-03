@@ -32,9 +32,10 @@ func WebsocketMsg(c *gin.Context) {
 	models.WsClients[claims.ID] = models.ConnUser{Username: claims.Username, WsConn: ws}
 
 	msg := models.Message{
-		Type:            models.MsgTypeIsNotice,
+		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
+		UpdateDataType:  models.UpdateDataTypeIsNotice,
 		Message:         "“" + claims.Username + "” 加入了系统",
 	}
 	models.Broadcast <- msg

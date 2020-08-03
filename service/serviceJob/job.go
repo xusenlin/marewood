@@ -85,10 +85,11 @@ func JobRun(job *models.Job, repository *models.Repository, claims *models.Claim
 		Update("job_status", models.RepoJobStatusLeisured)
 
 	successMsg := models.Message{
-		Type:            models.MsgTypeIsJobBuild,
+		Type:            models.MsgTypeSuccess,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
 		NeedNotifySelf:  true,
+		UpdateDataType:  models.UpdateDataTypeIsJobAction,
 		Message:         "“" + claims.Username + "” 运行的任务“" + job.Name + "”已经打包成功",
 	}
 	models.Broadcast <- successMsg
@@ -101,10 +102,11 @@ func jobRunError(job *models.Job, repository *models.Repository, errOut string, 
 	sql.DB.Model(&repository).Update("job_status", models.RepoJobStatusLeisured)
 
 	errMsg := models.Message{
-		Type:            models.MsgTypeIsJobBuild,
+		Type:            models.MsgTypeError,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
 		NeedNotifySelf:  true,
+		UpdateDataType:  models.UpdateDataTypeIsJobAction,
 		Message:         "“" + claims.Username + "” 运行的任务“" + job.Name + "”打包失败了",
 	}
 	models.Broadcast <- errMsg
