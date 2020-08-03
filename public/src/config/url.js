@@ -19,6 +19,7 @@ if ("production" === nodeEnv) {
       useApiUrl = "http://192.168.48.192:9288";
       break;
     default:
+      host = window.location.host;
       useApiUrl = window.location.origin;
       break;
   }
