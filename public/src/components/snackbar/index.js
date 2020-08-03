@@ -7,6 +7,7 @@ const notice = (type, content, duration) => {
 };
 
 export default {
+  notice,
   info(content, duration = 4000) {
     return notice("info", content, duration);
   },

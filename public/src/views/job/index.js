@@ -65,7 +65,9 @@ class Jobs extends React.Component {
       this.setTabAndJobsByCategoryId(this.state.category, this.state.pageNum);
     };
   }
-
+  componentWillUnmount() {
+    window.wsFunc = null;
+  }
   changePagination(v, pageNum) {
     if (pageNum === this.state.pageNum) {
       return;
