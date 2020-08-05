@@ -108,6 +108,7 @@ func UserFindAll(c *gin.Context) {
 func UserDestroy(c *gin.Context) {
 
 	id := c.Query("id")
+	var user  models.User
 
 	if !sql.DB.
 		Where("id = ? AND role = ?", id, models.UserRoleSuperAdministrator).
@@ -120,7 +121,7 @@ func UserDestroy(c *gin.Context) {
 		return
 	}
 
-	if sql.DB.Where("id = ?", id).Delete(&models.User{}).Error != nil {
+	if sql.DB.Where("id = ?", id).Delete(&user).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -128,6 +129,16 @@ func UserDestroy(c *gin.Context) {
 		})
 		return
 	}
+
+	claims, _ := serviceUser.GetJwtClaimsByContext(c)
+	msg := models.Message{
+		Type:            models.MsgTypeInfo,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		UpdateDataType:  models.UpdateDataTypeIsUserAction,
+		Message:         "“" + claims.Username + "” 删除了用户“" + user.Username + "”",
+	}
+	models.Broadcast <- msg
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,

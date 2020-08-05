@@ -1,22 +1,22 @@
 import snackbar from "./snackbarInstance";
 
 let snackbarInstance;
-const notice = (type, content, duration) => {
+export const notice = (type, content, duration = 4000) => {
   if (!snackbarInstance) snackbarInstance = snackbar;
   return snackbarInstance.openSnackbar(type, content, duration);
 };
 
 export default {
-  info(content, duration = 5000) {
+  info(content, duration = 4000) {
     return notice("info", content, duration);
   },
-  success(content, duration = 5000) {
+  success(content, duration = 4000) {
     return notice("success", content, duration);
   },
-  warning(content, duration = 5000) {
+  warning(content, duration = 4000) {
     return notice("warning", content, duration);
   },
-  error(content, duration = 5000) {
+  error(content, duration = 4000) {
     return notice("error", content, duration);
   }
 };

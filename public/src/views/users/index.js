@@ -38,6 +38,12 @@ class User extends React.Component {
   }
   componentDidMount() {
     this.getUserList();
+    window.wsFuncUser = () => {
+      this.getUserList();
+    };
+  }
+  componentWillUnmount() {
+    window.wsFuncUser = null;
   }
   getUserList() {
     users()

@@ -17,52 +17,52 @@ import (
 更新代码->安装依赖->打包->创建目录并复制代码->更新Url->
 更新运行次数->更新任务状态->更新仓库状态为空闲->（执行附加脚本，暂不做）->更新终端信息。
 */
-func JobRun(job *models.Job, repository *models.Repository) {
+func JobRun(job *models.Job, repository *models.Repository, claims *models.Claims) {
 
 	var terminalOut string
 	repositoryId := strconv.Itoa(int(repository.ID))
 
 	out, err := serviceRepository.GitPull(repositoryId)
 	if err != nil {
-		jobRunError(job, repository, err.Error())
+		jobRunError(job, repository, err.Error(), claims)
 		return
 	}
 	terminalOut += out
 
 	branch, err := serviceRepository.GetBranch(strconv.Itoa(int(repository.ID)))
 	if err != nil {
-		jobRunError(job, repository, err.Error())
+		jobRunError(job, repository, err.Error(), claims)
 		return
 	}
 
-	if !helper.InStrArr(job.Branch,branch){
-		jobRunError(job, repository, config.Cfg.AppName + ":打包失败了！！😭😭😭 \n当前任务的分支已经不存在了 :( \n请尝试裁剪分支后切换分支再试试吧！")
+	if !helper.InStrArr(job.Branch, branch) {
+		jobRunError(job, repository, config.Cfg.AppName+":打包失败了！！😭😭😭 \n当前任务的分支已经不存在了 :( \n请尝试裁剪分支后切换分支再试试吧！", claims)
 		return
 	}
 
 	out, err = serviceRepository.GitCheckout(repositoryId, job.Branch)
 	if err != nil {
-		jobRunError(job, repository, err.Error())
+		jobRunError(job, repository, err.Error(), claims)
 		return
 	}
 	terminalOut += out
 	out, err = serviceRepository.GitPull(repositoryId)
 	if err != nil {
-		jobRunError(job, repository, err.Error())
+		jobRunError(job, repository, err.Error(), claims)
 		return
 	}
 	terminalOut += out
 
 	out, err = serviceRepository.InstallDepend(repositoryId, repository.DependTools)
 	if err != nil {
-		jobRunError(job, repository, err.Error())
+		jobRunError(job, repository, err.Error(), claims)
 		return
 	}
 	terminalOut += out
 
 	out, err = serviceRepository.RunBuild(repositoryId, job.BuildCommand)
 	if err != nil {
-		jobRunError(job, repository, err.Error())
+		jobRunError(job, repository, err.Error(), claims)
 		return
 	}
 	terminalOut += out
@@ -70,7 +70,7 @@ func JobRun(job *models.Job, repository *models.Repository) {
 	//创建目录并复制代码
 	out, err = CopyBuildResultToWebRootDir(strconv.Itoa(int(job.ID)), repositoryId, job.BuildDir)
 	if err != nil {
-		jobRunError(job, repository, err.Error())
+		jobRunError(job, repository, err.Error(), claims)
 		return
 	}
 	terminalOut += out
@@ -84,12 +84,32 @@ func JobRun(job *models.Job, repository *models.Repository) {
 	sql.DB.Model(&repository).
 		Update("job_status", models.RepoJobStatusLeisured)
 
+	successMsg := models.Message{
+		Type:            models.MsgTypeSuccess,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		NeedNotifySelf:  true,
+		UpdateDataType:  models.UpdateDataTypeIsJobAction,
+		Message:         "“" + claims.Username + "” 运行的任务“" + job.Name + "”已经打包成功",
+	}
+	models.Broadcast <- successMsg
+
 }
 
-func jobRunError(job *models.Job, repository *models.Repository, errOut string) {
+func jobRunError(job *models.Job, repository *models.Repository, errOut string, claims *models.Claims) {
 	fmt.Println("jobRunError::", errOut)
 	sql.DB.Model(&job).Update("status", models.JobStatusFail).Update("terminal_info", errOut)
 	sql.DB.Model(&repository).Update("job_status", models.RepoJobStatusLeisured)
+
+	errMsg := models.Message{
+		Type:            models.MsgTypeError,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		NeedNotifySelf:  true,
+		UpdateDataType:  models.UpdateDataTypeIsJobAction,
+		Message:         "“" + claims.Username + "” 运行的任务“" + job.Name + "”打包失败了",
+	}
+	models.Broadcast <- errMsg
 
 }
 
@@ -102,7 +122,7 @@ func CopyBuildResultToWebRootDir(jobId string, repositoryId string, buildDir str
 		}
 	}
 
-	distDirArg := config.Cfg.RepositoryDir + "/"+ repositoryId + "/" + buildDir
+	distDirArg := config.Cfg.RepositoryDir + "/" + repositoryId + "/" + buildDir
 
 	err := os.Rename(distDirArg, destination)
 

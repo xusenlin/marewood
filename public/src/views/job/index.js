@@ -59,10 +59,18 @@ class Jobs extends React.Component {
         this.setState({ categories: r }, () => {
           this.setTabAndJobsByCategoryId(0);
         });
+        window.wsFuncJob = () => {
+          this.setTabAndJobsByCategoryId(
+            this.state.category,
+            this.state.pageNum
+          );
+        };
       })
       .catch(() => {});
   }
-
+  componentWillUnmount() {
+    window.wsFuncJob = null;
+  }
   changePagination(v, pageNum) {
     if (pageNum === this.state.pageNum) {
       return;
@@ -87,14 +95,14 @@ class Jobs extends React.Component {
           totalPage: r.TotalPage,
           pageNum: r.PageNum
         });
-        for (let i = 0; i < r.List.length; i++) {
-          if (r.List[i].Status === 3) {
-            this.timeoutId = setTimeout(() => {
-              this.setTabAndJobsByCategoryId(index, pageNum, pageSize);
-            }, 2000);
-            return;
-          }
-        }
+        // for (let i = 0; i < r.List.length; i++) {
+        //   if (r.List[i].Status === 3) {
+        //     this.timeoutId = setTimeout(() => {
+        //       this.setTabAndJobsByCategoryId(index, pageNum, pageSize);
+        //     }, 2000);
+        //     return;
+        //   }
+        // }
       })
       .catch(() => {});
   }

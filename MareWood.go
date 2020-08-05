@@ -20,9 +20,12 @@ func main() {
 
 	sql.InitDb()
 	defer sql.DB.Close()
+
 	models.AutoMigrate()
+	go models.BroadcastMessages()
 
 	r := routes.InitRouter()
+
 	err = r.Run(":" + config.Cfg.HttpPort)
 	if err != nil {
 		panic(err)
