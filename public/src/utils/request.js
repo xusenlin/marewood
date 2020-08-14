@@ -5,7 +5,6 @@ import Config from "../config/index";
 import { getToken } from "../utils/dataStorage";
 import Snackbar from "../components/snackbar/index";
 
-NProgress.configure({ showSpinner: false });
 const service = Axios.create({
   baseURL: useApiUrl + "/" + Config.apiPrefix,
   headers: {
@@ -30,7 +29,9 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   res => {
-    NProgress.done();
+    setTimeout(() => {
+      NProgress.done();
+    }, 300);
     if (res.status !== 200) {
       Snackbar.error("Status Code Is Not 200");
       return Promise.reject(res);

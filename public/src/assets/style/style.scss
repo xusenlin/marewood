@@ -29,3 +29,24 @@ a {
   background-color: #9e9e9e;
   color: white;
 }
+#nprogress {
+  .spinner {
+    width: 100vw;
+    top: 0;
+    display: flex;
+    right: 0;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.68);
+    justify-content: center;
+    height: 100vh;
+    pointer-events: auto;
+    .spinner-icon {
+      border-top-color: #3f51b5;
+      border-left-color: #3f51b5;
+    }
+  }
+  .bar {
+    background: #3f51b5;
+    z-index: 1032;
+  }
+}

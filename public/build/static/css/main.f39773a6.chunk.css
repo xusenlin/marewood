@@ -338,6 +338,25 @@ a {
   background-color: #9e9e9e;
   color: #fff;
 }
+#nprogress .spinner {
+  width: 100vw;
+  top: 0;
+  display: flex;
+  right: 0;
+  align-items: center;
+  background: hsla(0, 0%, 100%, 0.68);
+  justify-content: center;
+  height: 100vh;
+  pointer-events: auto;
+}
+#nprogress .spinner .spinner-icon {
+  border-top-color: #3f51b5;
+  border-left-color: #3f51b5;
+}
+#nprogress .bar {
+  background: #3f51b5;
+  z-index: 1032;
+}
 .admin {
   width: 100%;
   height: 100vh;
@@ -370,4 +389,4 @@ a {
     padding: 2px;
   }
 }
-/*# sourceMappingURL=main.4e51d40d.chunk.css.map */
+/*# sourceMappingURL=main.f39773a6.chunk.css.map */

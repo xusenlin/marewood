@@ -53,6 +53,7 @@ func InitRouter() *gin.Engine {
 		v1.GET("/repository/delete_depend", middlewares.RoleDeveloper(), controller.RepositoryDeleteDepend)
 		v1.GET("/repository/get_script", middlewares.RoleReporter(), controller.RepositoryScript)
 		v1.GET("/repository/update_field", middlewares.RoleDeveloper(), controller.RepositoryUpdateField)
+		v1.GET("/repository/commit_record", middlewares.RoleReporter(), controller.CommitRecord)
 
 		//任务分类
 		v1.GET("/categories", middlewares.RoleReporter(), controller.CategoryFindAll)
