@@ -11,7 +11,7 @@
 <img src="https://img.shields.io/badge/material ui-4.9.10-green"/>
 </div>
 
-![Job](preview/job.png)
+![Job](preview/jobs.png)
 ![Repo](preview/repo.png)
 ![Category](preview/category.png)
 # MareWood
