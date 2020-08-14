@@ -35,7 +35,7 @@ func CommitRecord(c *gin.Context) {
 	args := []string{
 		"log",
 		"-4",
-		"--date=iso-strict",
+		//"--date=iso-strict",
 		"--first-parent",
 	}
 
