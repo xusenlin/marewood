@@ -35,8 +35,8 @@ func JobRun(job *models.Job, repository *models.Repository) {
 		return
 	}
 
-	if !helper.InStrArr(job.Branch,branch){
-		jobRunError(job, repository, config.Cfg.AppName + ":打包失败了！！😭😭😭 \n当前任务的分支已经不存在了 :( \n请尝试裁剪分支后切换分支再试试吧！")
+	if !helper.InStrArr(job.Branch, branch) {
+		jobRunError(job, repository, config.Cfg.AppName+":打包失败了！！😭😭😭 \n当前任务的分支已经不存在了 :( \n请尝试裁剪分支后切换分支再试试吧！")
 		return
 	}
 
@@ -102,7 +102,7 @@ func CopyBuildResultToWebRootDir(jobId string, repositoryId string, buildDir str
 		}
 	}
 
-	distDirArg := config.Cfg.RepositoryDir + "/"+ repositoryId + "/" + buildDir
+	distDirArg := config.Cfg.RepositoryDir + "/" + repositoryId + "/" + buildDir
 
 	err := os.Rename(distDirArg, destination)
 

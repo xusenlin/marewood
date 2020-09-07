@@ -40,6 +40,19 @@ export function create(params) {
 }
 
 /**
+ * 重置git仓库
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function reset(params) {
+  return request({
+    url: "/job/reset",
+    method: "post",
+    data: params
+  });
+}
+
+/**
  * 修改任务分支
  * @param params
  * @returns {AxiosPromise}

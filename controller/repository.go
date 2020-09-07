@@ -1,12 +1,13 @@
 package controller
 
 import (
-	"MareWood/sql"
 	"MareWood/models"
 	"MareWood/service/serviceRepository"
-	"github.com/gin-gonic/gin"
+	"MareWood/sql"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func RepositoryFindAll(c *gin.Context) {
@@ -38,7 +39,7 @@ func RepositoryFindAll(c *gin.Context) {
 
 }
 
-func RepositoryFind(c *gin.Context)  {
+func RepositoryFind(c *gin.Context) {
 
 	pageNum, err := strconv.Atoi(c.Query("pageNum"))
 	if err != nil {
@@ -210,7 +211,7 @@ func RepositoryGitPull(c *gin.Context) {
 	})
 }
 
-func RepositoryDiscardChange(c *gin.Context)  {
+func RepositoryDiscardChange(c *gin.Context) {
 
 	id := c.Query("id")
 	out, err := serviceRepository.DiscardChange(id)
@@ -317,7 +318,7 @@ func RepositoryScript(c *gin.Context) {
 	})
 }
 
-func RepositoryUpdateField(c *gin.Context)  {
+func RepositoryUpdateField(c *gin.Context) {
 
 	id := c.Query("id")
 	field := c.Query("field")

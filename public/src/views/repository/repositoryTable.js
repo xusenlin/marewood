@@ -40,6 +40,8 @@ import {
 } from "../../api/repository";
 import EditField from "../../components/editField";
 import { tooltip } from "../../assets/jss/common";
+import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
+import { reset } from "../../api/job.js";
 
 const styles = () => ({
   table: {
@@ -83,14 +85,14 @@ class RepositoryTable extends React.Component {
       .then(r => {
         Snackbar.success(r);
       })
-      .catch(() => {});
+      .catch(() => { });
   }
   discardRepoChange(row) {
     discardChange({ id: row.ID })
       .then(() => {
         Snackbar.success("执行 git checkout . 成功！");
       })
-      .catch(() => {});
+      .catch(() => { });
   }
   destroyConfirm() {
     destroy({ id: this.destroyId })
@@ -98,7 +100,7 @@ class RepositoryTable extends React.Component {
         this.setState({ destroyDialogShow: false });
         this.props.refresh();
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 
   repositoryGitPull(row) {
@@ -106,7 +108,7 @@ class RepositoryTable extends React.Component {
       .then(() => {
         Snackbar.success("已经更新代码");
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 
   repositoryPruneBranch(row) {
@@ -114,7 +116,7 @@ class RepositoryTable extends React.Component {
       .then(() => {
         Snackbar.success("分支已经裁剪");
       })
-      .catch(() => {});
+      .catch(() => { });
   }
 
   clickEditField(row, inputRows, desc, field) {
@@ -135,7 +137,7 @@ class RepositoryTable extends React.Component {
         this.closeResetEditFieldDialog();
         this.props.refresh();
       })
-      .catch(() => {});
+      .catch(() => { });
   }
   closeResetEditFieldDialog() {
     this.setState({
@@ -149,7 +151,17 @@ class RepositoryTable extends React.Component {
       }
     });
   }
-
+  resetProject(row) {
+    if (row.Status !== 1) return Snackbar.warning("仓库状态不正常，无法重置仓库");
+    const p = {
+      ID: row.ID + "",
+      gitUrl: row.Url,
+      Name: row.Name,
+      UserName: row.UserName,
+      Password: row.Password
+    }
+    reset(p)
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -229,12 +241,12 @@ class RepositoryTable extends React.Component {
                       </IconButton>
                     </Tooltip>
                   ) : (
-                    <Tooltip title="仓库非私密" interactive>
-                      <IconButton color="primary">
-                        <LockOpenIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
+                      <Tooltip title="仓库非私密" interactive>
+                        <IconButton color="primary">
+                          <LockOpenIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                 </TableCell>
                 <TableCell align="center">
                   <Tooltip
@@ -309,6 +321,14 @@ class RepositoryTable extends React.Component {
                       onClick={this.destroyDialogOpen.bind(this, row.ID)}
                     >
                       <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="重置仓库">
+                    <IconButton
+                      color="primary"
+                      onClick={this.resetProject.bind(this, row)}
+                    >
+                      <TransferWithinAStationIcon />
                     </IconButton>
                   </Tooltip>
                 </TableCell>

@@ -4,9 +4,11 @@ import AddIcon from "@material-ui/icons/Add";
 import { Fab, Paper } from "@material-ui/core";
 import Edit from "./edit";
 import Table from "./repositoryTable";
+import Transfer from "./transfer.js";
 import { getSystemInfo } from "../../utils/dataStorage";
 import { repositoryFind } from "../../api/repository";
 import Pagination from "@material-ui/lab/Pagination";
+// import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
 
 const styles = theme => ({
   root: {
@@ -25,6 +27,9 @@ const styles = theme => ({
     justifyContent: "center",
     textAlign: "center",
     padding: theme.spacing(3)
+  },
+  headFun: {
+    textAlign: "right"
   }
 });
 
@@ -36,7 +41,8 @@ class RepositoryTable extends React.Component {
       editShow: false,
       dependentSupport: getSystemInfo("DependTools") || [],
       totalPage: 1,
-      pageNum: 1
+      pageNum: 1,
+      transferDis: false
     };
     this.timeout = null;
   }
@@ -92,10 +98,27 @@ class RepositoryTable extends React.Component {
     }
     this.getTableData(pageNum);
   }
+  showTransfer(){
+    this.setState({ transferDis: true });
+  }
+  closeDia(){
+    this.setState({ transferDis: false });
+  }
   render() {
     const { classes } = this.props;
     return (
       <div>
+        <header className={classes.headFun}>
+          {/* <Tooltip title="仓库迁移">
+            <IconButton
+              color="primary"
+              onClick={this.showTransfer.bind(this)}
+            >
+              <TransferWithinAStationIcon />
+            </IconButton>
+          </Tooltip> */}
+          {this.state.transferDis && <Transfer closeDia={this.closeDia.bind(this)} transfer={this.state.transferDis} /> }
+        </header>
         <Paper className={classes.root}>
           <Table
             tableData={this.state.tableData}

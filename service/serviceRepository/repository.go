@@ -4,6 +4,7 @@ import (
 	"MareWood/config"
 	"MareWood/helper"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -12,21 +13,22 @@ import (
 //克隆仓库，userName，password可留空
 func GitClone(repositoryId string, gitUrl string, userName string, password string) (string, error) {
 
-	var cmd *exec.Cmd
-
-	if userName == "" || password == "" {
-		cmd = exec.Command("git", "clone", gitUrl)
-	} else {
+	var (
+		cmd       *exec.Cmd
+		endingUrl string
+	)
+	endingUrl = gitUrl
+	if userName != "" && password != "" {
 		authUrl, err := helper.GitUrl2AuthUrl(gitUrl, userName, password)
 		if err != nil {
 			return "", err
 		}
-		cmd = exec.Command("git", "clone", authUrl)
+		endingUrl = authUrl
 	}
-
+	cmd = exec.Command("git", "clone", endingUrl)
 	cmd.Dir = config.Cfg.RepositoryDir
 	out, err := cmd.CombinedOutput()
-
+	fmt.Println(endingUrl, "gitclone---", err)
 	if err != nil {
 		return string(out), err
 	}
@@ -52,7 +54,7 @@ func GitPull(repositoryId string) (string, error) {
 }
 
 func DiscardChange(repositoryId string) (string, error) {
-	return RunCmdOnRepositoryDir(repositoryId, "git", "checkout",".")
+	return RunCmdOnRepositoryDir(repositoryId, "git", "checkout", ".")
 }
 
 func DeleteRepository(repositoryId string) error {
@@ -66,15 +68,15 @@ func DeleteRepository(repositoryId string) error {
 	return os.RemoveAll(repoDir)
 }
 
-func PruneBranch(repositoryId string) (string,error) {
-	if out ,err := GitCheckout(repositoryId,"master");err != nil{
-		return out,err
+func PruneBranch(repositoryId string) (string, error) {
+	if out, err := GitCheckout(repositoryId, "master"); err != nil {
+		return out, err
 	}
-	if out,err := GitPull(repositoryId);err != nil{
-		return out,err
+	if out, err := GitPull(repositoryId); err != nil {
+		return out, err
 	}
 	//裁剪分支
-	return RunCmdOnRepositoryDir(repositoryId, "git", "remote", "prune","origin")
+	return RunCmdOnRepositoryDir(repositoryId, "git", "remote", "prune", "origin")
 }
 
 func GetBranch(repositoryId string) ([]string, error) {
@@ -103,6 +105,20 @@ func GitCheckout(repositoryId string, branch string) (string, error) {
 	return RunCmdOnRepositoryDir(repositoryId, "git", "checkout", branch)
 }
 
+func ResetRepository(repositoryId string, gitUrl string, userName string, password string) (string, error) {
+	err := DeleteRepository(repositoryId)
+	if err != nil {
+		return "", err
+	}
+	// gitUrl string, userName string, password string
+
+	clone, err2 := GitClone(repositoryId, gitUrl, userName, password)
+	if err2 != nil {
+		return clone, err
+	}
+	return "", nil
+}
+
 //仓库URL， 构建命令 test、build、build:dev
 func RunBuild(repositoryId string, buildCmd string) (string, error) {
 
@@ -117,7 +133,7 @@ func RunCmdOnRepositoryDir(repositoryId string, cmdName string, arg ...string) (
 		return "", errors.New("找不到仓库目录=>" + repositoryDir)
 	}
 
-	cmd := exec.Command(cmdName, arg ...)
+	cmd := exec.Command(cmdName, arg...)
 	cmd.Dir = repositoryDir
 
 	out, err := cmd.CombinedOutput()

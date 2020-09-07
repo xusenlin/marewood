@@ -4,9 +4,10 @@ import (
 	"MareWood/helper"
 	"MareWood/sql"
 	"errors"
+	"time"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
-	"time"
 )
 
 const ( //用户状态

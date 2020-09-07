@@ -3,11 +3,13 @@ package controller
 import (
 	"MareWood/models"
 	"MareWood/service/serviceJob"
+	"MareWood/service/serviceRepository"
 	"MareWood/service/serviceUser"
 	"MareWood/sql"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func JobFindAll(c *gin.Context) {
@@ -111,6 +113,36 @@ func JobCreate(c *gin.Context) {
 	})
 }
 
+func JobReset(c *gin.Context) {
+	var job models.JobReste
+	jobErr := c.ShouldBindJSON(&job)
+
+	if jobErr != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    jobErr.Error(),
+		})
+		return
+	}
+
+	_, err := serviceRepository.ResetRepository(job.ID, job.GitUrl, job.UserName, job.Password)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   "",
+		"msg":    "重新构建成功",
+	})
+}
+
 func JobUpdateBranch(c *gin.Context) {
 
 	id := c.Query("id")
@@ -194,7 +226,7 @@ func JobUpdateField(c *gin.Context) {
 	field := c.Query("field")
 	fieldContent := c.Query("fieldContent")
 
-	err := new(models.Job).UpdateFieldContent(id,field,fieldContent)
+	err := new(models.Job).UpdateFieldContent(id, field, fieldContent)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{

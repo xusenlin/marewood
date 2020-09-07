@@ -4,8 +4,9 @@ import (
 	"MareWood/config"
 	"MareWood/controller"
 	"MareWood/middlewares"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() *gin.Engine {
@@ -62,6 +63,7 @@ func InitRouter() *gin.Engine {
 		v1.GET("/jobs", middlewares.RoleReporter(), controller.JobFindAll)
 		v1.GET("/jobs_find", middlewares.RoleReporter(), controller.JobFind)
 		v1.POST("/job/create", middlewares.RoleDeveloper(), controller.JobCreate)
+		v1.POST("/job/reset", middlewares.RoleDeveloper(), middlewares.CheckAfferent([]string{"id"}), controller.JobReset)
 		v1.GET("/job/update_branch", middlewares.RoleDeveloper(), controller.JobUpdateBranch)
 		v1.GET("/job/update_field", middlewares.RoleDeveloper(), controller.JobUpdateField)
 		v1.GET("/job/delete", middlewares.RoleAdmin(), controller.JobDestroy)

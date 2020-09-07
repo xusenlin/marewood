@@ -5,9 +5,10 @@ import (
 	"MareWood/helper"
 	"MareWood/sql"
 	"errors"
-	"github.com/jinzhu/gorm"
 	"strconv"
 	"strings"
+
+	"github.com/jinzhu/gorm"
 )
 
 const ( //任务执行状态
@@ -25,15 +26,15 @@ type Job struct {
 	Desc          string `gorm:"type:varchar(1000)",binding:"required,min=2,max=999"`
 	Status        int    `gorm:"default:0"`        //任务状态
 	Branch        string `gorm:"default:'master'"` //部署分支默认master，用户在部署之前随时可以修改
-	Url           string                           //访问目录
-	RunQuantity   int `gorm:"default:0"`
-	CategoryId    int `gorm:"index",binding:"required"`
+	Url           string //访问目录
+	RunQuantity   int    `gorm:"default:0"`
+	CategoryId    int    `gorm:"index",binding:"required"`
 	WebHookUrl    string
 	RepositoryId  int    `gorm:"index",binding:"required"`
 	BuildDir      string `binding:"required"` //打包的目录,默认是dist
 	BuildCommand  string `binding:"required"` //打包命令，npm run build 可以读取package.json供选择
-	User          string                      //操作人，目前只有加锁用户
-	LockPassword  string                      //任务加锁
+	User          string //操作人，目前只有加锁用户
+	LockPassword  string //任务加锁
 	TerminalInfo  string `gorm:"type:varchar(1000)"`
 	SuccessScript string `gorm:"type:varchar(1000)"` //打包成功运行的脚本，多个用 ; 隔开
 }
@@ -44,6 +45,14 @@ type JobPageResult struct {
 	PageNum   int
 	PageSize  int
 	TotalPage int
+}
+
+type JobReste struct {
+	ID       string
+	GitUrl   string
+	Name     string
+	Password string
+	UserName string
 }
 
 func (j *Job) FindAll() (jobs []Job, err error) {
@@ -81,7 +90,7 @@ func (j *Job) UpdateFieldContent(id string, field string, fieldContent string) (
 		return errors.New("不能修改当前字段！")
 	}
 
-	if err := sql.DB.First(&j, id).Error ;err != nil {
+	if err := sql.DB.First(&j, id).Error; err != nil {
 		return err
 	}
 	if j.LockPassword != "" {
@@ -109,7 +118,7 @@ func FindJob(pageNum int, pageSize int, maps interface{}) (JobPageResult, error)
 	var result JobPageResult
 	var err error
 
-	result.List,result.Total, err = GetJobs(pageNum, pageSize, maps)
+	result.List, result.Total, err = GetJobs(pageNum, pageSize, maps)
 	if err != nil {
 		return result, err
 	}
@@ -122,8 +131,8 @@ func FindJob(pageNum int, pageSize int, maps interface{}) (JobPageResult, error)
 	return result, nil
 }
 
-func GetJobs(pageNum int, pageSize int, maps interface{}) ([]*Job,int, error) {
-	var total  int
+func GetJobs(pageNum int, pageSize int, maps interface{}) ([]*Job, int, error) {
+	var total int
 	var jobs []*Job
 
 	query := sql.DB.Model(&Job{}).Where(maps).Order("updated_at desc")
