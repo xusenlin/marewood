@@ -142,3 +142,16 @@ export function discardChange(params) {
     params: params
   });
 }
+
+/**
+ * 仓库提交日志
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function commitRecord(params) {
+  return request({
+    url: "/repository/commit_record",
+    method: "get",
+    params: params
+  });
+}

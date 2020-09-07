@@ -2,6 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import LinkIcon from "@material-ui/icons/Link";
 import EditIcon from "@material-ui/icons/Edit";
+import ReceiptIcon from "@material-ui/icons/Receipt";
 import LinkOffIcon from "@material-ui/icons/LinkOff";
 import UsbIcon from "@material-ui/icons/Usb";
 import Computer from "@material-ui/icons/Computer";
@@ -27,12 +28,14 @@ import {
 import JobStatus from "./jobStatus";
 import HelperTooltips from "../../components/helperTooltips";
 import EditField from "../../components/editField.js";
+import DetailsPanel from "../../components/detailsPanel.js";
 import SwitchBranchDialog from "./switchBranchDialog";
 import Snackbar from "../../components/snackbar/index";
 import LockIcon from "@material-ui/icons/Lock";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { destroy, RunJob, UpdateField, jobLock } from "../../api/job";
+import { commitRecord } from "../../api/repository";
 import { tooltip } from "../../assets/jss/common";
 import { getSystemInfo } from "../../utils/dataStorage";
 
@@ -66,11 +69,17 @@ class CategoriesTable extends React.Component {
         rows: 1,
         field: "",
         fieldContent: ""
+      },
+      detailsPanel: {
+        title: "",
+        open: false,
+        content: ""
       }
     };
     this.destroyId = 0;
     this.addressUrl = getSystemInfo("OtherAddressUrl") || [];
   }
+
   toggleLock(row) {
     this.setState({
       lockPassword: {
@@ -80,6 +89,7 @@ class CategoriesTable extends React.Component {
       }
     });
   }
+
   runJob(row) {
     if (row.Status === 3) {
       Snackbar.warning("任务正在打包，请稍等");
@@ -159,6 +169,7 @@ class CategoriesTable extends React.Component {
       })
       .catch(() => {});
   }
+
   openJobUrl(row, url) {
     if (row.Status !== 1) {
       Snackbar.error("任务没有打包成功！");
@@ -166,6 +177,7 @@ class CategoriesTable extends React.Component {
     }
     window.open(url);
   }
+
   closeLockJobDialog() {
     this.setState({
       lockPassword: {
@@ -202,6 +214,24 @@ class CategoriesTable extends React.Component {
     this.setState({ lockPassword: p });
   }
 
+  closeCommitRecord() {
+    this.setState({
+      detailsPanel: { ...this.state.detailsPanel, open: false }
+    });
+  }
+  commitRecord(row) {
+    commitRecord({ id: row.RepositoryId })
+      .then(r => {
+        this.setState({
+          detailsPanel: {
+            open: true,
+            title: "最近4次的代码提交详情",
+            content: r
+          }
+        });
+      })
+      .catch(() => {});
+  }
   clickEditField(row, inputRows, desc, field) {
     if (row.LockPassword !== "") {
       Snackbar.warning("任务锁定，请先解锁");
@@ -236,16 +266,10 @@ class CategoriesTable extends React.Component {
       })
       .catch(() => {});
   }
+
   closeEditFieldDialog() {
     this.setState({
-      editField: {
-        id: 0,
-        open: false,
-        rows: 1,
-        desc: "",
-        field: "",
-        fieldContent: ""
-      }
+      editField: { ...this.state.editField, open: false }
     });
   }
 
@@ -446,6 +470,14 @@ class CategoriesTable extends React.Component {
                       <PlayCircleFilled />
                     </IconButton>
                   </Tooltip>
+                  <Tooltip title="查看提交记录" interactive>
+                    <IconButton
+                      color="primary"
+                      onClick={this.commitRecord.bind(this, row)}
+                    >
+                      <ReceiptIcon />
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip title="删除任务" interactive>
                     <IconButton
                       color="primary"
@@ -468,6 +500,12 @@ class CategoriesTable extends React.Component {
           fieldContent={this.state.editField.fieldContent}
           onClose={this.closeEditFieldDialog.bind(this)}
           editSuccess={this.editFieldSuccess.bind(this)}
+        />
+        <DetailsPanel
+          open={this.state.detailsPanel.open}
+          content={this.state.detailsPanel.content}
+          onClose={this.closeCommitRecord.bind(this)}
+          title={this.state.detailsPanel.title}
         />
         <SwitchBranchDialog
           jobId={this.state.switchBranchDialog.id}

@@ -3,12 +3,41 @@ package serviceRepository
 import (
 	"MareWood/config"
 	"MareWood/helper"
+	"MareWood/models"
+	"MareWood/sql"
 	"errors"
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 )
+
+func CloneRepo(repo *models.Repository,claims *models.Claims){
+	out, err := GitClone(strconv.Itoa(int(repo.ID)), repo.Url, repo.UserName, repo.Password)
+	if err != nil {
+		sql.DB.Model(repo).
+			Where("id = ?", repo.ID).
+			Update("status", models.RepoStatusFail).
+			Update("terminal_info", out)
+		return
+	}
+
+	sql.DB.Model(repo).
+		Where("id = ?", repo.ID).
+		Update("status", models.RepoStatusSuccess).
+		Update("terminal_info", out)
+
+	msg := models.Message{
+		Type:            models.MsgTypeSuccess,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		NeedNotifySelf:  true,
+		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
+		Message:         "“" + claims.Username + "” 创建的仓库“" + repo.Name + "”克隆成功了。",
+	}
+	models.Broadcast <- msg
+}
 
 //克隆仓库，userName，password可留空
 func GitClone(repositoryId string, gitUrl string, userName string, password string) (string, error) {

@@ -6,15 +6,16 @@
 <img src="https://img.shields.io/badge/gin-1.4.0-lightBlue"/>
 <img src="https://img.shields.io/badge/jwt go-3.2.0-lightBlue"/>
 <img src="https://img.shields.io/badge/gorm-1.9.11-red"/>
+<img src="https://img.shields.io/badge/gorilla websocket-1.42-blue"/>
 <img src="https://img.shields.io/badge/react-16.9.0-brightgreen"/>
 <img src="https://img.shields.io/badge/material ui-4.9.10-green"/>
 </div>
 
-![Job](http://xusenlin.com/assets/images/marewood/v1.0.png)
-![Repo](http://xusenlin.com/assets/images/marewood/repo.png?v=2)
-
+![Job](preview/jobs.png)
+![Repo](preview/repo.png)
+![Category](preview/category.png)
 # MareWood
->MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、SQLITE、REACT、MATERIAL-UI 开发，
+>MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、WEBSOCKET、SQLITE、REACT、MATERIAL-UI 开发，
 不同于 Jenkins 的大而全，它很简单且只针对前端，你可以很灵活的配置各种部署环境。
 如果你愿意，线上发布也可以是点击一下按钮这么简单的事情,当然也可以配置 WEBHOOK，提交 GIT 代码既自动发布。
 
@@ -58,7 +59,12 @@ http://xusenlin.com/article?key=BzV0K2
 注：等级高的角色拥有低级角色的全部权限。用户注册默认成为项目记者，如果注册的名字是 Admin 会自动成为超级管理员，注册名字不可重复。
 
 # 更新日志
-### v1.0
+### v1.2 未发布
+* 添加了 websocket 广播，每个仓库和任务状态实时同步所有人。
+* 优化了接口请求加载动画禁止页面操作。
+* 添加了查看用户提交代码记录的功能。
+
+### v1.0 目前功能最稳定版本
 * 添加丢弃本地仓库变动的功能 （2020-07-23）
 * 修复运行老的任务分支不存在的 BUG (2020-06-25)
 * 可以快捷修改更多字段和添加任务分页

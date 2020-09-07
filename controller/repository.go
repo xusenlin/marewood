@@ -3,11 +3,11 @@ package controller
 import (
 	"MareWood/models"
 	"MareWood/service/serviceRepository"
+	"MareWood/service/serviceUser"
 	"MareWood/sql"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
 
 func RepositoryFindAll(c *gin.Context) {
@@ -72,6 +72,8 @@ func RepositoryCreate(c *gin.Context) {
 
 	var repository models.Repository
 
+	claims, _ := serviceUser.GetJwtClaimsByContext(c)
+
 	if err := c.ShouldBindJSON(&repository); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
@@ -91,23 +93,16 @@ func RepositoryCreate(c *gin.Context) {
 		})
 		return
 	}
-	go func() {
-		//克隆并更新记录
-		out, err := serviceRepository.GitClone(strconv.Itoa(int(repository.ID)), repository.Url, repository.UserName, repository.Password)
-		if err != nil {
-			sql.DB.Model(&repository).
-				Where("id = ?", repository.ID).
-				Update("status", models.RepoStatusFail).
-				Update("terminal_info", out)
-			return
-		}
+	go serviceRepository.CloneRepo(&repository, claims)
 
-		sql.DB.Model(&repository).
-			Where("id = ?", repository.ID).
-			Update("status", models.RepoStatusSuccess).
-			Update("terminal_info", out)
-
-	}()
+	msg := models.Message{
+		Type:            models.MsgTypeInfo,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
+		Message:         "“" + claims.Username + "” 创建了仓库“" + repository.Name + "”",
+	}
+	models.Broadcast <- msg
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
@@ -159,19 +154,16 @@ func RepositoryDestroy(c *gin.Context) {
 		return
 	}
 
-	//if repository.Status == models.RepoStatusSuccess {
-	//
-	//	err := serviceRepository.DeleteRepository(strconv.Itoa(int(repository.ID)))
-	//
-	//	if err != nil {
-	//		c.JSON(http.StatusOK, gin.H{
-	//			"status": false,
-	//			"data":   "",
-	//			"msg":    err.Error(),
-	//		})
-	//		return
-	//	}
-	//}
+	err := serviceRepository.DeleteRepository(strconv.Itoa(int(repository.ID)))
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
 
 	if sql.DB.Delete(&repository).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -181,6 +173,16 @@ func RepositoryDestroy(c *gin.Context) {
 		})
 		return
 	}
+
+	claims, _ := serviceUser.GetJwtClaimsByContext(c)
+	msg := models.Message{
+		Type:            models.MsgTypeInfo,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
+		Message:         "“" + claims.Username + "” 删除了仓库“" + repository.Name + "”",
+	}
+	models.Broadcast <- msg
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,

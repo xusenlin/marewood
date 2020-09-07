@@ -2,6 +2,7 @@ package controller
 
 import (
 	"MareWood/models"
+	"MareWood/service/serviceUser"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -96,6 +97,15 @@ func CategoryDestroy(c *gin.Context) {
 		})
 		return
 	}
+	claims, _ := serviceUser.GetJwtClaimsByContext(c)
+	msg := models.Message{
+		Type:            models.MsgTypeInfo,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		UpdateDataType:  models.UpdateDataTypeIsCategoryAction,
+		Message:         "“" + claims.Username + "” 删除了分类",
+	}
+	models.Broadcast <- msg
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,

@@ -44,14 +44,18 @@ class RepositoryTable extends React.Component {
       pageNum: 1,
       transferDis: false
     };
-    this.timeout = null;
+    // this.timeout = null;
   }
   componentDidMount() {
     this.getTableData();
+    window.wsFuncRepo = () => {
+      this.getTableData(this.state.pageNum);
+    };
   }
 
   componentWillUnmount() {
-    if (this.timeout) clearTimeout(this.timeout);
+    window.wsFuncRepo = null;
+    // if (this.timeout) clearTimeout(this.timeout);
   }
   editDialogShow() {
     this.setState({ editShow: true });
@@ -65,9 +69,8 @@ class RepositoryTable extends React.Component {
     this.setState({ editShow: false });
     this.getTableData();
   }
-
   getTableData(pageNum = 1, pageSize = 8) {
-    if (this.timeout) clearTimeout(this.timeout);
+    // if (this.timeout) clearTimeout(this.timeout);
     repositoryFind({ pageNum, pageSize })
       .then(r => {
         this.setState({
@@ -76,18 +79,18 @@ class RepositoryTable extends React.Component {
           pageNum: r.PageNum
         });
 
-        for (let i = 0; i < r.length; i++) {
-          if (
-            r[i].Status === 0 ||
-            (r[i].JobStatus === 1 && r[i].Status === 1)
-          ) {
-            //仓库正在克隆当中  或者 （一个正常的仓库很繁忙）的情况就会刷新
-            this.timeout = setTimeout(() => {
-              this.getTableData();
-            }, 5000);
-            return;
-          }
-        }
+        // for (let i = 0; i < r.length; i++) {
+        //   if (
+        //     r[i].Status === 0 ||
+        //     (r[i].JobStatus === 1 && r[i].Status === 1)
+        //   ) {
+        //     //仓库正在克隆当中  或者 （一个正常的仓库很繁忙）的情况就会刷新
+        //     this.timeout = setTimeout(() => {
+        //       this.getTableData();
+        //     }, 5000);
+        //     return;
+        //   }
+        // }
       })
       .catch(() => {});
   }

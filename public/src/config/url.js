@@ -1,7 +1,9 @@
 const nodeEnv = process.env.NODE_ENV;
 const appMode = process.env.REACT_APP_MODE;
 
-let useApiUrl = "http://localhost:8081";
+let host = "localhost:8088";
+let useApiUrl = "http://" + host;
+
 if ("production" === nodeEnv) {
   switch (appMode) {
     case "buildDev":
@@ -17,6 +19,7 @@ if ("production" === nodeEnv) {
       useApiUrl = "http://192.168.48.192:9288";
       break;
     default:
+      host = window.location.host;
       useApiUrl = window.location.origin;
       break;
   }
@@ -30,4 +33,4 @@ if (useApiUrl.slice(0, 4) !== "http") {
   useApiUrl = window.location.origin + useApiUrl;
 }
 
-export default useApiUrl;
+export { host, useApiUrl };

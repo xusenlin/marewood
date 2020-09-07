@@ -36,7 +36,7 @@ func init() {
 		ClientDir = systemCfg.CurrentDir + "/public/build"
 	}
 
-	systemCfg.Version = 0.3
+	systemCfg.Version = 1.2
 	systemCfg.AppName = "MareWood"
 	systemCfg.AppRepository = "https://github.com/xusenlin/MareWood"
 	systemCfg.DbDns = systemCfg.CurrentDir + "/database.db"
@@ -46,7 +46,7 @@ func init() {
 	systemCfg.ClientDir = ClientDir
 	systemCfg.WebHookUrl = "/web_hook"
 	systemCfg.WebsUrl = "/webs"
-	systemCfg.Introduction = systemCfg.AppName + ` 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、SQLITE、REACT、MATERIAL-UI 开发，
+	systemCfg.Introduction = systemCfg.AppName + ` 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、WEBSOCKET、SQLITE、REACT、MATERIAL-UI 开发，
 不同于 Jenkins 的大而全，它很简单且只针对前端，你可以很灵活的配置各种部署环境。
 如果你愿意，线上发布也可以是点击一下按钮这么简单的事情,当然也可以配置 WEBHOOK，提交 GIT 代码既自动发布。
 `

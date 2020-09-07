@@ -12,7 +12,9 @@ import Container from "@material-ui/core/Container";
 import Copyright from "../../components/copyright";
 import { setToken, setUserInfo } from "../../utils/dataStorage";
 import { login } from "../../api/user";
+import { connWebsocket } from "../../utils/websocket.js";
 const Logo = require("../../assets/img/logo.svg");
+
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -64,6 +66,7 @@ export default function SignIn() {
       .then(r => {
         setToken(r.Token);
         setUserInfo(r);
+        connWebsocket(r.Token);
         window.location.href = "./";
         localStorage.setItem(
           "LoginInfo",
