@@ -155,3 +155,16 @@ export function commitRecord(params) {
     params: params
   });
 }
+
+/**
+ * 重置git仓库
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function reset(params) {
+  return request({
+    url: "/repository/reset",
+    method: "get",
+    params: params
+  });
+}

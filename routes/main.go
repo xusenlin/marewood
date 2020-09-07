@@ -55,6 +55,7 @@ func InitRouter() *gin.Engine {
 		v1.GET("/repository/get_script", middlewares.RoleReporter(), controller.RepositoryScript)
 		v1.GET("/repository/update_field", middlewares.RoleDeveloper(), controller.RepositoryUpdateField)
 		v1.GET("/repository/commit_record", middlewares.RoleReporter(), controller.CommitRecord)
+		v1.GET("/repository/reset", middlewares.RoleDeveloper(), controller.RepositoryReset)
 
 		//任务分类
 		v1.GET("/categories", middlewares.RoleReporter(), controller.CategoryFindAll)
@@ -65,7 +66,6 @@ func InitRouter() *gin.Engine {
 		v1.GET("/jobs", middlewares.RoleReporter(), controller.JobFindAll)
 		v1.GET("/jobs_find", middlewares.RoleReporter(), controller.JobFind)
 		v1.POST("/job/create", middlewares.RoleDeveloper(), controller.JobCreate)
-		v1.POST("/job/reset", middlewares.RoleDeveloper(), middlewares.CheckAfferent([]string{"id"}), controller.JobReset)
 		v1.GET("/job/update_branch", middlewares.RoleDeveloper(), controller.JobUpdateBranch)
 		v1.GET("/job/update_field", middlewares.RoleDeveloper(), controller.JobUpdateField)
 		v1.GET("/job/delete", middlewares.RoleAdmin(), controller.JobDestroy)

@@ -40,8 +40,8 @@ import {
 } from "../../api/repository";
 import EditField from "../../components/editField";
 import { tooltip } from "../../assets/jss/common";
-import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
-import { reset } from "../../api/job.js";
+import NewReleases from "@material-ui/icons/NewReleases";
+import { reset } from "../../api/repository.js";
 
 const styles = () => ({
   table: {
@@ -85,14 +85,14 @@ class RepositoryTable extends React.Component {
       .then(r => {
         Snackbar.success(r);
       })
-      .catch(() => { });
+      .catch(() => {});
   }
   discardRepoChange(row) {
     discardChange({ id: row.ID })
       .then(() => {
         Snackbar.success("执行 git checkout . 成功！");
       })
-      .catch(() => { });
+      .catch(() => {});
   }
   destroyConfirm() {
     destroy({ id: this.destroyId })
@@ -100,7 +100,7 @@ class RepositoryTable extends React.Component {
         this.setState({ destroyDialogShow: false });
         this.props.refresh();
       })
-      .catch(() => { });
+      .catch(() => {});
   }
 
   repositoryGitPull(row) {
@@ -108,7 +108,7 @@ class RepositoryTable extends React.Component {
       .then(() => {
         Snackbar.success("已经更新代码");
       })
-      .catch(() => { });
+      .catch(() => {});
   }
 
   repositoryPruneBranch(row) {
@@ -116,7 +116,7 @@ class RepositoryTable extends React.Component {
       .then(() => {
         Snackbar.success("分支已经裁剪");
       })
-      .catch(() => { });
+      .catch(() => {});
   }
 
   clickEditField(row, inputRows, desc, field) {
@@ -137,7 +137,7 @@ class RepositoryTable extends React.Component {
         this.closeResetEditFieldDialog();
         this.props.refresh();
       })
-      .catch(() => { });
+      .catch(() => {});
   }
   closeResetEditFieldDialog() {
     this.setState({
@@ -151,16 +151,16 @@ class RepositoryTable extends React.Component {
       }
     });
   }
-  resetProject(row) {
-    if (row.Status !== 1) return Snackbar.warning("仓库状态不正常，无法重置仓库");
-    const p = {
-      ID: row.ID + "",
-      gitUrl: row.Url,
-      Name: row.Name,
-      UserName: row.UserName,
-      Password: row.Password
+  resetRepo(row) {
+    if (row.Status !== 1 || row.JobStatus !== 0) {
+      return Snackbar.warning("此仓库有任务正在执行，无法重置仓库");
     }
-    reset(p)
+    reset({ id: row.ID })
+      .then(r => {
+        Snackbar.success("后台重建仓库中...");
+        this.props.refresh();
+      })
+      .catch(() => {});
   }
   render() {
     const { classes } = this.props;
@@ -189,7 +189,7 @@ class RepositoryTable extends React.Component {
               <TableCell align="center">依赖工具</TableCell>
               <TableCell align="center">
                 操作
-                <HelperTooltips help="删除的依赖会在任务执行时重新安装/丢弃本地修改用于修复安装依赖导致yarn.lock改变无法正常运行任务" />
+                <HelperTooltips help="删除的依赖会在任务执行时重新安装/丢弃本地修改用于修复安装依赖导致yarn.lock改变无法正常运行任务/重置仓库会删除仓库重新克隆代码" />
               </TableCell>
             </TableRow>
           </TableHead>
@@ -241,12 +241,12 @@ class RepositoryTable extends React.Component {
                       </IconButton>
                     </Tooltip>
                   ) : (
-                      <Tooltip title="仓库非私密" interactive>
-                        <IconButton color="primary">
-                          <LockOpenIcon />
-                        </IconButton>
-                      </Tooltip>
-                    )}
+                    <Tooltip title="仓库非私密" interactive>
+                      <IconButton color="primary">
+                        <LockOpenIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                 </TableCell>
                 <TableCell align="center">
                   <Tooltip
@@ -315,20 +315,20 @@ class RepositoryTable extends React.Component {
                       <RestoreFromTrash />
                     </IconButton>
                   </Tooltip>
+                  <Tooltip title="重置仓库">
+                    <IconButton
+                      color="primary"
+                      onClick={this.resetRepo.bind(this, row)}
+                    >
+                      <NewReleases />
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip title="删除仓库" interactive>
                     <IconButton
                       color="primary"
                       onClick={this.destroyDialogOpen.bind(this, row.ID)}
                     >
                       <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="重置仓库">
-                    <IconButton
-                      color="primary"
-                      onClick={this.resetProject.bind(this, row)}
-                    >
-                      <TransferWithinAStationIcon />
                     </IconButton>
                   </Tooltip>
                 </TableCell>

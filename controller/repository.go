@@ -95,14 +95,13 @@ func RepositoryCreate(c *gin.Context) {
 	}
 	go serviceRepository.CloneRepo(&repository, claims)
 
-	msg := models.Message{
+	models.Broadcast <- models.Message{
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
 		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
 		Message:         "“" + claims.Username + "” 创建了仓库“" + repository.Name + "”",
 	}
-	models.Broadcast <- msg
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
@@ -341,5 +340,50 @@ func RepositoryUpdateField(c *gin.Context) {
 		"status": true,
 		"data":   id,
 		"msg":    "更新成功",
+	})
+}
+
+func RepositoryReset(c *gin.Context) {
+
+	id := c.Query("id")
+	var repo models.Repository
+
+	//更新 status ，防止任务在这个时候打包
+	if sql.DB.First(&repo, id).Update("status", models.RepoStatusProcessing).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    sql.DB.Error.Error(),
+		})
+		return
+	}
+	claims, _ := serviceUser.GetJwtClaimsByContext(c)
+
+	err := serviceRepository.DeleteRepository(id)
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    err.Error(),
+		})
+		return
+	}
+
+
+	go serviceRepository.CloneRepo(&repo, claims)
+
+	models.Broadcast <- models.Message{
+		Type:            models.MsgTypeInfo,
+		TriggerID:       claims.ID,
+		TriggerUsername: claims.Username,
+		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
+		Message:         "“" + claims.Username + "” 重建了仓库“" + repo.Name + "”",
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+		"data":   "",
+		"msg":    "后台重建仓库中...",
 	})
 }

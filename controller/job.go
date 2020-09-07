@@ -3,7 +3,6 @@ package controller
 import (
 	"MareWood/models"
 	"MareWood/service/serviceJob"
-	"MareWood/service/serviceRepository"
 	"MareWood/service/serviceUser"
 	"MareWood/sql"
 	"net/http"
@@ -113,35 +112,7 @@ func JobCreate(c *gin.Context) {
 	})
 }
 
-func JobReset(c *gin.Context) {
-	var job models.JobReste
-	jobErr := c.ShouldBindJSON(&job)
 
-	if jobErr != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    jobErr.Error(),
-		})
-		return
-	}
-
-	_, err := serviceRepository.ResetRepository(job.ID, job.GitUrl, job.UserName, job.Password)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-			"data":   "",
-			"msg":    err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"status": true,
-		"data":   "",
-		"msg":    "重新构建成功",
-	})
-}
 
 func JobUpdateBranch(c *gin.Context) {
 
@@ -295,7 +266,7 @@ func JobRun(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
-			"msg":    "仓库已经损坏，请尝试修复对应仓库",
+			"msg":    "仓库已经损坏或者正在在克隆中，请尝试修复对应仓库",
 		})
 		return
 	}

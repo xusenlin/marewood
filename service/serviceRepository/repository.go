@@ -6,7 +6,6 @@ import (
 	"MareWood/models"
 	"MareWood/sql"
 	"errors"
-	"fmt"
 	"os"
 	"os/exec"
 	"strconv"
@@ -28,7 +27,7 @@ func CloneRepo(repo *models.Repository,claims *models.Claims){
 		Update("status", models.RepoStatusSuccess).
 		Update("terminal_info", out)
 
-	msg := models.Message{
+	models.Broadcast <-  models.Message{
 		Type:            models.MsgTypeSuccess,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
@@ -36,7 +35,6 @@ func CloneRepo(repo *models.Repository,claims *models.Claims){
 		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
 		Message:         "“" + claims.Username + "” 创建的仓库“" + repo.Name + "”克隆成功了。",
 	}
-	models.Broadcast <- msg
 }
 
 //克隆仓库，userName，password可留空
@@ -57,7 +55,6 @@ func GitClone(repositoryId string, gitUrl string, userName string, password stri
 	cmd = exec.Command("git", "clone", endingUrl)
 	cmd.Dir = config.Cfg.RepositoryDir
 	out, err := cmd.CombinedOutput()
-	fmt.Println(endingUrl, "gitclone---", err)
 	if err != nil {
 		return string(out), err
 	}
@@ -132,20 +129,6 @@ func GetBranch(repositoryId string) ([]string, error) {
 func GitCheckout(repositoryId string, branch string) (string, error) {
 
 	return RunCmdOnRepositoryDir(repositoryId, "git", "checkout", branch)
-}
-
-func ResetRepository(repositoryId string, gitUrl string, userName string, password string) (string, error) {
-	err := DeleteRepository(repositoryId)
-	if err != nil {
-		return "", err
-	}
-	// gitUrl string, userName string, password string
-
-	clone, err2 := GitClone(repositoryId, gitUrl, userName, password)
-	if err2 != nil {
-		return clone, err
-	}
-	return "", nil
 }
 
 //仓库URL， 构建命令 test、build、build:dev

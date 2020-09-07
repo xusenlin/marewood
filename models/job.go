@@ -47,13 +47,6 @@ type JobPageResult struct {
 	TotalPage int
 }
 
-type JobReste struct {
-	ID       string
-	GitUrl   string
-	Name     string
-	Password string
-	UserName string
-}
 
 func (j *Job) FindAll() (jobs []Job, err error) {
 	err = sql.DB.Order("created_at desc").Select("id,name").Find(&jobs).Error
