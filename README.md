@@ -60,6 +60,7 @@ http://xusenlin.com/article?key=BzV0K2
 
 # 更新日志
 ### v1.2 未发布
+* @wojiaolingdu111 添加了仓库重建功能
 * 添加了 websocket 广播，每个仓库和任务状态实时同步所有人。
 * 优化了接口请求加载动画禁止页面操作。
 * 添加了查看用户提交代码记录的功能。
