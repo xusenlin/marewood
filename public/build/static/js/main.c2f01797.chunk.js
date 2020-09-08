@@ -2,114 +2,111 @@
   window["webpackJsonpmaterial-ui-admin"] || []).push([
   [0],
   {
-    120: function(e, t, a) {
+    121: function(e, t, a) {
       e.exports = a.p + "static/media/logo.afcbb538.svg";
     },
-    220: function(e, t, a) {
-      e.exports = a(283);
+    219: function(e, t, a) {
+      e.exports = a(281);
     },
-    226: function(e, t, a) {},
-    281: function(e, t, a) {},
-    283: function(e, t, a) {
+    225: function(e, t, a) {},
+    279: function(e, t, a) {},
+    281: function(e, t, a) {
       "use strict";
       a.r(t);
       var n = a(0),
         i = a.n(n),
-        r = a(18),
+        r = a(17),
         l = a.n(r),
-        o = (a(225), a(226), a(57)),
-        c = {
-          apiPrefix: "v1",
-          timeout: 1e4,
-          requestRetry: 4,
-          requestRetryDelay: 800,
-          siteName: "MareWood",
-          systemInfoKey: "MareWood_SYSTEM_INFO",
-          userInfoKey: "MareWood_USER_INFO",
-          tokenKey: "MareWood_ACCESS_TOKEN"
-        };
-      function s() {
-        return o.a.get(c.tokenKey);
+        o = (a(224), a(225), a(59)),
+        c = "v1",
+        s = 1e4,
+        d = 4,
+        u = 800,
+        m = "MareWood",
+        h = "MareWood_SYSTEM_INFO",
+        p = "MareWood_USER_INFO",
+        g = "MareWood_ACCESS_TOKEN";
+      function f() {
+        return o.a.get(g);
       }
-      function u() {
+      function E() {
         var e =
             arguments.length > 0 && void 0 !== arguments[0]
               ? arguments[0]
               : null,
-          t = o.a.get(c.systemInfoKey) || {};
+          t = o.a.get(h) || {};
         return e ? (t.hasOwnProperty(e) ? t[e] : null) : t;
       }
-      var d = Object({ NODE_ENV: "production", PUBLIC_URL: "." })
+      var b = Object({ NODE_ENV: "production", PUBLIC_URL: "." })
           .REACT_APP_MODE,
-        m = "localhost:8088",
-        h = "http://" + m;
-      switch (d) {
+        y = "localhost:8088",
+        v = "http://" + y;
+      switch (b) {
         case "buildDev":
-          h = "http://192.168.48.192:9088";
+          v = "http://192.168.48.192:9088";
           break;
         case "buildDevTest":
         case "buildTest":
         case "buildPre":
-          h = "http://192.168.48.192:9288";
+          v = "http://192.168.48.192:9288";
           break;
         default:
-          (m = window.location.host), (h = window.location.origin);
+          (y = window.location.host), (v = window.location.origin);
       }
       "string" ===
         typeof Object({ NODE_ENV: "production", PUBLIC_URL: "." })
           .REACT_APP_API_URL &&
-        (h = Object({ NODE_ENV: "production", PUBLIC_URL: "." })
+        (v = Object({ NODE_ENV: "production", PUBLIC_URL: "." })
           .REACT_APP_API_URL),
-        "http" !== h.slice(0, 4) && (h = window.location.origin + h);
-      var p = a(13),
-        g = a(14),
-        f = a(16),
-        b = a(15),
-        E = a(17),
-        y = a(350),
-        v = a(73),
-        w = a(3),
-        C = a(165),
-        k = a.n(C),
-        D = a(170),
-        O = a.n(D),
-        j = a(171),
-        S = a.n(j),
-        I = a(67),
-        F = a.n(I),
-        P = a(124),
-        N = a(174),
-        x = a.n(N),
-        T = a(173),
-        L = a.n(T),
-        U = a(169),
-        R = a.n(U),
-        W = a(172),
-        B = { success: k.a, warning: R.a, error: O.a, info: S.a },
-        _ = Object(W.makeStyles)(function(e) {
+        "http" !== v.slice(0, 4) && (v = window.location.origin + v);
+      var C = a(13),
+        w = a(14),
+        k = a(16),
+        D = a(15),
+        S = a(348),
+        j = a(74),
+        O = a(3),
+        F = a(165),
+        I = a.n(F),
+        N = a(170),
+        P = a.n(N),
+        x = a(171),
+        T = a.n(x),
+        L = a(68),
+        U = a.n(L),
+        R = a(124),
+        W = a(174),
+        B = a.n(W),
+        _ = a(173),
+        J = a.n(_),
+        M = a(169),
+        A = a.n(M),
+        z = a(172),
+        q = { success: I.a, warning: A.a, error: P.a, info: T.a },
+        V = Object(z.makeStyles)(function(e) {
           return {
-            success: { backgroundColor: P.green[600] },
+            success: { backgroundColor: R.green[600] },
             error: { backgroundColor: e.palette.error.dark },
             info: { backgroundColor: e.palette.primary.main },
-            warning: { backgroundColor: P.amber[700] },
+            warning: { backgroundColor: R.amber[700] },
             icon: { fontSize: 20 },
             iconVariant: { opacity: 0.9, marginRight: e.spacing(1) },
             message: { display: "flex", alignItems: "center" }
           };
         });
-      var M,
-        J = function(e) {
-          var t = _(),
+      var X,
+        H = function(e) {
+          var t = V(),
             a = e.message,
             n = e.onClose,
             r = e.variant,
-            l = Object(v.a)(e, ["message", "onClose", "variant"]),
-            o = B[r];
+            l = Object(j.a)(e, ["message", "onClose", "variant"]),
+            o = q[r];
           return i.a.createElement(
-            L.a,
+            J.a,
             Object.assign(
               {
-                className: Object(w.default)(t[r]),
+                className: Object(O.default)(t[r]),
                 "aria-describedby": "client-snackbar",
                 message: i.a.createElement(
                   "span",
@@ -119,20 +116,20 @@
                     style: { whiteSpace: "pre-wrap" }
                   },
                   i.a.createElement(o, {
-                    className: Object(w.default)(t.icon, t.iconVariant)
+                    className: Object(O.default)(t.icon, t.iconVariant)
                   }),
                   a
                 ),
                 action: [
                   i.a.createElement(
-                    x.a,
+                    B.a,
                     {
                       key: "close",
                       "aria-label": "close",
                       color: "inherit",
                       onClick: n
                     },
-                    i.a.createElement(F.a, { className: t.icon })
+                    i.a.createElement(U.a, { className: t.icon })
                   )
                 ]
               },
@@ -140,23 +137,24 @@
             )
           );
         },
-        z = (function(e) {
-          function t(e) {
-            var a;
+        G = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = {
                 open: !1,
                 content: "",
                 duration: 3e3,
                 type: "info"
               }),
-              a
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "openSnackbar",
                 value: function(e, t, a) {
@@ -189,14 +187,14 @@
                 key: "render",
                 value: function() {
                   return i.a.createElement(
-                    y.a,
+                    S.a,
                     {
                       anchorOrigin: { vertical: "bottom", horizontal: "left" },
                       open: this.state.open,
                       autoHideDuration: this.state.duration,
                       onClose: this.handleClose.bind(this)
                     },
-                    i.a.createElement(J, {
+                    i.a.createElement(H, {
                       onClose: this.handleClose.bind(this),
                       variant: this.state.type,
                       message: this.state.content
@@ -205,119 +203,105 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        A = document.getElementById("snackbar"),
-        q = l.a.render(i.a.createElement(z, null), A),
+        Y = document.getElementById("snackbar"),
+        Q = l.a.render(i.a.createElement(G, null), Y),
         K = function(e, t) {
           var a =
             arguments.length > 2 && void 0 !== arguments[2]
               ? arguments[2]
               : 4e3;
-          return M || (M = q), M.openSnackbar(e, t, a);
+          return X || (X = Q), X.openSnackbar(e, t, a);
         },
-        V = {
-          info: function(e) {
-            var t =
-              arguments.length > 1 && void 0 !== arguments[1]
-                ? arguments[1]
-                : 4e3;
-            return K("info", e, t);
-          },
-          success: function(e) {
-            var t =
-              arguments.length > 1 && void 0 !== arguments[1]
-                ? arguments[1]
-                : 4e3;
-            return K("success", e, t);
-          },
-          warning: function(e) {
-            var t =
-              arguments.length > 1 && void 0 !== arguments[1]
-                ? arguments[1]
-                : 4e3;
-            return K("warning", e, t);
-          },
-          error: function(e) {
-            var t =
-              arguments.length > 1 && void 0 !== arguments[1]
-                ? arguments[1]
-                : 4e3;
-            return K("error", e, t);
-          }
+        $ = function(e) {
+          var t =
+            arguments.length > 1 && void 0 !== arguments[1]
+              ? arguments[1]
+              : 4e3;
+          return K("success", e, t);
         },
-        X = 0,
-        H = 1,
-        G = 2,
-        Y = 3,
-        Q = 4;
-      function $(e) {
+        Z = function(e) {
+          var t =
+            arguments.length > 1 && void 0 !== arguments[1]
+              ? arguments[1]
+              : 4e3;
+          return K("warning", e, t);
+        },
+        ee = function(e) {
+          var t =
+            arguments.length > 1 && void 0 !== arguments[1]
+              ? arguments[1]
+              : 4e3;
+          return K("error", e, t);
+        };
+      function te(e) {
         (window.ws = new WebSocket(
-          "ws://".concat(m, "/websocket?token=").concat(e)
+          "ws://".concat(y, "/websocket?token=").concat(e)
         )),
           window.ws.addEventListener("message", function(e) {
             var t = JSON.parse(e.data);
             K(t.Type, t.Message),
-              t.UpdateDataType !== X &&
-                (t.UpdateDataType === Y && window.wsFuncJob
+              0 !== t.UpdateDataType &&
+                (3 === t.UpdateDataType && window.wsFuncJob
                   ? window.wsFuncJob()
-                  : t.UpdateDataType === H && window.wsFuncRepo
+                  : 1 === t.UpdateDataType && window.wsFuncRepo
                   ? window.wsFuncRepo()
-                  : t.UpdateDataType === G && window.wsFuncCategory
+                  : 2 === t.UpdateDataType && window.wsFuncCategory
                   ? window.wsFuncCategory()
-                  : t.UpdateDataType === Q &&
+                  : 4 === t.UpdateDataType &&
                     window.wsFuncUser &&
                     window.wsFuncUser());
           }),
           window.ws.addEventListener("error", function(e) {
-            V.error("WebSocket \u94fe\u63a5\u51fa\u9519\uff01");
+            ee("WebSocket \u94fe\u63a5\u51fa\u9519\uff01");
           });
       }
-      var Z = a(122),
-        ee = a(56),
-        te = a(345),
-        ae = a(38),
-        ne = a(354),
-        ie = a(319),
-        re = a(320),
-        le = a(321),
-        oe = a(58),
-        ce = a(196),
-        se = a(352),
-        ue = a(324),
-        de = a(325),
-        me = {
+      var ae = a(123),
+        ne = a(19),
+        ie = a(343),
+        re = a(38),
+        le = a(350),
+        oe = a(317),
+        ce = a(318),
+        se = a(319),
+        de = a(60),
+        ue = a(195),
+        me = a(352),
+        he = a(322),
+        pe = a(323),
+        ge = {
           1: "\u8d85\u7ea7\u7ba1\u7406\u5458",
           2: "\u7ba1\u7406\u5458",
           3: "\u5f00\u53d1\u8005",
           4: "\u9879\u76ee\u8bb0\u8005"
         },
-        he = a(120),
-        pe = (function() {
+        fe = a(121),
+        Ee = (function() {
           var e =
               arguments.length > 0 && void 0 !== arguments[0]
                 ? arguments[0]
                 : null,
-            t = o.a.get(c.userInfoKey) || {};
+            t = o.a.get(p) || {};
           return e ? (t.hasOwnProperty(e) ? t[e] : null) : t;
         })(),
-        ge = function(e) {
+        be = function(e) {
           var t = i.a.useState(null),
-            a = Object(ae.a)(t, 2),
+            a = Object(re.a)(t, 2),
             n = a[0],
             r = a[1];
           return i.a.createElement(
             "div",
             { className: "topBar" },
             i.a.createElement(
-              ie.a,
+              oe.a,
               { position: "static", color: "default" },
               i.a.createElement(
-                re.a,
+                ce.a,
                 null,
                 i.a.createElement(
-                  le.a,
+                  se.a,
                   {
                     edge: "start",
                     color: "inherit",
@@ -329,28 +313,28 @@
                     { style: { width: 24, height: 24, display: "flex" } },
                     i.a.createElement("img", {
                       style: { width: 24 },
-                      src: he,
+                      src: fe,
                       alt: ""
                     })
                   )
                 ),
                 i.a.createElement(
-                  oe.a,
+                  de.a,
                   { variant: "h6", style: { flexGrow: 1, marginLeft: 20 } },
                   e.title
                 ),
                 i.a.createElement(
                   "div",
                   null,
-                  i.a.createElement(se.a, {
+                  i.a.createElement(me.a, {
                     onClick: function(e) {
                       r(e.currentTarget);
                     },
                     color: "primary",
-                    label: pe.Username
+                    label: Ee.Username
                   }),
                   i.a.createElement(
-                    ce.a,
+                    ue.a,
                     {
                       id: "user-menu",
                       anchorEl: n,
@@ -360,11 +344,11 @@
                         r(null);
                       }
                     },
-                    i.a.createElement(ue.a, null, me[pe.Role]),
+                    i.a.createElement(he.a, null, ge[Ee.Role]),
                     i.a.createElement(
-                      de.a,
+                      pe.a,
                       { href: "#/login" },
-                      i.a.createElement(ue.a, null, "\u9000\u51fa")
+                      i.a.createElement(he.a, null, "\u9000\u51fa")
                     )
                   )
                 )
@@ -372,74 +356,73 @@
             )
           );
         },
-        fe = a(4),
-        be = a(326),
-        Ee = a(330),
-        ye = a(329),
-        ve = a(327),
-        we = a(328),
-        Ce = a(101),
-        ke = a(175),
-        De = a.n(ke),
-        Oe = a(108),
-        je = a.n(Oe),
-        Se = De.a.create({
-          baseURL: h + "/" + c.apiPrefix,
+        ye = a(4),
+        ve = a(324),
+        Ce = a(328),
+        we = a(327),
+        ke = a(325),
+        De = a(326),
+        Se = a(103),
+        je = a(175),
+        Oe = a.n(je),
+        Fe = a(110),
+        Ie = a.n(Fe),
+        Ne = Oe.a.create({
+          baseURL: v + "/" + c,
           headers: { Accept: "*/*" },
-          timeout: c.timeout
+          timeout: s
         });
-      (Se.defaults.retry = c.requestRetry),
-        (Se.defaults.retryDelay = c.requestRetryDelay),
-        Se.interceptors.request.use(
+      (Ne.defaults.retry = d),
+        (Ne.defaults.retryDelay = u),
+        Ne.interceptors.request.use(
           function(e) {
-            return je.a.start(), (e.headers.Authorization = s() || ""), e;
+            return Ie.a.start(), (e.headers.Authorization = f() || ""), e;
           },
           function(e) {
             Promise.reject(e);
           }
         ),
-        Se.interceptors.response.use(
+        Ne.interceptors.response.use(
           function(e) {
             return (
               setTimeout(function() {
-                je.a.done();
+                Ie.a.done();
               }, 300),
               200 !== e.status
-                ? (V.error("Status Code Is Not 200"), Promise.reject(e))
+                ? (ee("Status Code Is Not 200"), Promise.reject(e))
                 : !0 !== e.data.status
-                ? (V.warning(e.data.msg), Promise.reject(e))
+                ? (Z(e.data.msg), Promise.reject(e))
                 : e.data.data
             );
           },
           function(e) {
-            return V.error(e.message), je.a.done(), Promise.reject(e);
+            return ee(e.message), Ie.a.done(), Promise.reject(e);
           }
         );
-      var Ie = Se;
-      var Fe = (function(e) {
-          function t(e) {
-            var a;
+      var Pe = Ne;
+      var xe = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
-                tableData: []
-              }),
-              a
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = { tableData: [] }),
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "componentDidMount",
                 value: function() {
                   var e,
                     t = this;
-                  Ie({ url: "/system/info", method: "get", params: e })
+                  Pe({ url: "/system/info", method: "get", params: e })
                     .then(function(e) {
                       var a;
                       (a = e.kvConfig),
-                        o.a.set(c.systemInfoKey, a),
+                        o.a.set(h, a),
                         t.setState({ tableData: e.detailsConfig });
                     })
                     .catch(function() {});
@@ -453,40 +436,40 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Ce.a,
+                      Se.a,
                       { className: e.root },
                       i.a.createElement(
-                        be.a,
+                        ve.a,
                         { className: e.table },
                         i.a.createElement(
-                          ve.a,
+                          ke.a,
                           null,
                           i.a.createElement(
-                            we.a,
+                            De.a,
                             null,
-                            i.a.createElement(ye.a, null, "\u6807\u9898"),
-                            i.a.createElement(ye.a, null, "\u503c"),
-                            i.a.createElement(ye.a, null, "\u5907\u6ce8")
+                            i.a.createElement(we.a, null, "\u6807\u9898"),
+                            i.a.createElement(we.a, null, "\u503c"),
+                            i.a.createElement(we.a, null, "\u5907\u6ce8")
                           )
                         ),
                         i.a.createElement(
-                          Ee.a,
+                          Ce.a,
                           null,
                           this.state.tableData.map(function(e) {
                             return i.a.createElement(
-                              we.a,
+                              De.a,
                               { key: e.Title },
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { component: "th", scope: "row" },
                                 e.Title
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 null,
                                 Array.isArray(e.Val) ? e.Val.join(" | ") : e.Val
                               ),
-                              i.a.createElement(ye.a, null, e.Desc)
+                              i.a.createElement(we.a, null, e.Desc)
                             );
                           })
                         )
@@ -496,55 +479,53 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        Pe = Object(fe.a)(function(e) {
+        Te = Object(ye.a)(function(e) {
           return {
             root: { width: "100%", marginTop: e.spacing(1), overflowX: "auto" },
             table: { minWidth: 650 },
             sept: { marginTop: 20, padding: e.spacing(3, 2) }
           };
-        })(Fe),
-        Ne = a(72),
-        xe = a.n(Ne),
-        Te = a(70),
-        Le = a.n(Te),
-        Ue = a(52),
-        Re = a.n(Ue),
-        We = a(351),
-        Be = a(331),
-        _e = a(332),
-        Me = a(333),
-        Je = a(336),
-        ze = a(334),
-        Ae = a(335),
-        qe = a(337),
-        Ke = a(48),
-        Ve = a(346);
-      function Xe(e) {
-        return Ie({ url: "/categories", method: "get", params: e });
+        })(xe),
+        Le = a(73),
+        Ue = a.n(Le),
+        Re = a(71),
+        We = a.n(Re),
+        Be = a(54),
+        _e = a.n(Be),
+        Je = a(349),
+        Me = a(329),
+        Ae = a(330),
+        ze = a(331),
+        qe = a(334),
+        Ve = a(332),
+        Xe = a(333),
+        He = a(335),
+        Ge = a(53),
+        Ye = a(344);
+      function Qe(e) {
+        return Pe({ url: "/categories", method: "get", params: e });
       }
-      var He = (function(e) {
-          function t(e) {
-            var a;
+      var Ke = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
-                name: "",
-                desc: ""
-              }),
-              a
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = { name: "", desc: "" }),
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               { key: "componentDidMount", value: function() {} },
               {
                 key: "textFieldChange",
                 value: function(e, t) {
-                  this.setState(Object(Ke.a)({}, e, t.target.value));
+                  this.setState(Object(Ge.a)({}, e, t.target.value));
                 }
               },
               {
@@ -553,7 +534,7 @@
                   var e,
                     t = this;
                   ((e = this.state),
-                  Ie({ url: "/category/create", method: "post", data: e }))
+                  Pe({ url: "/category/create", method: "post", data: e }))
                     .then(function(e) {
                       t.props.createSuccess();
                     })
@@ -567,21 +548,21 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Be.a,
+                      Me.a,
                       {
                         open: this.props.show,
                         onClose: this.props.handleClose,
                         "aria-labelledby": "form-dialog-title"
                       },
                       i.a.createElement(
-                        _e.a,
+                        Ae.a,
                         { id: "form-dialog-title" },
                         "\u65b0\u589e\u5206\u7c7b"
                       ),
                       i.a.createElement(
-                        Me.a,
+                        ze.a,
                         null,
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           required: !0,
                           value: this.state.name,
                           margin: "dense",
@@ -591,7 +572,7 @@
                           type: "text",
                           fullWidth: !0
                         }),
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           margin: "dense",
                           value: this.state.desc,
                           id: "desc",
@@ -604,15 +585,15 @@
                         })
                       ),
                       i.a.createElement(
-                        ze.a,
+                        Ve.a,
                         null,
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           { onClick: this.props.handleClose },
                           "\u5173\u95ed"
                         ),
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             onClick: this.submitCategory.bind(this),
                             color: "primary"
@@ -625,10 +606,10 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        Ge = Object(fe.a)(function(e) {
+        $e = Object(ye.a)(function(e) {
           return {
             root: { margin: 0, padding: e.spacing(2) },
             closeButton: {
@@ -642,44 +623,43 @@
           var t = e.children,
             a = e.classes,
             n = e.onClose,
-            r = Object(v.a)(e, ["children", "classes", "onClose"]);
+            r = Object(j.a)(e, ["children", "classes", "onClose"]);
           return i.a.createElement(
-            _e.a,
+            Ae.a,
             Object.assign({ disableTypography: !0, className: a.root }, r),
-            i.a.createElement(oe.a, { variant: "h6" }, t),
+            i.a.createElement(de.a, { variant: "h6" }, t),
             n
               ? i.a.createElement(
-                  le.a,
+                  se.a,
                   {
                     "aria-label": "close",
                     className: a.closeButton,
                     onClick: n
                   },
-                  i.a.createElement(F.a, null)
+                  i.a.createElement(U.a, null)
                 )
               : null
           );
         }),
-        Ye = Object(fe.a)(function(e) {
+        Ze = Object(ye.a)(function(e) {
           return { root: { padding: e.spacing(2) } };
-        })(Me.a),
-        Qe = Object(fe.a)(function(e) {
-          return { root: { margin: 0, padding: e.spacing(1) } };
         })(ze.a),
-        $e = (function(e) {
-          function t(e) {
-            var a;
+        et = Object(ye.a)(function(e) {
+          return { root: { margin: 0, padding: e.spacing(1) } };
+        })(Ve.a),
+        tt = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
-                fieldContent: ""
-              }),
-              a
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = { fieldContent: "" }),
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "saveFieldContent",
                 value: function() {
@@ -709,7 +689,7 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Be.a,
+                      Me.a,
                       {
                         onClose: this.props.onClose,
                         onEntering: this.onEnteredDialog.bind(this),
@@ -717,7 +697,7 @@
                         open: this.props.open
                       },
                       i.a.createElement(
-                        Ge,
+                        $e,
                         {
                           id: "customized-dialog-title",
                           onClose: this.props.onClose
@@ -726,9 +706,9 @@
                         this.props.desc
                       ),
                       i.a.createElement(
-                        Ye,
+                        Ze,
                         { dividers: !0, style: { width: 600 } },
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           InputLabelProps: { shrink: !0 },
                           margin: "dense",
                           value: this.state.fieldContent,
@@ -742,10 +722,10 @@
                         })
                       ),
                       i.a.createElement(
-                        Qe,
+                        et,
                         null,
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             autoFocus: !0,
                             onClick: this.saveFieldContent.bind(this),
@@ -759,19 +739,21 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component);
-      $e.defaultProps = { row: 1 };
-      var Ze = $e,
-        et = a(71),
-        tt = a.n(et),
-        at = (function(e) {
-          function t(e) {
-            var a;
+      tt.defaultProps = { row: 1 };
+      var at = tt,
+        nt = a(72),
+        it = a.n(nt),
+        rt = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = {
                 tableData: [],
                 destroyDialogShow: !1,
                 editCategoryShow: !1,
@@ -784,13 +766,12 @@
                   fieldContent: ""
                 }
               }),
-              (a.destroyId = 0),
-              a
+              (n.destroyId = 0),
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "componentDidMount",
                 value: function() {
@@ -811,7 +792,7 @@
                 key: "getTableData",
                 value: function() {
                   var e = this;
-                  Xe()
+                  Qe()
                     .then(function(t) {
                       e.setState({ tableData: t });
                     })
@@ -837,9 +818,9 @@
                   var e,
                     t = this;
                   ((e = { id: this.destroyId }),
-                  Ie({ url: "/category/delete", method: "get", params: e }))
+                  Pe({ url: "/category/delete", method: "get", params: e }))
                     .then(function(e) {
-                      V.success("\u5220\u9664\u6210\u529f\uff01"),
+                      $("\u5220\u9664\u6210\u529f\uff01"),
                         t.setState({ destroyDialogShow: !1 }),
                         t.getTableData();
                     })
@@ -885,7 +866,7 @@
                   var n,
                     i = this;
                   ((n = { id: e, field: t, fieldContent: a }),
-                  Ie({
+                  Pe({
                     url: "/category/update_field",
                     method: "get",
                     params: n
@@ -920,61 +901,61 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Ce.a,
+                      Se.a,
                       { className: t.root },
                       i.a.createElement(
-                        be.a,
+                        ve.a,
                         { className: t.table },
                         i.a.createElement(
-                          ve.a,
+                          ke.a,
                           null,
                           i.a.createElement(
-                            we.a,
+                            De.a,
                             null,
-                            i.a.createElement(ye.a, null, "ID"),
+                            i.a.createElement(we.a, null, "ID"),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left" },
                               "\u5206\u7c7b\u540d\u5b57"
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left" },
                               "\u4efb\u52a1\u6570\u91cf"
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left" },
                               "\u5907\u6ce8"
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left" },
                               "\u521b\u5efa\u65f6\u95f4"
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left" },
                               "\u64cd\u4f5c"
                             )
                           )
                         ),
                         i.a.createElement(
-                          Ee.a,
+                          Ce.a,
                           null,
                           this.state.tableData.map(function(a) {
                             return i.a.createElement(
-                              we.a,
+                              De.a,
                               { key: a.ID, hover: !0 },
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { component: "th", scope: "row" },
                                 a.ID
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { align: "left" },
-                                i.a.createElement(Le.a, {
+                                i.a.createElement(We.a, {
                                   style: {
                                     fontSize: 14,
                                     marginRight: 10,
@@ -992,22 +973,22 @@
                                 a.Name
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { align: "left" },
                                 a.JobQuantity
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { align: "left" },
                                 i.a.createElement(
-                                  We.a,
+                                  Je.a,
                                   {
                                     title: a.Desc,
                                     classes: { tooltip: t.tooltip },
                                     interactive: !0
                                   },
                                   i.a.createElement(
-                                    le.a,
+                                    se.a,
                                     {
                                       color: "primary",
                                       onClick: e.clickEditField.bind(
@@ -1018,29 +999,29 @@
                                         "Desc"
                                       )
                                     },
-                                    i.a.createElement(tt.a, null)
+                                    i.a.createElement(it.a, null)
                                   )
                                 )
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { align: "left" },
                                 a.CreatedAt
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { align: "left" },
                                 i.a.createElement(
-                                  We.a,
+                                  Je.a,
                                   { title: "\u5220\u9664\u5206\u7c7b" },
                                   i.a.createElement(
-                                    le.a,
+                                    se.a,
                                     {
                                       edge: "start",
                                       color: "primary",
                                       onClick: e.destroyDialogOpen.bind(e, a.ID)
                                     },
-                                    i.a.createElement(Re.a, null)
+                                    i.a.createElement(_e.a, null)
                                   )
                                 )
                               )
@@ -1050,7 +1031,7 @@
                       )
                     ),
                     i.a.createElement(
-                      Be.a,
+                      Me.a,
                       {
                         open: this.state.destroyDialogShow,
                         onClose: this.destroyDialogClose.bind(this),
@@ -1058,24 +1039,24 @@
                         "aria-describedby": "alert-dialog-description"
                       },
                       i.a.createElement(
-                        _e.a,
+                        Ae.a,
                         { id: "alert-dialog-title" },
                         "\u786e\u8ba4\u5220\u9664\u5206\u7c7b?"
-                      ),
-                      i.a.createElement(
-                        Me.a,
-                        null,
-                        i.a.createElement(
-                          Je.a,
-                          { id: "alert-dialog-description" },
-                          "\u5982\u679c\u4f60\u786e\u8ba4\u8981\u5220\u9664\u8fd9\u4e2a\u5206\u7c7b\uff0c\u8bf7\u786e\u4fdd\u5728\u8fd9\u4e2a\u5206\u7c7b\u4e0b\u9762\u5df2\u7ecf\u6ca1\u6709\u4efb\u4f55\u4efb\u52a1\u4e86\u3002"
-                        )
                       ),
                       i.a.createElement(
                         ze.a,
                         null,
                         i.a.createElement(
-                          Ae.a,
+                          qe.a,
+                          { id: "alert-dialog-description" },
+                          "\u5982\u679c\u4f60\u786e\u8ba4\u8981\u5220\u9664\u8fd9\u4e2a\u5206\u7c7b\uff0c\u8bf7\u786e\u4fdd\u5728\u8fd9\u4e2a\u5206\u7c7b\u4e0b\u9762\u5df2\u7ecf\u6ca1\u6709\u4efb\u4f55\u4efb\u52a1\u4e86\u3002"
+                        )
+                      ),
+                      i.a.createElement(
+                        Ve.a,
+                        null,
+                        i.a.createElement(
+                          Xe.a,
                           {
                             onClick: this.destroyDialogClose.bind(this),
                             color: "primary"
@@ -1083,7 +1064,7 @@
                           "\u5173\u95ed"
                         ),
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             onClick: this.destroyConfirm.bind(this),
                             color: "secondary",
@@ -1094,16 +1075,16 @@
                       )
                     ),
                     i.a.createElement(
-                      qe.a,
+                      He.a,
                       {
                         color: "primary",
                         className: t.fab,
                         "aria-label": "add",
                         onClick: this.editDialogShow.bind(this)
                       },
-                      i.a.createElement(xe.a, null)
+                      i.a.createElement(Ue.a, null)
                     ),
-                    i.a.createElement(Ze, {
+                    i.a.createElement(at, {
                       id: this.state.editField.id,
                       open: this.state.editField.open,
                       desc: this.state.editField.desc,
@@ -1113,7 +1094,7 @@
                       onClose: this.closeResetEditFieldDialog.bind(this),
                       editSuccess: this.editFieldSuccess.bind(this)
                     }),
-                    i.a.createElement(He, {
+                    i.a.createElement(Ke, {
                       show: this.state.editCategoryShow,
                       handleClose: this.editDialogClose.bind(this),
                       createSuccess: this.createCategorySuccess.bind(this)
@@ -1122,10 +1103,10 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        nt = Object(fe.a)(function(e) {
+        lt = Object(ye.a)(function(e) {
           return {
             root: { width: "100%", marginTop: e.spacing(1), overflowX: "auto" },
             table: { minWidth: 650 },
@@ -1135,16 +1116,18 @@
               right: e.spacing(2)
             }
           };
-        })(at);
-      function it(e) {
-        return Ie({ url: "/repository_find", method: "get", params: e });
+        })(rt);
+      function ot(e) {
+        return Pe({ url: "/repository_find", method: "get", params: e });
       }
-      var rt = (function(e) {
-          function t(e) {
-            var a;
+      var ct = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = {
                 name: "",
                 url: "",
                 desc: "",
@@ -1152,17 +1135,16 @@
                 password: "",
                 dependTools: ""
               }),
-              a
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               { key: "componentDidMount", value: function() {} },
               {
                 key: "textFieldChange",
                 value: function(e, t) {
-                  this.setState(Object(Ke.a)({}, e, t.target.value));
+                  this.setState(Object(Ge.a)({}, e, t.target.value));
                 }
               },
               {
@@ -1171,7 +1153,7 @@
                   var e,
                     t = this;
                   ((e = this.state),
-                  Ie({ url: "/repository/create", method: "post", data: e }))
+                  Pe({ url: "/repository/create", method: "post", data: e }))
                     .then(function(e) {
                       t.props.createSuccess();
                     })
@@ -1185,21 +1167,21 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Be.a,
+                      Me.a,
                       {
                         open: this.props.show,
                         onClose: this.props.handleClose,
                         "aria-labelledby": "form-dialog-title"
                       },
                       i.a.createElement(
-                        _e.a,
+                        Ae.a,
                         { id: "form-dialog-title" },
                         "\u7f16\u8f91\u4ed3\u5e93"
                       ),
                       i.a.createElement(
-                        Me.a,
+                        ze.a,
                         null,
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           InputLabelProps: { shrink: !0 },
                           required: !0,
                           autoFocus: !0,
@@ -1211,7 +1193,7 @@
                           type: "text",
                           fullWidth: !0
                         }),
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           InputLabelProps: { shrink: !0 },
                           required: !0,
                           autoFocus: !0,
@@ -1224,7 +1206,7 @@
                           fullWidth: !0
                         }),
                         i.a.createElement(
-                          Ve.a,
+                          Ye.a,
                           {
                             InputLabelProps: { shrink: !0 },
                             select: !0,
@@ -1242,13 +1224,13 @@
                           },
                           this.props.dependentSupport.map(function(e) {
                             return i.a.createElement(
-                              ue.a,
+                              he.a,
                               { key: e, value: e },
                               e
                             );
                           })
                         ),
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           InputLabelProps: { shrink: !0 },
                           autoFocus: !0,
                           value: this.state.userName,
@@ -1259,7 +1241,7 @@
                           type: "text",
                           fullWidth: !0
                         }),
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           InputLabelProps: { shrink: !0 },
                           autoFocus: !0,
                           value: this.state.password,
@@ -1270,7 +1252,7 @@
                           type: "password",
                           fullWidth: !0
                         }),
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           InputLabelProps: { shrink: !0 },
                           margin: "dense",
                           value: this.state.desc,
@@ -1284,15 +1266,15 @@
                         })
                       ),
                       i.a.createElement(
-                        ze.a,
+                        Ve.a,
                         null,
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           { onClick: this.props.handleClose },
                           "\u5173\u95ed"
                         ),
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             onClick: this.submitForm.bind(this),
                             color: "primary"
@@ -1305,90 +1287,78 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        lt = a(180),
-        ot = a.n(lt),
-        ct = a(179),
-        st = a.n(ct),
-        ut = a(181),
-        dt = a.n(ut),
-        mt = a(105),
-        ht = a.n(mt),
-        pt = a(106),
-        gt = a.n(pt),
-        ft = a(178),
-        bt = a.n(ft),
-        Et = a(107),
-        yt = a.n(Et),
-        vt = a(104),
-        wt = a.n(vt),
-        Ct = a(177),
-        kt = a.n(Ct),
-        Dt = (function(e) {
-          function t(e) {
-            var a;
-            return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(
-                this,
-                Object(b.a)(t).call(this, e)
-              )).state = {}),
-              a
-            );
+        st = a(180),
+        dt = a.n(st),
+        ut = a(179),
+        mt = a.n(ut),
+        ht = a(181),
+        pt = a.n(ht),
+        gt = a(107),
+        ft = a.n(gt),
+        Et = a(108),
+        bt = a.n(Et),
+        yt = a(178),
+        vt = a.n(yt),
+        Ct = a(109),
+        wt = a.n(Ct),
+        kt = a(106),
+        Dt = a.n(kt),
+        St = a(177),
+        jt = a.n(St),
+        Ot = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
+            return Object(C.a)(this, a), ((n = t.call(this, e)).state = {}), n;
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               { key: "componentDidMount", value: function() {} },
               {
                 key: "render",
                 value: function() {
                   return i.a.createElement(
-                    We.a,
+                    Je.a,
                     { title: this.props.help },
-                    i.a.createElement(kt.a, { fontSize: "small" })
+                    i.a.createElement(jt.a, { fontSize: "small" })
                   );
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        Ot = a(338),
-        jt = [
+        Ft = a(336),
+        It = [
           "\u4ee3\u7801\u514b\u9686\u4e2d",
           "\u4ee3\u7801\u514b\u9686\u5b8c\u6210",
           "\u4ee3\u7801\u514b\u9686\u5931\u8d25"
         ],
-        St = (function(e) {
-          function t(e) {
-            var a;
-            return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(
-                this,
-                Object(b.a)(t).call(this, e)
-              )).state = {}),
-              a
-            );
+        Nt = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
+            return Object(C.a)(this, a), ((n = t.call(this, e)).state = {}), n;
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "renderCircularProgress",
                 value: function(e) {
                   return 0 === e
-                    ? i.a.createElement(Ot.a, { size: 20 })
+                    ? i.a.createElement(Ft.a, { size: 20 })
                     : 1 === e
-                    ? i.a.createElement(Ot.a, {
+                    ? i.a.createElement(Ft.a, {
                         variant: "static",
                         value: 100,
                         size: 20
                       })
-                    : i.a.createElement(Ot.a, {
+                    : i.a.createElement(Ft.a, {
                         variant: "static",
                         value: 100,
                         size: 20,
@@ -1403,10 +1373,10 @@
                     "div",
                     null,
                     i.a.createElement(
-                      We.a,
-                      { title: jt[this.props.status] },
+                      Je.a,
+                      { title: It[this.props.status] },
                       i.a.createElement(
-                        le.a,
+                        se.a,
                         { color: "primary" },
                         this.renderCircularProgress(this.props.status)
                       )
@@ -1415,34 +1385,28 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        It = [
+        Pt = [
           "\u7ed9\u6211\u5b89\u6392\u4efb\u52a1\u5427\uff0c\u73b0\u5728\u7a7a\u95f2\ud83e\udd17",
           "\u8d44\u6e90\u88ab\u5360\u7528\uff0c\u975e\u5e38\u5fd9\ud83d\ude24"
         ],
-        Ft = (function(e) {
-          function t(e) {
-            var a;
-            return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(
-                this,
-                Object(b.a)(t).call(this, e)
-              )).state = {}),
-              a
-            );
+        xt = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
+            return Object(C.a)(this, a), ((n = t.call(this, e)).state = {}), n;
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "renderCircularProgress",
                 value: function(e) {
                   return 1 === e
-                    ? i.a.createElement(Ot.a, { size: 20, color: "secondary" })
-                    : i.a.createElement(Ot.a, {
+                    ? i.a.createElement(Ft.a, { size: 20, color: "secondary" })
+                    : i.a.createElement(Ft.a, {
                         variant: "static",
                         value: 100,
                         size: 20
@@ -1456,10 +1420,10 @@
                     "div",
                     null,
                     i.a.createElement(
-                      We.a,
-                      { title: It[this.props.status] },
+                      Je.a,
+                      { title: Pt[this.props.status] },
                       i.a.createElement(
-                        le.a,
+                        se.a,
                         { color: "primary" },
                         this.renderCircularProgress(this.props.status)
                       )
@@ -1468,22 +1432,26 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        Pt = {
+        Tt = {
           maxWidth: 600,
           padding: 10,
           maxHeight: "60vh",
           overflowY: "auto",
           whiteSpace: "pre-wrap"
         },
-        Nt = (function(e) {
-          function t(e) {
-            var a;
+        Lt = a(182),
+        Ut = a.n(Lt),
+        Rt = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = {
                 destroyDialogShow: !1,
                 editField: {
                   id: 0,
@@ -1494,13 +1462,12 @@
                   fieldContent: ""
                 }
               }),
-              (a.destroyId = 0),
-              a
+              (n.destroyId = 0),
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "destroyDialogOpen",
                 value: function(e) {
@@ -1520,16 +1487,16 @@
                   var t;
                   1 === e.Status
                     ? ((t = { id: e.ID }),
-                      Ie({
+                      Pe({
                         url: "/repository/delete_depend",
                         method: "get",
                         params: t
                       }))
                         .then(function(e) {
-                          V.success(e);
+                          $(e);
                         })
                         .catch(function() {})
-                    : V.warning(
+                    : Z(
                         "\u4ed3\u5e93\u72b6\u6001\u4e0d\u6b63\u5e38\uff0c\u65e0\u6cd5\u5220\u9664\u4f9d\u8d56"
                       );
                 }
@@ -1539,15 +1506,13 @@
                 value: function(e) {
                   var t;
                   ((t = { id: e.ID }),
-                  Ie({
+                  Pe({
                     url: "/repository/discard_change",
                     method: "get",
                     params: t
                   }))
                     .then(function() {
-                      V.success(
-                        "\u6267\u884c git checkout . \u6210\u529f\uff01"
-                      );
+                      $("\u6267\u884c git checkout . \u6210\u529f\uff01");
                     })
                     .catch(function() {});
                 }
@@ -1558,7 +1523,7 @@
                   var e,
                     t = this;
                   ((e = { id: this.destroyId }),
-                  Ie({ url: "/repository/delete", method: "get", params: e }))
+                  Pe({ url: "/repository/delete", method: "get", params: e }))
                     .then(function(e) {
                       t.setState({ destroyDialogShow: !1 }), t.props.refresh();
                     })
@@ -1570,9 +1535,9 @@
                 value: function(e) {
                   var t;
                   ((t = { id: e.ID }),
-                  Ie({ url: "/repository/git_pull", method: "get", params: t }))
+                  Pe({ url: "/repository/git_pull", method: "get", params: t }))
                     .then(function() {
-                      V.success("\u5df2\u7ecf\u66f4\u65b0\u4ee3\u7801");
+                      $("\u5df2\u7ecf\u66f4\u65b0\u4ee3\u7801");
                     })
                     .catch(function() {});
                 }
@@ -1582,13 +1547,13 @@
                 value: function(e) {
                   var t;
                   ((t = { id: e.ID }),
-                  Ie({
+                  Pe({
                     url: "/repository/prune_branch",
                     method: "get",
                     params: t
                   }))
                     .then(function() {
-                      V.success("\u5206\u652f\u5df2\u7ecf\u88c1\u526a");
+                      $("\u5206\u652f\u5df2\u7ecf\u88c1\u526a");
                     })
                     .catch(function() {});
                 }
@@ -1614,7 +1579,7 @@
                   var n,
                     i = this;
                   ((n = { id: e, field: t, fieldContent: a }),
-                  Ie({
+                  Pe({
                     url: "/repository/update_field",
                     method: "get",
                     params: n
@@ -1641,6 +1606,24 @@
                 }
               },
               {
+                key: "resetRepo",
+                value: function(e) {
+                  var t,
+                    a = this;
+                  if (0 !== e.JobStatus)
+                    return Z(
+                      "\u6b64\u4ed3\u5e93\u6709\u4efb\u52a1\u6b63\u5728\u6267\u884c\uff0c\u65e0\u6cd5\u91cd\u5efa\u4ed3\u5e93"
+                    );
+                  ((t = { id: e.ID }),
+                  Pe({ url: "/repository/reset", method: "get", params: t }))
+                    .then(function() {
+                      $("\u540e\u53f0\u91cd\u5efa\u4ed3\u5e93\u4e2d..."),
+                        a.props.refresh();
+                    })
+                    .catch(function() {});
+                }
+              },
+              {
                 key: "render",
                 value: function() {
                   var e = this,
@@ -1649,106 +1632,106 @@
                     n.Fragment,
                     null,
                     i.a.createElement(
-                      be.a,
+                      ve.a,
                       { className: t.table },
                       i.a.createElement(
-                        ve.a,
+                        ke.a,
                         null,
                         i.a.createElement(
-                          we.a,
+                          De.a,
                           null,
-                          i.a.createElement(ye.a, null, "ID"),
+                          i.a.createElement(we.a, null, "ID"),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u4ed3\u5e93\u5730\u5740"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u4ed3\u5e93\u540d\u5b57"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u514b\u9686\u72b6\u6001"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u5de5\u4f5c\u72b6\u6001",
-                            i.a.createElement(Dt, {
+                            i.a.createElement(Ot, {
                               help:
                                 "\u5f53\u524d\u5de5\u4f5c\u76ee\u5f55\u6b63\u5728\u6267\u884c\u5176\u4ed6\u90e8\u7f72\u4efb\u52a1\uff0c\u8d44\u6e90\u88ab\u5360\u7528"
                             })
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u4ed3\u5e93\u6743\u9650",
-                            i.a.createElement(Dt, {
+                            i.a.createElement(Ot, {
                               help:
                                 "\u79c1\u5bc6\u4ed3\u5e93\u662f\u9700\u8981\u7528\u6237\u540d\u548c\u5bc6\u7801\u7684\uff0c\u5426\u5219\u514b\u9686\u5931\u8d25"
                             })
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u7ec8\u7aef\u4fe1\u606f"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u5907\u6ce8",
-                            i.a.createElement(Dt, {
+                            i.a.createElement(Ot, {
                               help: "\u70b9\u51fb\u53ef\u4ee5\u4fee\u6539"
                             })
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u4f9d\u8d56\u5de5\u5177"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u64cd\u4f5c",
-                            i.a.createElement(Dt, {
+                            i.a.createElement(Ot, {
                               help:
-                                "\u5220\u9664\u7684\u4f9d\u8d56\u4f1a\u5728\u4efb\u52a1\u6267\u884c\u65f6\u91cd\u65b0\u5b89\u88c5/\u4e22\u5f03\u672c\u5730\u4fee\u6539\u7528\u4e8e\u4fee\u590d\u5b89\u88c5\u4f9d\u8d56\u5bfc\u81f4yarn.lock\u6539\u53d8\u65e0\u6cd5\u6b63\u5e38\u8fd0\u884c\u4efb\u52a1"
+                                "\u5220\u9664\u7684\u4f9d\u8d56\u4f1a\u5728\u4efb\u52a1\u6267\u884c\u65f6\u91cd\u65b0\u5b89\u88c5/\u4e22\u5f03\u672c\u5730\u4fee\u6539\u7528\u4e8e\u4fee\u590d\u5b89\u88c5\u4f9d\u8d56\u5bfc\u81f4yarn.lock\u6539\u53d8\u65e0\u6cd5\u6b63\u5e38\u8fd0\u884c\u4efb\u52a1/\u91cd\u7f6e\u4ed3\u5e93\u4f1a\u5220\u9664\u4ed3\u5e93\u91cd\u65b0\u514b\u9686\u4ee3\u7801"
                             })
                           )
                         )
                       ),
                       i.a.createElement(
-                        Ee.a,
+                        Ce.a,
                         null,
                         this.props.tableData.map(function(a) {
                           return i.a.createElement(
-                            we.a,
+                            De.a,
                             { key: a.ID, hover: !0 },
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { component: "th", scope: "row" },
                               a.ID
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 { title: a.Url, interactive: !0 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   { color: "primary" },
-                                  i.a.createElement(wt.a, null)
+                                  i.a.createElement(Dt.a, null)
                                 )
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left" },
-                              i.a.createElement(Le.a, {
+                              i.a.createElement(We.a, {
                                 style: {
                                   fontSize: 14,
                                   marginRight: 10,
@@ -1766,21 +1749,21 @@
                               a.Name
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
-                              i.a.createElement(St, { status: a.Status })
+                              i.a.createElement(Nt, { status: a.Status })
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
-                              i.a.createElement(Ft, { status: a.JobStatus })
+                              i.a.createElement(xt, { status: a.JobStatus })
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               a.UserName && a.Password
                                 ? i.a.createElement(
-                                    We.a,
+                                    Je.a,
                                     {
                                       title: i.a.createElement(
                                         "div",
@@ -1791,53 +1774,53 @@
                                       interactive: !0
                                     },
                                     i.a.createElement(
-                                      le.a,
+                                      se.a,
                                       { color: "primary" },
-                                      i.a.createElement(ht.a, null)
+                                      i.a.createElement(ft.a, null)
                                     )
                                   )
                                 : i.a.createElement(
-                                    We.a,
+                                    Je.a,
                                     {
                                       title: "\u4ed3\u5e93\u975e\u79c1\u5bc6",
                                       interactive: !0
                                     },
                                     i.a.createElement(
-                                      le.a,
+                                      se.a,
                                       { color: "primary" },
-                                      i.a.createElement(gt.a, null)
+                                      i.a.createElement(bt.a, null)
                                     )
                                   )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: a.TerminalInfo,
                                   classes: { tooltip: t.tooltip },
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   { color: "primary" },
-                                  i.a.createElement(yt.a, null)
+                                  i.a.createElement(wt.a, null)
                                 )
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: a.Desc,
                                   classes: { tooltip: t.tooltip },
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.clickEditField.bind(
@@ -1848,12 +1831,12 @@
                                       "Desc"
                                     )
                                   },
-                                  i.a.createElement(tt.a, null)
+                                  i.a.createElement(it.a, null)
                                 )
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
                                 "span",
@@ -1862,82 +1845,94 @@
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: "\u66f4\u65b0\u4ed3\u5e93",
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.repositoryGitPull.bind(e, a)
                                   },
-                                  i.a.createElement(bt.a, null)
+                                  i.a.createElement(vt.a, null)
                                 )
                               ),
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: "\u88c1\u526a\u5206\u652f",
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.repositoryPruneBranch.bind(e, a)
                                   },
-                                  i.a.createElement(st.a, null)
+                                  i.a.createElement(mt.a, null)
                                 )
                               ),
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title:
                                     "\u4e22\u5f03\u672c\u5730\u4ed3\u5e93\u53d8\u52a8",
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.discardRepoChange.bind(e, a)
-                                  },
-                                  i.a.createElement(ot.a, null)
-                                )
-                              ),
-                              i.a.createElement(
-                                We.a,
-                                {
-                                  title: "\u5220\u9664\u4f9d\u8d56",
-                                  interactive: !0
-                                },
-                                i.a.createElement(
-                                  le.a,
-                                  {
-                                    color: "primary",
-                                    onClick: e.deleteRepositoryDepend.bind(e, a)
                                   },
                                   i.a.createElement(dt.a, null)
                                 )
                               ),
                               i.a.createElement(
-                                We.a,
+                                Je.a,
+                                {
+                                  title: "\u5220\u9664\u4f9d\u8d56",
+                                  interactive: !0
+                                },
+                                i.a.createElement(
+                                  se.a,
+                                  {
+                                    color: "primary",
+                                    onClick: e.deleteRepositoryDepend.bind(e, a)
+                                  },
+                                  i.a.createElement(pt.a, null)
+                                )
+                              ),
+                              i.a.createElement(
+                                Je.a,
+                                { title: "\u91cd\u5efa\u4ed3\u5e93" },
+                                i.a.createElement(
+                                  se.a,
+                                  {
+                                    color: "primary",
+                                    onClick: e.resetRepo.bind(e, a)
+                                  },
+                                  i.a.createElement(Ut.a, null)
+                                )
+                              ),
+                              i.a.createElement(
+                                Je.a,
                                 {
                                   title: "\u5220\u9664\u4ed3\u5e93",
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.destroyDialogOpen.bind(e, a.ID)
                                   },
-                                  i.a.createElement(Re.a, null)
+                                  i.a.createElement(_e.a, null)
                                 )
                               )
                             )
@@ -1945,7 +1940,7 @@
                         })
                       )
                     ),
-                    i.a.createElement(Ze, {
+                    i.a.createElement(at, {
                       id: this.state.editField.id,
                       open: this.state.editField.open,
                       desc: this.state.editField.desc,
@@ -1956,7 +1951,7 @@
                       editSuccess: this.editFieldSuccess.bind(this)
                     }),
                     i.a.createElement(
-                      Be.a,
+                      Me.a,
                       {
                         open: this.state.destroyDialogShow,
                         onClose: this.destroyDialogClose.bind(this),
@@ -1964,24 +1959,24 @@
                         "aria-describedby": "alert-dialog-description"
                       },
                       i.a.createElement(
-                        _e.a,
+                        Ae.a,
                         { id: "alert-dialog-title" },
                         "\u786e\u8ba4\u5220\u9664\u4ed3\u5e93?"
-                      ),
-                      i.a.createElement(
-                        Me.a,
-                        null,
-                        i.a.createElement(
-                          Je.a,
-                          { id: "alert-dialog-description" },
-                          "\u4f60\u786e\u8ba4\u8981\u5220\u9664\u8fd9\u4e2a\u4ed3\u5e93\uff1f\u6ca1\u6709\u4efb\u52a1\u4f7f\u7528\u6b64\u4ed3\u5e93\u624d\u80fd\u5220\u9664\u3002"
-                        )
                       ),
                       i.a.createElement(
                         ze.a,
                         null,
                         i.a.createElement(
-                          Ae.a,
+                          qe.a,
+                          { id: "alert-dialog-description" },
+                          "\u4f60\u786e\u8ba4\u8981\u5220\u9664\u8fd9\u4e2a\u4ed3\u5e93\uff1f\u6ca1\u6709\u4efb\u52a1\u4f7f\u7528\u6b64\u4ed3\u5e93\u624d\u80fd\u5220\u9664\u3002"
+                        )
+                      ),
+                      i.a.createElement(
+                        Ve.a,
+                        null,
+                        i.a.createElement(
+                          Xe.a,
                           {
                             onClick: this.destroyDialogClose.bind(this),
                             color: "primary"
@@ -1989,7 +1984,7 @@
                           "\u5173\u95ed"
                         ),
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             onClick: this.destroyConfirm.bind(this),
                             color: "secondary",
@@ -2003,31 +1998,32 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        xt = Object(fe.a)(function() {
-          return { table: { minWidth: 400 }, tooltip: Pt };
-        })(Nt),
-        Tt = a(348),
-        Lt = (function(e) {
-          function t(e) {
-            var a;
+        Wt = Object(ye.a)(function() {
+          return { table: { minWidth: 400 }, tooltip: Tt };
+        })(Rt),
+        Bt = a(346),
+        _t = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = {
                 tableData: [],
                 editShow: !1,
-                dependentSupport: u("DependTools") || [],
+                dependentSupport: E("DependTools") || [],
                 totalPage: 1,
                 pageNum: 1
               }),
-              a
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "componentDidMount",
                 value: function() {
@@ -2074,7 +2070,7 @@
                       arguments.length > 1 && void 0 !== arguments[1]
                         ? arguments[1]
                         : 8;
-                  it({ pageNum: t, pageSize: a })
+                  ot({ pageNum: t, pageSize: a })
                     .then(function(t) {
                       e.setState({
                         tableData: t.List,
@@ -2099,16 +2095,16 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Ce.a,
+                      Se.a,
                       { className: e.root },
-                      i.a.createElement(xt, {
+                      i.a.createElement(Wt, {
                         tableData: this.state.tableData,
                         refresh: this.getTableData.bind(this)
                       }),
                       i.a.createElement(
                         "div",
                         { className: e.pagination },
-                        i.a.createElement(Tt.a, {
+                        i.a.createElement(Bt.a, {
                           count: this.state.totalPage,
                           page: this.state.pageNum,
                           onChange: this.changePagination.bind(this),
@@ -2118,16 +2114,16 @@
                       )
                     ),
                     i.a.createElement(
-                      qe.a,
+                      He.a,
                       {
                         color: "primary",
                         className: e.fab,
                         "aria-label": "add",
                         onClick: this.editDialogShow.bind(this)
                       },
-                      i.a.createElement(xe.a, null)
+                      i.a.createElement(Ue.a, null)
                     ),
-                    i.a.createElement(rt, {
+                    i.a.createElement(ct, {
                       dependentSupport: this.state.dependentSupport,
                       show: this.state.editShow,
                       handleClose: this.editDialogClose.bind(this),
@@ -2137,10 +2133,10 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        Ut = Object(fe.a)(function(e) {
+        Jt = Object(ye.a)(function(e) {
           return {
             root: { width: "100%", marginTop: e.spacing(1), overflowX: "auto" },
             fab: {
@@ -2154,69 +2150,65 @@
               justifyContent: "center",
               textAlign: "center",
               padding: e.spacing(3)
-            }
+            },
+            headFun: { textAlign: "right" }
           };
-        })(Lt),
-        Rt = a(347),
-        Wt = a(340);
-      function Bt(e) {
-        return Ie({ url: "/jobs_find", method: "get", params: e });
+        })(_t),
+        Mt = a(345),
+        At = a(338);
+      function zt(e) {
+        return Pe({ url: "/jobs_find", method: "get", params: e });
       }
-      var _t = a(186),
-        Mt = a.n(_t),
-        Jt = a(182),
-        zt = a.n(Jt),
-        At = a(183),
-        qt = a.n(At),
-        Kt = a(185),
-        Vt = a.n(Kt),
-        Xt = a(184),
-        Ht = a.n(Xt),
-        Gt = [
+      var qt = a(58),
+        Vt = a(187),
+        Xt = a.n(Vt),
+        Ht = a(183),
+        Gt = a.n(Ht),
+        Yt = a(184),
+        Qt = a.n(Yt),
+        Kt = a(186),
+        $t = a.n(Kt),
+        Zt = a(185),
+        ea = a.n(Zt),
+        ta = [
           "\u4efb\u52a1\u7a7a\u95f2",
           "\u6253\u5305\u6210\u529f",
           "\u6253\u5305\u5931\u8d25",
           "\u6b63\u5728\u6253\u5305"
         ],
-        Yt = (function(e) {
-          function t(e) {
-            var a;
-            return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(
-                this,
-                Object(b.a)(t).call(this, e)
-              )).state = {}),
-              a
-            );
+        aa = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
+            return Object(C.a)(this, a), ((n = t.call(this, e)).state = {}), n;
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "renderCircularProgress",
                 value: function(e) {
                   return 0 === e
-                    ? i.a.createElement(Ot.a, {
+                    ? i.a.createElement(Ft.a, {
                         variant: "static",
                         style: { color: "#9E9E9E" },
                         value: 100,
                         size: 20
                       })
                     : 1 === e
-                    ? i.a.createElement(Ot.a, {
+                    ? i.a.createElement(Ft.a, {
                         variant: "static",
                         value: 100,
                         size: 20
                       })
                     : 2 === e
-                    ? i.a.createElement(Ot.a, {
+                    ? i.a.createElement(Ft.a, {
                         variant: "static",
                         value: 100,
                         size: 20,
                         color: "secondary"
                       })
-                    : i.a.createElement(Ot.a, { size: 20 });
+                    : i.a.createElement(Ft.a, { size: 20 });
                 }
               },
               {
@@ -2226,10 +2218,10 @@
                     "div",
                     null,
                     i.a.createElement(
-                      We.a,
-                      { title: Gt[this.props.status] },
+                      Je.a,
+                      { title: ta[this.props.status] },
                       i.a.createElement(
-                        le.a,
+                        se.a,
                         { color: "primary" },
                         this.renderCircularProgress(this.props.status)
                       )
@@ -2238,10 +2230,10 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        Qt = Object(fe.a)(function(e) {
+        na = Object(ye.a)(function(e) {
           return {
             root: { margin: 0, padding: e.spacing(2) },
             closeButton: {
@@ -2255,45 +2247,39 @@
           var t = e.children,
             a = e.classes,
             n = e.onClose,
-            r = Object(v.a)(e, ["children", "classes", "onClose"]);
+            r = Object(j.a)(e, ["children", "classes", "onClose"]);
           return i.a.createElement(
-            _e.a,
+            Ae.a,
             Object.assign({ disableTypography: !0, className: a.root }, r),
-            i.a.createElement(oe.a, { variant: "h6" }, t),
+            i.a.createElement(de.a, { variant: "h6" }, t),
             n
               ? i.a.createElement(
-                  le.a,
+                  se.a,
                   {
                     "aria-label": "close",
                     className: a.closeButton,
                     onClick: n
                   },
-                  i.a.createElement(F.a, null)
+                  i.a.createElement(U.a, null)
                 )
               : null
           );
         }),
-        $t = Object(fe.a)(function(e) {
+        ia = Object(ye.a)(function(e) {
           return { root: { padding: e.spacing(2) } };
-        })(Me.a),
-        Zt = Object(fe.a)(function(e) {
-          return { root: { margin: 0, padding: e.spacing(1) } };
         })(ze.a),
-        ea = (function(e) {
-          function t(e) {
-            var a;
-            return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(
-                this,
-                Object(b.a)(t).call(this, e)
-              )).state = {}),
-              a
-            );
+        ra = Object(ye.a)(function(e) {
+          return { root: { margin: 0, padding: e.spacing(1) } };
+        })(Ve.a),
+        la = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
+            return Object(C.a)(this, a), ((n = t.call(this, e)).state = {}), n;
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "render",
                 value: function() {
@@ -2301,27 +2287,27 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Be.a,
+                      Me.a,
                       {
                         onClose: this.props.onClose,
                         "aria-labelledby": "customized-dialog-title",
                         open: this.props.open
                       },
                       i.a.createElement(
-                        Qt,
+                        na,
                         { id: "customized-dialog-title" },
                         this.props.title
                       ),
                       i.a.createElement(
-                        $t,
+                        ia,
                         { dividers: !0, style: { whiteSpace: "pre-wrap" } },
                         this.props.content
                       ),
                       i.a.createElement(
-                        Zt,
+                        ra,
                         null,
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             autoFocus: !0,
                             onClick: this.props.onClose,
@@ -2335,28 +2321,27 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component);
-      ea.defaultProps = { title: "\u67e5\u770b\u8be6\u60c5" };
-      var ta = ea,
-        aa = a(323),
-        na = a(287),
-        ia = a(339),
-        ra = (function(e) {
-          function t(e) {
-            var a;
+      la.defaultProps = { title: "\u67e5\u770b\u8be6\u60c5" };
+      var oa = la,
+        ca = a(321),
+        sa = a(285),
+        da = a(337),
+        ua = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
-                branchList: []
-              }),
-              a
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = { branchList: [] }),
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               { key: "componentDidMount", value: function() {} },
               {
                 key: "onEnteredDialog",
@@ -2365,7 +2350,7 @@
                     t = this;
                   this.setState({ branchList: [] }),
                     ((e = { id: this.props.repositoryId }),
-                    Ie({
+                    Pe({
                       url: "/repository/git_branch",
                       method: "get",
                       params: e
@@ -2382,7 +2367,7 @@
                   var t,
                     a = this;
                   ((t = { branch: e, id: this.props.jobId }),
-                  Ie({ url: "/job/update_branch", method: "get", params: t }))
+                  Pe({ url: "/job/update_branch", method: "get", params: t }))
                     .then(function() {
                       a.props.switchSuccess();
                     })
@@ -2394,7 +2379,7 @@
                 value: function() {
                   var e = this;
                   return i.a.createElement(
-                    Be.a,
+                    Me.a,
                     {
                       open: this.props.open,
                       onEntering: this.onEnteredDialog.bind(this),
@@ -2402,29 +2387,29 @@
                       "aria-labelledby": "dialog-title"
                     },
                     i.a.createElement(
-                      _e.a,
+                      Ae.a,
                       { id: "dialog-title" },
                       "\u5207\u6362\u5f53\u524d\u4efb\u52a1\u7684\u5206\u652f"
                     ),
                     i.a.createElement(
-                      Je.a,
+                      qe.a,
                       null,
                       0 === this.state.branchList.length
                         ? "\u5206\u652f\u65e0\u6cd5\u4f7f\u7528"
                         : ""
                     ),
                     i.a.createElement(
-                      aa.a,
+                      ca.a,
                       null,
                       this.state.branchList.map(function(t) {
                         return i.a.createElement(
-                          na.a,
+                          sa.a,
                           {
                             button: !0,
                             onClick: e.selectBranch.bind(e, t),
                             key: t
                           },
-                          i.a.createElement(ia.a, { primary: t })
+                          i.a.createElement(da.a, { primary: t })
                         );
                       })
                     )
@@ -2432,46 +2417,17 @@
                 }
               }
             ]),
-            t
+            a
           );
-        })(i.a.Component);
-      function la(e, t) {
-        var a = Object.keys(e);
-        if (Object.getOwnPropertySymbols) {
-          var n = Object.getOwnPropertySymbols(e);
-          t &&
-            (n = n.filter(function(t) {
-              return Object.getOwnPropertyDescriptor(e, t).enumerable;
-            })),
-            a.push.apply(a, n);
-        }
-        return a;
-      }
-      function oa(e) {
-        for (var t = 1; t < arguments.length; t++) {
-          var a = null != arguments[t] ? arguments[t] : {};
-          t % 2
-            ? la(a, !0).forEach(function(t) {
-                Object(Ke.a)(e, t, a[t]);
-              })
-            : Object.getOwnPropertyDescriptors
-            ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(a))
-            : la(a).forEach(function(t) {
-                Object.defineProperty(
-                  e,
-                  t,
-                  Object.getOwnPropertyDescriptor(a, t)
-                );
-              });
-        }
-        return e;
-      }
-      var ca = (function(e) {
-          function t(e) {
-            var a;
+        })(i.a.Component),
+        ma = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = {
                 destroyDialogShow: !1,
                 switchBranchDialog: { id: 0, show: !1, repositoryId: 0 },
                 lockPassword: { id: 0, password: "", show: !1 },
@@ -2485,14 +2441,13 @@
                 },
                 detailsPanel: { title: "", open: !1, content: "" }
               }),
-              (a.destroyId = 0),
-              (a.addressUrl = u("OtherAddressUrl") || []),
-              a
+              (n.destroyId = 0),
+              (n.addressUrl = E("OtherAddressUrl") || []),
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "toggleLock",
                 value: function(e) {
@@ -2509,18 +2464,18 @@
                   3 !== e.Status
                     ? "" === e.LockPassword
                       ? ((t = { id: e.ID }),
-                        Ie({ url: "/job/run", method: "get", params: t }))
+                        Pe({ url: "/job/run", method: "get", params: t }))
                           .then(function(e) {
-                            V.success(
+                            $(
                               "\u8fd0\u884c\u6210\u529f\uff0c\u6b63\u5728\u6253\u5305"
                             ),
                               a.props.refresh();
                           })
                           .catch(function() {})
-                      : V.warning(
+                      : Z(
                           "\u4efb\u52a1\u9501\u5b9a\uff0c\u8bf7\u5148\u89e3\u9501"
                         )
-                    : V.warning(
+                    : Z(
                         "\u4efb\u52a1\u6b63\u5728\u6253\u5305\uff0c\u8bf7\u7a0d\u7b49"
                       );
                 }
@@ -2537,10 +2492,10 @@
                             repositoryId: e.RepositoryId
                           }
                         })
-                      : V.warning(
+                      : Z(
                           "\u4efb\u52a1\u6b63\u5728\u6253\u5305\uff0c\u8bf7\u7a0d\u7b49"
                         )
-                    : V.warning(
+                    : Z(
                         "\u4efb\u52a1\u9501\u5b9a\uff0c\u8bf7\u5148\u89e3\u9501"
                       );
                 }
@@ -2568,7 +2523,7 @@
                   "" === e.LockPassword
                     ? ((this.destroyId = e.ID),
                       this.setState({ destroyDialogShow: !0 }))
-                    : V.warning(
+                    : Z(
                         "\u4efb\u52a1\u9501\u5b9a\uff0c\u8bf7\u5148\u89e3\u9501"
                       );
                 }
@@ -2585,9 +2540,9 @@
                   var e,
                     t = this;
                   ((e = { id: this.destroyId }),
-                  Ie({ url: "/job/delete", method: "get", params: e }))
+                  Pe({ url: "/job/delete", method: "get", params: e }))
                     .then(function(e) {
-                      V.success("\u5220\u9664\u6210\u529f\uff01"),
+                      $("\u5220\u9664\u6210\u529f\uff01"),
                         t.setState({ destroyDialogShow: !1 }),
                         t.props.refresh();
                     })
@@ -2599,7 +2554,7 @@
                 value: function(e, t) {
                   1 === e.Status
                     ? window.open(t)
-                    : V.error(
+                    : ee(
                         "\u4efb\u52a1\u6ca1\u6709\u6253\u5305\u6210\u529f\uff01"
                       );
                 }
@@ -2621,9 +2576,9 @@
                       id: this.state.lockPassword.id,
                       password: this.state.lockPassword.password
                     };
-                  ((e = a), Ie({ url: "/job/lock", method: "get", params: e }))
+                  ((e = a), Pe({ url: "/job/lock", method: "get", params: e }))
                     .then(function(e) {
-                      V.success("\u64cd\u4f5c\u6210\u529f\uff01"),
+                      $("\u64cd\u4f5c\u6210\u529f\uff01"),
                         t.props.refresh(),
                         t.setState({
                           lockPassword: { id: 0, password: "", show: !1 }
@@ -2644,7 +2599,11 @@
                 key: "closeCommitRecord",
                 value: function() {
                   this.setState({
-                    detailsPanel: oa({}, this.state.detailsPanel, { open: !1 })
+                    detailsPanel: Object(qt.a)(
+                      Object(qt.a)({}, this.state.detailsPanel),
+                      {},
+                      { open: !1 }
+                    )
                   });
                 }
               },
@@ -2654,7 +2613,7 @@
                   var t,
                     a = this;
                   ((t = { id: e.RepositoryId }),
-                  Ie({
+                  Pe({
                     url: "/repository/commit_record",
                     method: "get",
                     params: t
@@ -2686,7 +2645,7 @@
                           fieldContent: e[n]
                         }
                       })
-                    : V.warning(
+                    : Z(
                         "\u4efb\u52a1\u9501\u5b9a\uff0c\u8bf7\u5148\u89e3\u9501"
                       );
                 }
@@ -2697,7 +2656,7 @@
                   var n,
                     i = this;
                   ((n = { id: e, field: t, fieldContent: a }),
-                  Ie({ url: "/job/update_field", method: "get", params: n }))
+                  Pe({ url: "/job/update_field", method: "get", params: n }))
                     .then(function() {
                       i.setState({
                         editField: {
@@ -2718,7 +2677,11 @@
                 key: "closeEditFieldDialog",
                 value: function() {
                   this.setState({
-                    editField: oa({}, this.state.editField, { open: !1 })
+                    editField: Object(qt.a)(
+                      Object(qt.a)({}, this.state.editField),
+                      {},
+                      { open: !1 }
+                    )
                   });
                 }
               },
@@ -2731,145 +2694,145 @@
                     "div",
                     null,
                     i.a.createElement(
-                      be.a,
+                      ve.a,
                       { className: t.table },
                       i.a.createElement(
-                        ve.a,
+                        ke.a,
                         null,
                         i.a.createElement(
-                          we.a,
+                          De.a,
                           null,
-                          i.a.createElement(ye.a, { align: "center" }, "ID"),
+                          i.a.createElement(we.a, { align: "center" }, "ID"),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u52a0\u9501",
-                            i.a.createElement(Dt, {
+                            i.a.createElement(Ot, {
                               help:
                                 "\u4e34\u65f6\u9501\u5b9a\u4efb\u52a1\uff0c\u9632\u6b62\u522b\u4eba\u5207\u6362\u5206\u652f\u6253\u5305"
                             })
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u4efb\u52a1\u540d\u79f0"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u4efb\u52a1\u72b6\u6001"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u5f53\u524d\u5206\u652f",
-                            i.a.createElement(Dt, {
+                            i.a.createElement(Ot, {
                               help:
                                 "\u5f53\u524d\u4efb\u52a1\u5206\u652f\uff0c\u5982\u6709\u9700\u8981\u8bf7\u5148\u5207\u6362\u5206\u652f"
                             })
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u8fd0\u884c\u6b21\u6570"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u8bbf\u95ee\u5730\u5740",
-                            i.a.createElement(Dt, {
+                            i.a.createElement(Ot, {
                               help:
                                 "\u6253\u5305\u6210\u529f\u65f6\u53ef\u8bbf\u95ee\u7684\u9875\u9762\ud83e\udd13"
                             })
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "WebHook",
-                            i.a.createElement(Dt, {
+                            i.a.createElement(Ot, {
                               help:
                                 "\u89e6\u53d1\u4efb\u52a1\u7684\u94a9\u5b50\uff0c\u5982\u679c\u6b64\u4efb\u52a1\u4ed3\u5e93\u8d44\u6e90\u88ab\u5360\u7528\u5219\u65e0\u6cd5\u6253\u5305"
                             })
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u7ec8\u7aef\u4fe1\u606f"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u4efb\u52a1\u63cf\u8ff0",
-                            i.a.createElement(Dt, {
+                            i.a.createElement(Ot, {
                               help:
                                 "\u9488\u5bf9\u4efb\u52a1\u7684\u4e00\u4e9b\u63cf\u8ff0\uff0c\u6bd4\u5982\u8d26\u53f7\u3001Swagger UI \u5730\u5740\u7b49,\u70b9\u51fb\u5373\u53ef\u4fee\u6539\u3002"
                             })
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u6253\u5305\u76ee\u5f55"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u6253\u5305\u547d\u4ee4"
                           ),
                           i.a.createElement(
-                            ye.a,
+                            we.a,
                             { align: "center" },
                             "\u64cd\u4f5c"
                           )
                         )
                       ),
                       i.a.createElement(
-                        Ee.a,
+                        Ce.a,
                         null,
                         this.props.tableData.map(function(a) {
                           return i.a.createElement(
-                            we.a,
+                            De.a,
                             { key: a.ID, hover: !0 },
-                            i.a.createElement(ye.a, { align: "center" }, a.ID),
+                            i.a.createElement(we.a, { align: "center" }, a.ID),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               a.LockPassword
                                 ? i.a.createElement(
-                                    We.a,
+                                    Je.a,
                                     {
                                       title:
                                         "\u64cd\u4f5c\u4eba\uff1a" + a.User,
                                       interactive: !0
                                     },
                                     i.a.createElement(
-                                      le.a,
+                                      se.a,
                                       {
                                         color: "primary",
                                         onClick: e.toggleLock.bind(e, a)
                                       },
-                                      i.a.createElement(ht.a, null)
+                                      i.a.createElement(ft.a, null)
                                     )
                                   )
                                 : i.a.createElement(
-                                    We.a,
+                                    Je.a,
                                     {
                                       title: "\u4efb\u52a1\u672a\u52a0\u9501",
                                       interactive: !0
                                     },
                                     i.a.createElement(
-                                      le.a,
+                                      se.a,
                                       {
                                         color: "primary",
                                         onClick: e.toggleLock.bind(e, a)
                                       },
-                                      i.a.createElement(gt.a, null)
+                                      i.a.createElement(bt.a, null)
                                     )
                                   )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left", style: { fontSize: "12px" } },
-                              i.a.createElement(Le.a, {
+                              i.a.createElement(We.a, {
                                 style: {
                                   fontSize: 14,
                                   marginRight: 10,
@@ -2887,25 +2850,25 @@
                               a.Name
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
-                              i.a.createElement(Yt, { status: a.Status })
+                              i.a.createElement(aa, { status: a.Status })
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               a.Branch
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               a.RunQuantity
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   style: { padding: 10 },
                                   title:
@@ -2946,7 +2909,7 @@
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.openJobUrl.bind(
@@ -2956,56 +2919,56 @@
                                     )
                                   },
                                   1 !== a.Status
-                                    ? i.a.createElement(zt.a, null)
-                                    : i.a.createElement(wt.a, null)
+                                    ? i.a.createElement(Gt.a, null)
+                                    : i.a.createElement(Dt.a, null)
                                 )
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: window.location.origin + a.WebHookUrl,
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   { color: "primary" },
-                                  i.a.createElement(qt.a, null)
+                                  i.a.createElement(Qt.a, null)
                                 )
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: a.TerminalInfo,
                                   classes: { tooltip: t.tooltip },
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   { color: "primary" },
-                                  i.a.createElement(yt.a, null)
+                                  i.a.createElement(wt.a, null)
                                 )
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: a.Desc,
                                   classes: { tooltip: t.tooltip },
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.clickEditField.bind(
@@ -3016,12 +2979,12 @@
                                       "Desc"
                                     )
                                   },
-                                  i.a.createElement(tt.a, null)
+                                  i.a.createElement(it.a, null)
                                 )
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
                                 "span",
@@ -3030,7 +2993,7 @@
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
                                 "span",
@@ -3039,66 +3002,66 @@
                               )
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: "\u5207\u6362\u5206\u652f",
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.openSwitchBranchDialog.bind(e, a)
                                   },
-                                  i.a.createElement(Ht.a, null)
+                                  i.a.createElement(ea.a, null)
                                 )
                               ),
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: "\u8fd0\u884c\u4efb\u52a1",
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.runJob.bind(e, a)
                                   },
-                                  i.a.createElement(Vt.a, null)
+                                  i.a.createElement($t.a, null)
                                 )
                               ),
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: "\u67e5\u770b\u63d0\u4ea4\u8bb0\u5f55",
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.commitRecord.bind(e, a)
                                   },
-                                  i.a.createElement(Mt.a, null)
+                                  i.a.createElement(Xt.a, null)
                                 )
                               ),
                               i.a.createElement(
-                                We.a,
+                                Je.a,
                                 {
                                   title: "\u5220\u9664\u4efb\u52a1",
                                   interactive: !0
                                 },
                                 i.a.createElement(
-                                  le.a,
+                                  se.a,
                                   {
                                     color: "primary",
                                     onClick: e.destroyDialogOpen.bind(e, a)
                                   },
-                                  i.a.createElement(Re.a, null)
+                                  i.a.createElement(_e.a, null)
                                 )
                               )
                             )
@@ -3106,7 +3069,7 @@
                         })
                       )
                     ),
-                    i.a.createElement(Ze, {
+                    i.a.createElement(at, {
                       id: this.state.editField.id,
                       open: this.state.editField.open,
                       desc: this.state.editField.desc,
@@ -3116,13 +3079,13 @@
                       onClose: this.closeEditFieldDialog.bind(this),
                       editSuccess: this.editFieldSuccess.bind(this)
                     }),
-                    i.a.createElement(ta, {
+                    i.a.createElement(oa, {
                       open: this.state.detailsPanel.open,
                       content: this.state.detailsPanel.content,
                       onClose: this.closeCommitRecord.bind(this),
                       title: this.state.detailsPanel.title
                     }),
-                    i.a.createElement(ra, {
+                    i.a.createElement(ua, {
                       jobId: this.state.switchBranchDialog.id,
                       repositoryId: this.state.switchBranchDialog.repositoryId,
                       open: this.state.switchBranchDialog.show,
@@ -3130,7 +3093,7 @@
                       switchSuccess: this.switchSuccess.bind(this)
                     }),
                     i.a.createElement(
-                      Be.a,
+                      Me.a,
                       {
                         open: this.state.destroyDialogShow,
                         onClose: this.destroyDialogClose.bind(this),
@@ -3138,24 +3101,24 @@
                         "aria-describedby": "alert-dialog-description"
                       },
                       i.a.createElement(
-                        _e.a,
+                        Ae.a,
                         { id: "alert-dialog-title" },
                         "\u786e\u8ba4\u5220\u9664\u4efb\u52a1?"
-                      ),
-                      i.a.createElement(
-                        Me.a,
-                        null,
-                        i.a.createElement(
-                          Je.a,
-                          { id: "alert-dialog-description" },
-                          "\u4f60\u786e\u8ba4\u8981\u5220\u9664\u8fd9\u4e2a\u4efb\u52a1\uff1f"
-                        )
                       ),
                       i.a.createElement(
                         ze.a,
                         null,
                         i.a.createElement(
-                          Ae.a,
+                          qe.a,
+                          { id: "alert-dialog-description" },
+                          "\u4f60\u786e\u8ba4\u8981\u5220\u9664\u8fd9\u4e2a\u4efb\u52a1\uff1f"
+                        )
+                      ),
+                      i.a.createElement(
+                        Ve.a,
+                        null,
+                        i.a.createElement(
+                          Xe.a,
                           {
                             onClick: this.destroyDialogClose.bind(this),
                             color: "primary"
@@ -3163,7 +3126,7 @@
                           "\u5173\u95ed"
                         ),
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             onClick: this.destroyConfirm.bind(this),
                             color: "secondary",
@@ -3174,25 +3137,25 @@
                       )
                     ),
                     i.a.createElement(
-                      Be.a,
+                      Me.a,
                       {
                         open: this.state.lockPassword.show,
                         onClose: this.closeLockJobDialog.bind(this)
                       },
                       i.a.createElement(
-                        _e.a,
+                        Ae.a,
                         { id: "form-dialog-title" },
                         "\u89e3\u9501\u6216\u52a0\u9501"
                       ),
                       i.a.createElement(
-                        Me.a,
+                        ze.a,
                         null,
                         i.a.createElement(
-                          Je.a,
+                          qe.a,
                           null,
                           "\u9700\u8981\u4f60\u8f93\u5165\u5bc6\u7801\u6765\u89e3\u9501\u6216\u52a0\u9501\u3002"
                         ),
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           onChange: this.passwordFieldChange.bind(this),
                           autoFocus: !0,
                           margin: "dense",
@@ -3203,10 +3166,10 @@
                         })
                       ),
                       i.a.createElement(
-                        ze.a,
+                        Ve.a,
                         null,
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             onClick: this.closeLockJobDialog.bind(this),
                             color: "primary"
@@ -3214,7 +3177,7 @@
                           "\u5173\u95ed"
                         ),
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             onClick: this.lockJobDialogConfirm.bind(this),
                             color: "primary"
@@ -3227,33 +3190,23 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        sa = Object(fe.a)(function(e) {
+        ha = Object(ye.a)(function(e) {
           return {
             table: { marginTop: e.spacing(3), minWidth: 650 },
-            tooltip: Pt
+            tooltip: Tt
           };
-        })(ca);
-      function ua(e, t) {
-        var a = Object.keys(e);
-        if (Object.getOwnPropertySymbols) {
-          var n = Object.getOwnPropertySymbols(e);
-          t &&
-            (n = n.filter(function(t) {
-              return Object.getOwnPropertyDescriptor(e, t).enumerable;
-            })),
-            a.push.apply(a, n);
-        }
-        return a;
-      }
-      var da = (function(e) {
-          function t(e) {
-            var a;
+        })(ma),
+        pa = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = {
                 name: "",
                 desc: "",
                 repositoryId: "",
@@ -3263,19 +3216,18 @@
                 repositories: [],
                 buildCommandList: {}
               }),
-              a
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "componentDidMount",
                 value: function() {
                   var e,
                     t = this;
                   ((e = { isNormal: 1 }),
-                  Ie({ url: "/repositories", method: "get", params: e }))
+                  Pe({ url: "/repositories", method: "get", params: e }))
                     .then(function(e) {
                       t.setState({ repositories: e });
                     })
@@ -3285,7 +3237,7 @@
               {
                 key: "textFieldChange",
                 value: function(e, t) {
-                  this.setState(Object(Ke.a)({}, e, t.target.value)),
+                  this.setState(Object(Ge.a)({}, e, t.target.value)),
                     "repositoryId" === e && this.onChangeRepository(t);
                 }
               },
@@ -3295,7 +3247,7 @@
                   var t,
                     a = this;
                   ((t = { id: e.target.value }),
-                  Ie({
+                  Pe({
                     url: "/repository/get_script",
                     method: "get",
                     params: t
@@ -3312,29 +3264,12 @@
                 value: function() {
                   var e,
                     t = this;
-                  ((e = (function(e) {
-                    for (var t = 1; t < arguments.length; t++) {
-                      var a = null != arguments[t] ? arguments[t] : {};
-                      t % 2
-                        ? ua(a, !0).forEach(function(t) {
-                            Object(Ke.a)(e, t, a[t]);
-                          })
-                        : Object.getOwnPropertyDescriptors
-                        ? Object.defineProperties(
-                            e,
-                            Object.getOwnPropertyDescriptors(a)
-                          )
-                        : ua(a).forEach(function(t) {
-                            Object.defineProperty(
-                              e,
-                              t,
-                              Object.getOwnPropertyDescriptor(a, t)
-                            );
-                          });
-                    }
-                    return e;
-                  })({}, this.state, { categoryId: this.props.categoryId })),
-                  Ie({ url: "/job/create", method: "post", data: e }))
+                  ((e = Object(qt.a)(
+                    Object(qt.a)({}, this.state),
+                    {},
+                    { categoryId: this.props.categoryId }
+                  )),
+                  Pe({ url: "/job/create", method: "post", data: e }))
                     .then(function(e) {
                       t.props.createSuccess();
                     })
@@ -3349,23 +3284,23 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Be.a,
+                      Me.a,
                       {
                         open: this.props.show,
                         onClose: this.props.handleClose,
                         "aria-labelledby": "form-dialog-title"
                       },
                       i.a.createElement(
-                        _e.a,
+                        Ae.a,
                         { id: "form-dialog-title" },
                         "\u5728\u300a",
                         this.props.categoryName,
                         "\u300b\u5206\u7c7b\u4e0b\u6dfb\u52a0\u4efb\u52a1"
                       ),
                       i.a.createElement(
-                        Me.a,
+                        ze.a,
                         null,
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           InputLabelProps: { shrink: !0 },
                           required: !0,
                           autoFocus: !0,
@@ -3378,7 +3313,7 @@
                           fullWidth: !0
                         }),
                         i.a.createElement(
-                          Ve.a,
+                          Ye.a,
                           {
                             InputLabelProps: { shrink: !0 },
                             select: !0,
@@ -3396,13 +3331,13 @@
                           },
                           this.state.repositories.map(function(e) {
                             return i.a.createElement(
-                              ue.a,
+                              he.a,
                               { key: e.ID, value: e.ID },
                               e.Name
                             );
                           })
                         ),
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           required: !0,
                           InputLabelProps: { shrink: !0 },
                           autoFocus: !0,
@@ -3415,7 +3350,7 @@
                           fullWidth: !0
                         }),
                         i.a.createElement(
-                          Ve.a,
+                          Ye.a,
                           {
                             InputLabelProps: { shrink: !0 },
                             select: !0,
@@ -3435,7 +3370,7 @@
                             t
                           ) {
                             return i.a.createElement(
-                              ue.a,
+                              he.a,
                               { key: t, value: t },
                               t,
                               " => ",
@@ -3444,7 +3379,7 @@
                             );
                           })
                         ),
-                        i.a.createElement(Ve.a, {
+                        i.a.createElement(Ye.a, {
                           InputLabelProps: { shrink: !0 },
                           margin: "dense",
                           value: this.state.desc,
@@ -3458,15 +3393,15 @@
                         })
                       ),
                       i.a.createElement(
-                        ze.a,
+                        Ve.a,
                         null,
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           { onClick: this.props.handleClose },
                           "\u5173\u95ed"
                         ),
                         i.a.createElement(
-                          Ae.a,
+                          Xe.a,
                           {
                             onClick: this.submitForm.bind(this),
                             color: "primary"
@@ -3479,15 +3414,17 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        ma = (function(e) {
-          function t(e) {
-            var a;
+        ga = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = {
                 category: 0,
                 categories: [],
                 jobs: [],
@@ -3495,18 +3432,17 @@
                 totalPage: 1,
                 pageNum: 1
               }),
-              (a.timeoutId = null),
-              a
+              (n.timeoutId = null),
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "componentDidMount",
                 value: function() {
                   var e = this;
-                  Xe()
+                  Qe()
                     .then(function(t) {
                       0 !== t.length
                         ? (e.setState({ categories: t }, function() {
@@ -3560,7 +3496,7 @@
                         : 8,
                     i = this.state.categories[t].ID;
                   this.timeoutId && clearTimeout(this.timeoutId),
-                    Bt({ categoryId: i, pageNum: a, pageSize: n })
+                    zt({ categoryId: i, pageNum: a, pageSize: n })
                       .then(function(a) {
                         e.setState({
                           category: t,
@@ -3610,10 +3546,10 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Ce.a,
+                      Se.a,
                       { className: e.root },
                       i.a.createElement(
-                        Rt.a,
+                        Mt.a,
                         {
                           value: this.state.category,
                           indicatorColor: "primary",
@@ -3622,13 +3558,13 @@
                           onChange: this.tabsChange.bind(this)
                         },
                         this.state.categories.map(function(e) {
-                          return i.a.createElement(Wt.a, {
+                          return i.a.createElement(At.a, {
                             key: e.ID,
                             label: e.Name
                           });
                         })
                       ),
-                      i.a.createElement(sa, {
+                      i.a.createElement(ha, {
                         tableData: this.state.jobs,
                         refresh: this.setTabAndJobsByCategoryId.bind(
                           this,
@@ -3638,7 +3574,7 @@
                       i.a.createElement(
                         "div",
                         { className: e.pagination },
-                        i.a.createElement(Tt.a, {
+                        i.a.createElement(Bt.a, {
                           count: this.state.totalPage,
                           page: this.state.pageNum,
                           onChange: this.changePagination.bind(this),
@@ -3648,16 +3584,16 @@
                       )
                     ),
                     i.a.createElement(
-                      qe.a,
+                      He.a,
                       {
                         color: "primary",
                         className: e.fab,
                         "aria-label": "add",
                         onClick: this.editDialogShow.bind(this)
                       },
-                      i.a.createElement(xe.a, null)
+                      i.a.createElement(Ue.a, null)
                     ),
-                    i.a.createElement(da, {
+                    i.a.createElement(pa, {
                       show: this.state.editDialog.show,
                       categoryId: this.state.editDialog.categoryId,
                       categoryName: this.state.editDialog.categoryName,
@@ -3668,10 +3604,10 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        ha = Object(fe.a)(function(e) {
+        fa = Object(ye.a)(function(e) {
           return {
             root: { width: "100%", marginTop: e.spacing(1), overflowX: "auto" },
             table: { minWidth: 650 },
@@ -3688,30 +3624,24 @@
               padding: e.spacing(3)
             }
           };
-        })(ma);
-      function pa(e) {
-        return Ie({ url: "/user/role_edit", method: "get", params: e });
+        })(ga);
+      function Ea(e) {
+        return Pe({ url: "/user/role_edit", method: "get", params: e });
       }
-      var ga = a(188),
-        fa = a.n(ga),
-        ba = a(187),
-        Ea = a.n(ba),
-        ya = ["#f44336", "#f44336", "#ff9800", "#3f51b5", "#4caf50"],
-        va = (function(e) {
-          function t(e) {
-            var a;
-            return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(
-                this,
-                Object(b.a)(t).call(this, e)
-              )).state = {}),
-              a
-            );
+      var ba = a(189),
+        ya = a.n(ba),
+        va = a(188),
+        Ca = a.n(va),
+        wa = ["#f44336", "#f44336", "#ff9800", "#3f51b5", "#4caf50"],
+        ka = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
+            return Object(C.a)(this, a), ((n = t.call(this, e)).state = {}), n;
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "render",
                 value: function() {
@@ -3722,31 +3652,30 @@
                       "span",
                       {
                         className: "tag",
-                        style: { backgroundColor: ya[this.props.role] }
+                        style: { backgroundColor: wa[this.props.role] }
                       },
-                      me[this.props.role]
+                      ge[this.props.role]
                     )
                   );
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        wa = (function(e) {
-          function t(e) {
-            var a;
+        Da = (function(e) {
+          Object(k.a)(a, e);
+          var t = Object(D.a)(a);
+          function a(e) {
+            var n;
             return (
-              Object(p.a)(this, t),
-              ((a = Object(f.a)(this, Object(b.a)(t).call(this, e))).state = {
-                tableData: []
-              }),
-              a
+              Object(C.a)(this, a),
+              ((n = t.call(this, e)).state = { tableData: [] }),
+              n
             );
           }
           return (
-            Object(E.a)(t, e),
-            Object(g.a)(t, [
+            Object(w.a)(a, [
               {
                 key: "componentDidMount",
                 value: function() {
@@ -3768,7 +3697,7 @@
                 value: function() {
                   var e,
                     t = this;
-                  Ie({ url: "/users", method: "get", params: e })
+                  Pe({ url: "/users", method: "get", params: e })
                     .then(function(e) {
                       t.setState({ tableData: e });
                     })
@@ -3781,9 +3710,9 @@
                   var t,
                     a = this;
                   ((t = { id: e.ID }),
-                  Ie({ url: "/user/delete", method: "get", params: t }))
+                  Pe({ url: "/user/delete", method: "get", params: t }))
                     .then(function(e) {
-                      V.success("\u5220\u9664\u6210\u529f"), a.getUserList();
+                      $("\u5220\u9664\u6210\u529f"), a.getUserList();
                     })
                     .catch(function() {});
                 }
@@ -3796,9 +3725,9 @@
                       arguments.length > 1 && void 0 !== arguments[1]
                         ? arguments[1]
                         : 0;
-                  pa({ id: e.ID, isUp: a })
+                  Ea({ id: e.ID, isUp: a })
                     .then(function(e) {
-                      V.success("\u4fee\u6539\u6210\u529f"), t.getUserList();
+                      $("\u4fee\u6539\u6210\u529f"), t.getUserList();
                     })
                     .catch(function() {});
                 }
@@ -3812,104 +3741,104 @@
                     "div",
                     null,
                     i.a.createElement(
-                      Ce.a,
+                      Se.a,
                       { className: t.root },
                       i.a.createElement(
-                        be.a,
+                        ve.a,
                         { className: t.table },
                         i.a.createElement(
-                          ve.a,
+                          ke.a,
                           null,
                           i.a.createElement(
-                            we.a,
+                            De.a,
                             null,
-                            i.a.createElement(ye.a, null, "ID"),
+                            i.a.createElement(we.a, null, "ID"),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left" },
                               "\u7528\u6237\u540d\u5b57"
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left" },
                               "\u89d2\u8272"
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "left" },
                               "\u5907\u6ce8"
                             ),
                             i.a.createElement(
-                              ye.a,
+                              we.a,
                               { align: "center" },
                               "\u64cd\u4f5c"
                             )
                           )
                         ),
                         i.a.createElement(
-                          Ee.a,
+                          Ce.a,
                           null,
                           this.state.tableData.map(function(t) {
                             return i.a.createElement(
-                              we.a,
+                              De.a,
                               { key: t.ID, hover: !0 },
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { component: "th", scope: "row" },
                                 t.ID
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { align: "left" },
                                 t.Username
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { align: "left" },
-                                i.a.createElement(va, { role: t.Role })
+                                i.a.createElement(ka, { role: t.Role })
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { align: "left" },
                                 t.Desc
                               ),
                               i.a.createElement(
-                                ye.a,
+                                we.a,
                                 { align: "center" },
                                 i.a.createElement(
-                                  We.a,
+                                  Je.a,
                                   { title: "\u89d2\u8272\u63d0\u5347" },
                                   i.a.createElement(
-                                    le.a,
+                                    se.a,
                                     {
                                       color: "primary",
                                       onClick: e.role.bind(e, t, 1)
                                     },
-                                    i.a.createElement(Ea.a, null)
+                                    i.a.createElement(Ca.a, null)
                                   )
                                 ),
                                 i.a.createElement(
-                                  We.a,
+                                  Je.a,
                                   { title: "\u89d2\u8272\u964d\u7ea7" },
                                   i.a.createElement(
-                                    le.a,
+                                    se.a,
                                     {
                                       color: "primary",
                                       onClick: e.role.bind(e, t, 0)
                                     },
-                                    i.a.createElement(fa.a, null)
+                                    i.a.createElement(ya.a, null)
                                   )
                                 ),
                                 i.a.createElement(
-                                  We.a,
+                                  Je.a,
                                   { title: "\u5220\u9664\u7528\u6237" },
                                   i.a.createElement(
-                                    le.a,
+                                    se.a,
                                     {
                                       color: "primary",
                                       onClick: e.destroyUser.bind(e, t)
                                     },
-                                    i.a.createElement(Re.a, null)
+                                    i.a.createElement(_e.a, null)
                                   )
                                 )
                               )
@@ -3922,82 +3851,81 @@
                 }
               }
             ]),
-            t
+            a
           );
         })(i.a.Component),
-        Ca = Object(fe.a)(function(e) {
+        Sa = Object(ye.a)(function(e) {
           return {
             root: { width: "100%", marginTop: e.spacing(1), overflowX: "auto" },
             table: { minWidth: 650 },
             sept: { marginTop: 20, padding: e.spacing(3, 2) }
           };
-        })(wa),
-        ka = a(191),
-        Da = a.n(ka),
-        Oa = a(189),
-        ja = a.n(Oa),
-        Sa = a(192),
-        Ia = a.n(Sa),
+        })(Da),
+        ja = a(192),
+        Oa = a.n(ja),
         Fa = a(190),
-        Pa = a.n(Fa),
+        Ia = a.n(Fa),
         Na = a(193),
-        xa = a.n(Na),
-        Ta = [
+        Pa = a.n(Na),
+        xa = a(191),
+        Ta = a.n(xa),
+        La = a(194),
+        Ua = a.n(La),
+        Ra = [
           {
             title: "\u4eea\u8868\u76d8",
             path: "/dashboard",
             isMenu: !0,
-            icon: ja.a,
-            component: Pe
+            icon: Ia.a,
+            component: Te
           },
           {
             title: "\u4ed3\u5e93\u5217\u8868",
             path: "/repository",
             isMenu: !0,
-            icon: Pa.a,
-            component: Ut
+            icon: Ta.a,
+            component: Jt
           },
           {
             title: "\u4efb\u52a1\u5206\u7c7b",
             path: "/category",
             isMenu: !0,
-            icon: Da.a,
-            component: nt
+            icon: Oa.a,
+            component: lt
           },
           {
             title: "\u90e8\u7f72\u4efb\u52a1",
             path: "/job",
             isMenu: !0,
-            icon: Ia.a,
-            component: ha
+            icon: Pa.a,
+            component: fa
           },
           {
             title: "\u7528\u6237\u7ba1\u7406",
             path: "/users",
             isMenu: !0,
-            icon: xa.a,
-            component: Ca
+            icon: Ua.a,
+            component: Sa
           }
         ],
-        La =
-          (a(281),
-          Object(ee.g)(function(e) {
+        Wa =
+          (a(279),
+          Object(ne.g)(function(e) {
             var t = i.a.useState(!1),
-              a = Object(ae.a)(t, 2),
+              a = Object(re.a)(t, 2),
               n = a[0],
               r = a[1],
               l = i.a.useState(""),
-              o = Object(ae.a)(l, 2),
-              s = o[0],
-              u = o[1];
+              o = Object(re.a)(l, 2),
+              c = o[0],
+              s = o[1];
             i.a.useEffect(
               function() {
-                for (var t = 0; t < Ta.length; t++) {
-                  var a = Ta[t];
+                for (var t = 0; t < Ra.length; t++) {
+                  var a = Ra[t];
                   if (a.path === e.location.pathname)
                     return (
-                      u(a.title),
-                      void (document.title = a.title + "-" + c.siteName)
+                      s(a.title), void (document.title = a.title + "-" + m)
                     );
                 }
               },
@@ -4005,20 +3933,20 @@
             );
             var d = function(t) {
               t.path !== e.location.pathname &&
-                (u(t.title), r(!1), e.history.push(t.path));
+                (s(t.title), r(!1), e.history.push(t.path));
             };
             return i.a.createElement(
               "div",
               { id: "admin", className: "admin" },
-              i.a.createElement(ge, {
-                title: s,
+              i.a.createElement(be, {
+                title: c,
                 toggle: function() {
                   r(!0);
                 },
                 clickRoute: d
               }),
               i.a.createElement(
-                ne.a,
+                le.a,
                 {
                   anchor: "top",
                   open: n,
@@ -4030,14 +3958,14 @@
                 i.a.createElement(
                   "div",
                   { className: "menuList" },
-                  Ta.map(function(e) {
+                  Ra.map(function(e) {
                     return (
                       !!e.isMenu &&
                       i.a.createElement(
                         "div",
                         { className: "menuBox", key: e.path },
                         i.a.createElement(
-                          le.a,
+                          se.a,
                           {
                             edge: "start",
                             color: "primary",
@@ -4058,49 +3986,49 @@
                 "div",
                 { className: "container" },
                 i.a.createElement(
-                  ee.d,
+                  ne.d,
                   null,
-                  Ta.map(function(e) {
-                    return i.a.createElement(ee.b, {
+                  Ra.map(function(e) {
+                    return i.a.createElement(ne.b, {
                       exact: !0,
                       key: e.path,
                       path: e.path,
                       component: e.component
                     });
                   }),
-                  i.a.createElement(ee.a, {
+                  i.a.createElement(ne.a, {
                     exact: !0,
                     from: "/",
                     to: "/dashboard"
                   }),
-                  i.a.createElement(ee.a, { to: "/404" })
+                  i.a.createElement(ne.a, { to: "/404" })
                 )
               )
             );
           })),
-        Ua = a(343),
-        Ra = a(349),
-        Wa = a(344),
-        Ba = a(353),
-        _a = a(341),
-        Ma = a(342);
-      function Ja() {
+        Ba = a(341),
+        _a = a(347),
+        Ja = a(342),
+        Ma = a(351),
+        Aa = a(339),
+        za = a(340);
+      function qa() {
         return i.a.createElement(
-          oe.a,
+          de.a,
           { variant: "body2", color: "textSecondary", align: "center" },
           "Copyright \xa9 ",
           i.a.createElement(
-            de.a,
+            pe.a,
             { color: "inherit", href: "https://github.com/xusenlin/MareWood" },
-            c.siteName
+            m
           ),
           " ",
           new Date().getFullYear(),
           "."
         );
       }
-      var za = a(120),
-        Aa = Object(_a.a)(function(e) {
+      var Va = a(121),
+        Xa = Object(Aa.a)(function(e) {
           return {
             paper: {
               marginTop: e.spacing(8),
@@ -4116,74 +4044,74 @@
             submit: { margin: e.spacing(3, 0, 2) }
           };
         });
-      function qa() {
-        var e = Aa(),
+      function Ha() {
+        var e = Xa(),
           t = "1" === localStorage.getItem("RememberMe"),
           a = JSON.parse(localStorage.getItem("LoginInfo")) || {},
           r = i.a.useState(t),
-          l = Object(ae.a)(r, 2),
-          s = l[0],
-          u = l[1],
+          l = Object(re.a)(r, 2),
+          c = l[0],
+          s = l[1],
           d = Object(n.useState)(a.username),
-          m = Object(ae.a)(d, 2),
-          h = m[0],
-          p = m[1],
-          g = Object(n.useState)(a.password),
-          f = Object(ae.a)(g, 2),
-          b = f[0],
-          E = f[1];
+          u = Object(re.a)(d, 2),
+          m = u[0],
+          h = u[1],
+          f = Object(n.useState)(a.password),
+          E = Object(re.a)(f, 2),
+          b = E[0],
+          y = E[1];
         return i.a.createElement(
-          Ma.a,
+          za.a,
           { component: "main", maxWidth: "xs" },
           i.a.createElement(
             "div",
             { className: e.paper },
             i.a.createElement("img", {
               style: { width: 60, marginBottom: 20 },
-              src: za,
+              src: Va,
               alt: ""
             }),
             i.a.createElement(
-              oe.a,
+              de.a,
               { component: "h1", variant: "h5" },
               "\u767b\u9646"
             ),
             i.a.createElement(
               "form",
               { className: e.form, noValidate: !0 },
-              i.a.createElement(Ve.a, {
+              i.a.createElement(Ye.a, {
                 variant: "outlined",
                 margin: "normal",
                 required: !0,
                 fullWidth: !0,
-                value: h,
+                value: m,
                 onChange: function(e) {
-                  p(e.target.value);
+                  h(e.target.value);
                 },
                 id: "username",
                 label: "username",
                 name: "username",
                 autoFocus: !0
               }),
-              i.a.createElement(Ve.a, {
+              i.a.createElement(Ye.a, {
                 variant: "outlined",
                 margin: "normal",
                 value: b,
                 required: !0,
                 fullWidth: !0,
                 onChange: function(e) {
-                  E(e.target.value);
+                  y(e.target.value);
                 },
                 name: "password",
                 label: "Password",
                 type: "password",
                 id: "password"
               }),
-              i.a.createElement(Ua.a, {
-                control: i.a.createElement(Ra.a, {
-                  checked: s,
+              i.a.createElement(Ba.a, {
+                control: i.a.createElement(_a.a, {
+                  checked: c,
                   onChange: function(e) {
-                    u(e.target.checked),
+                    s(e.target.checked),
                       e.target.checked
                         ? localStorage.setItem("RememberMe", "1")
                         : localStorage.removeItem("RememberMe");
@@ -4194,26 +4122,26 @@
                 label: "Remember me"
               }),
               i.a.createElement(
-                Ae.a,
+                Xe.a,
                 {
                   fullWidth: !0,
                   variant: "contained",
                   color: "primary",
                   onClick: function() {
                     var e;
-                    ((e = { username: h, password: b }),
-                    Ie({ url: "/login", method: "post", data: e }))
+                    ((e = { username: m, password: b }),
+                    Pe({ url: "/login", method: "post", data: e }))
                       .then(function(e) {
                         var t, a;
                         (t = e.Token),
-                          o.a.set(c.tokenKey, t),
+                          o.a.set(g, t),
                           (a = e),
-                          o.a.set(c.userInfoKey, a),
-                          $(e.Token),
+                          o.a.set(p, a),
+                          te(e.Token),
                           (window.location.href = "./"),
                           localStorage.setItem(
                             "LoginInfo",
-                            JSON.stringify({ username: h, password: b })
+                            JSON.stringify({ username: m, password: b })
                           );
                       })
                       .catch(function() {});
@@ -4223,14 +4151,14 @@
                 "\u767b\u9646"
               ),
               i.a.createElement(
-                Wa.a,
+                Ja.a,
                 { container: !0 },
-                i.a.createElement(Wa.a, { item: !0, xs: !0 }),
+                i.a.createElement(Ja.a, { item: !0, xs: !0 }),
                 i.a.createElement(
-                  Wa.a,
+                  Ja.a,
                   { item: !0 },
                   i.a.createElement(
-                    de.a,
+                    pe.a,
                     { href: "#/register", variant: "body2" },
                     "\u6ca1\u6709\u8d26\u6237? \u6ce8\u518c\u4e00\u4e2a\u5427 \u256f\ufe3f\u2570"
                   )
@@ -4238,11 +4166,11 @@
               )
             )
           ),
-          i.a.createElement(Ba.a, { mt: 8 }, i.a.createElement(Ja, null))
+          i.a.createElement(Ma.a, { mt: 8 }, i.a.createElement(qa, null))
         );
       }
-      var Ka = a(120),
-        Va = Object(_a.a)(function(e) {
+      var Ga = a(121),
+        Ya = Object(Aa.a)(function(e) {
           return {
             paper: {
               marginTop: e.spacing(8),
@@ -4258,29 +4186,29 @@
             submit: { margin: e.spacing(3, 0, 2) }
           };
         });
-      function Xa() {
-        var e = Va(),
+      function Qa() {
+        var e = Ya(),
           t = Object(n.useState)(""),
-          a = Object(ae.a)(t, 2),
+          a = Object(re.a)(t, 2),
           r = a[0],
           l = a[1],
           o = Object(n.useState)(""),
-          c = Object(ae.a)(o, 2),
+          c = Object(re.a)(o, 2),
           s = c[0],
-          u = c[1];
+          d = c[1];
         return i.a.createElement(
-          Ma.a,
+          za.a,
           { component: "main", maxWidth: "xs" },
           i.a.createElement(
             "div",
             { className: e.paper },
             i.a.createElement("img", {
               style: { width: 60, marginBottom: 20 },
-              src: Ka,
+              src: Ga,
               alt: ""
             }),
             i.a.createElement(
-              oe.a,
+              de.a,
               { component: "h1", variant: "h5" },
               "\u6ce8\u518c"
             ),
@@ -4288,12 +4216,12 @@
               "form",
               { className: e.form, noValidate: !0 },
               i.a.createElement(
-                Wa.a,
+                Ja.a,
                 { container: !0, spacing: 2 },
                 i.a.createElement(
-                  Wa.a,
+                  Ja.a,
                   { item: !0, xs: 12 },
-                  i.a.createElement(Ve.a, {
+                  i.a.createElement(Ye.a, {
                     variant: "outlined",
                     required: !0,
                     fullWidth: !0,
@@ -4306,14 +4234,14 @@
                   })
                 ),
                 i.a.createElement(
-                  Wa.a,
+                  Ja.a,
                   { item: !0, xs: 12 },
-                  i.a.createElement(Ve.a, {
+                  i.a.createElement(Ye.a, {
                     variant: "outlined",
                     required: !0,
                     fullWidth: !0,
                     onChange: function(e) {
-                      u(e.target.value);
+                      d(e.target.value);
                     },
                     name: "password",
                     label: "Password",
@@ -4322,7 +4250,7 @@
                   })
                 ),
                 i.a.createElement(
-                  Wa.a,
+                  Ja.a,
                   { item: !0, xs: 12 },
                   i.a.createElement(
                     "span",
@@ -4332,15 +4260,15 @@
                 )
               ),
               i.a.createElement(
-                Ae.a,
+                Xe.a,
                 {
                   fullWidth: !0,
                   onClick: function() {
                     var e;
                     ((e = { username: r, password: s }),
-                    Ie({ url: "/register", method: "post", data: e }))
+                    Pe({ url: "/register", method: "post", data: e }))
                       .then(function() {
-                        V.success("\u6ce8\u518c\u6210\u529f\uff01");
+                        $("\u6ce8\u518c\u6210\u529f\uff01");
                       })
                       .catch(function() {});
                   },
@@ -4351,13 +4279,13 @@
                 "\u6ce8\u518c"
               ),
               i.a.createElement(
-                Wa.a,
+                Ja.a,
                 { container: !0, justify: "flex-end" },
                 i.a.createElement(
-                  Wa.a,
+                  Ja.a,
                   { item: !0 },
                   i.a.createElement(
-                    de.a,
+                    pe.a,
                     { href: "#/login", variant: "body2" },
                     "\u5df2\u7ecf\u6709\u8d26\u6237\uff1f\u53bb\u767b\u9646 ^_^"
                   )
@@ -4365,10 +4293,10 @@
               )
             )
           ),
-          i.a.createElement(Ba.a, { mt: 5 }, i.a.createElement(Ja, null))
+          i.a.createElement(Ma.a, { mt: 5 }, i.a.createElement(qa, null))
         );
       }
-      var Ha = {
+      var Ka = {
         notFound: {
           width: "100%",
           height: "100vh",
@@ -4378,41 +4306,41 @@
           alignItems: "center"
         }
       };
-      var Ga = function() {
-        return i.a.createElement("div", { style: Ha.notFound }, "4 0 4");
+      var $a = function() {
+        return i.a.createElement("div", { style: Ka.notFound }, "4 0 4");
       };
-      var Ya = function() {
+      var Za = function() {
         return i.a.createElement(
           "div",
           null,
-          i.a.createElement(te.a, null),
+          i.a.createElement(ie.a, null),
           i.a.createElement(
-            Z.a,
+            ae.a,
             null,
             i.a.createElement(
-              ee.d,
+              ne.d,
               null,
-              i.a.createElement(ee.b, {
+              i.a.createElement(ne.b, {
                 exact: !0,
                 path: "/register",
-                component: Xa
+                component: Qa
               }),
-              i.a.createElement(ee.b, {
+              i.a.createElement(ne.b, {
                 exact: !0,
                 path: "/login",
-                component: qa
+                component: Ha
               }),
-              i.a.createElement(ee.b, {
+              i.a.createElement(ne.b, {
                 exact: !0,
                 path: "/404",
-                component: Ga
+                component: $a
               }),
               i.a.createElement(
-                ee.b,
+                ne.b,
                 { path: "/" },
-                s()
-                  ? i.a.createElement(La, null)
-                  : i.a.createElement(ee.a, { to: "/login" })
+                f()
+                  ? i.a.createElement(Wa, null)
+                  : i.a.createElement(ne.a, { to: "/login" })
               )
             )
           )
@@ -4425,15 +4353,15 @@
             /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
           )
       );
-      l.a.render(i.a.createElement(Ya, null), document.getElementById("root"));
-      var Qa = s();
-      Qa && !window.ws && $(Qa),
+      l.a.render(i.a.createElement(Za, null), document.getElementById("root"));
+      var en = f();
+      en && !window.ws && te(en),
         "serviceWorker" in navigator &&
           navigator.serviceWorker.ready.then(function(e) {
             e.unregister();
           });
     }
   },
-  [[220, 1, 2]]
+  [[219, 1, 2]]
 ]);
-//# sourceMappingURL=main.f1f0b657.chunk.js.map
+//# sourceMappingURL=main.c2f01797.chunk.js.map

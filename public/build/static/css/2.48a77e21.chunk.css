@@ -18,7 +18,6 @@
   height: 100%;
   box-shadow: 0 0 10px #29d, 0 0 5px #29d;
   opacity: 1;
-  -webkit-transform: rotate(3deg) translateY(-4px);
   transform: rotate(3deg) translateY(-4px);
 }
 #nprogress .spinner {
@@ -57,12 +56,10 @@
 }
 @keyframes nprogress-spinner {
   0% {
-    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
   to {
-    -webkit-transform: rotate(1turn);
     transform: rotate(1turn);
   }
 }
-/*# sourceMappingURL=2.e6157a56.chunk.css.map */
+/*# sourceMappingURL=2.48a77e21.chunk.css.map */
