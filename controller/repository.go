@@ -348,8 +348,8 @@ func RepositoryReset(c *gin.Context) {
 	id := c.Query("id")
 	var repo models.Repository
 
-	//更新 status ，防止任务在这个时候打包
-	if sql.DB.First(&repo, id).Update("status", models.RepoStatusProcessing).Error != nil {
+	query := sql.DB.First(&repo, id)
+	if query.Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -357,6 +357,24 @@ func RepositoryReset(c *gin.Context) {
 		})
 		return
 	}
+	if repo.JobStatus != models.RepoJobStatusLeisured {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "有任务正在打包，请打包完成再试",
+		})
+		return
+	}
+	//更新 status ，防止任务在这个时候打包
+	if query.Update("status", models.RepoStatusProcessing).Error != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    sql.DB.Error.Error(),
+		})
+		return
+	}
+
 	claims, _ := serviceUser.GetJwtClaimsByContext(c)
 
 	err := serviceRepository.DeleteRepository(id)
@@ -369,7 +387,6 @@ func RepositoryReset(c *gin.Context) {
 		})
 		return
 	}
-
 
 	go serviceRepository.CloneRepo(&repo, claims)
 

@@ -152,11 +152,11 @@ class RepositoryTable extends React.Component {
     });
   }
   resetRepo(row) {
-    if (row.Status !== 1 || row.JobStatus !== 0) {
-      return Snackbar.warning("此仓库有任务正在执行，无法重置仓库");
+    if (row.JobStatus !== 0) {
+      return Snackbar.warning("此仓库有任务正在执行，无法重建仓库");
     }
     reset({ id: row.ID })
-      .then(r => {
+      .then(() => {
         Snackbar.success("后台重建仓库中...");
         this.props.refresh();
       })
@@ -315,7 +315,7 @@ class RepositoryTable extends React.Component {
                       <RestoreFromTrash />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="重置仓库">
+                  <Tooltip title="重建仓库">
                     <IconButton
                       color="primary"
                       onClick={this.resetRepo.bind(this, row)}
