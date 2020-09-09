@@ -59,7 +59,7 @@ class Jobs extends React.Component {
         this.setState({ categories: r }, () => {
           this.setTabAndJobsByCategoryId(0);
         });
-        window.wsFuncJob = () => {
+        window.wsUpdateDataFunc = () => {
           this.setTabAndJobsByCategoryId(
             this.state.category,
             this.state.pageNum
@@ -69,7 +69,7 @@ class Jobs extends React.Component {
       .catch(() => {});
   }
   componentWillUnmount() {
-    window.wsFuncJob = null;
+    window.wsUpdateDataFunc = null;
   }
   changePagination(v, pageNum) {
     if (pageNum === this.state.pageNum) {

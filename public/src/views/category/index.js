@@ -63,12 +63,12 @@ class CategoryTable extends React.Component {
 
   componentDidMount() {
     this.getTableData();
-    window.wsFuncCategory = () => {
+    window.wsUpdateDataFunc = () => {
       this.getTableData();
     };
   }
   componentWillUnmount() {
-    window.wsFuncCategory = null;
+    window.wsUpdateDataFunc = null;
   }
   getTableData() {
     categories()

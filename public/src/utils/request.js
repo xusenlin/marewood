@@ -37,8 +37,14 @@ service.interceptors.response.use(
       return Promise.reject(res);
     } else {
       if (res.data.status !== true) {
-        Snackbar.warning(res.data.msg);
-        return Promise.reject(res);
+        if (res.data.msg.indexOf("token is expired") !== -1) {
+          Snackbar.warning("登陆已经失效，请重新登陆");
+          window.location.href = "./#/login";
+          return Promise.reject(res);
+        } else {
+          Snackbar.warning(res.data.msg);
+          return Promise.reject(res);
+        }
       }
       return res.data.data;
     }

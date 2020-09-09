@@ -21,34 +21,12 @@ func WebsocketMsg(c *gin.Context) {
 	if err != nil || token == "" {
 		return
 	}
-
-	claims, err := serviceUser.ParseToken(token)
-
+	err = serviceUser.JoinWsClientsByToken(token, ws)
 	if err != nil {
-		return
+		_ = ws.WriteJSON(models.Message{
+			Type:    models.MsgTypeError,
+			Message: err.Error(),
+		})
+		_ = ws.Close()
 	}
-	//defer ws.Close()
-
-	models.WsClients[claims.ID] = models.ConnUser{Username: claims.Username, WsConn: ws}
-
-	msg := models.Message{
-		Type:            models.MsgTypeInfo,
-		TriggerID:       claims.ID,
-		TriggerUsername: claims.Username,
-		UpdateDataType:  models.UpdateDataTypeIsNotice,
-		Message:         "“" + claims.Username + "” 加入了系统",
-	}
-	models.Broadcast <- msg
-	//读取用户信息
-	//for {
-	//	var msg models.Message
-	//	//err := ws.ReadJSON(&msg)
-	//	//if err != nil {
-	//	//	log.Printf("error: %v", err)
-	//	//	delete(clients, ws)
-	//	//	break
-	//	//}
-	//	// Send the newly received message to the broadcast channel
-	//	broadcast <- msg
-	//}
 }

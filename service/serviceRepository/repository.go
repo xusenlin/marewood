@@ -32,7 +32,6 @@ func CloneRepo(repo *models.Repository,claims *models.Claims){
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
 		NeedNotifySelf:  true,
-		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
 		Message:         "“" + claims.Username + "” 创建的仓库“" + repo.Name + "”克隆成功了。",
 	}
 }

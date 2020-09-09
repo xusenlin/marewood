@@ -99,7 +99,6 @@ func RepositoryCreate(c *gin.Context) {
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
-		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
 		Message:         "“" + claims.Username + "” 创建了仓库“" + repository.Name + "”",
 	}
 
@@ -153,7 +152,7 @@ func RepositoryDestroy(c *gin.Context) {
 		return
 	}
 
-	err := serviceRepository.DeleteRepository(strconv.Itoa(int(repository.ID)))
+	err := serviceRepository.DeleteRepository(id)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -174,14 +173,12 @@ func RepositoryDestroy(c *gin.Context) {
 	}
 
 	claims, _ := serviceUser.GetJwtClaimsByContext(c)
-	msg := models.Message{
+	models.Broadcast <- models.Message{
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
-		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
 		Message:         "“" + claims.Username + "” 删除了仓库“" + repository.Name + "”",
 	}
-	models.Broadcast <- msg
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
@@ -394,7 +391,6 @@ func RepositoryReset(c *gin.Context) {
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
-		UpdateDataType:  models.UpdateDataTypeIsRepoAction,
 		Message:         "“" + claims.Username + "” 重建了仓库“" + repo.Name + "”",
 	}
 

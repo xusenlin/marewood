@@ -102,7 +102,6 @@ func CategoryDestroy(c *gin.Context) {
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
-		UpdateDataType:  models.UpdateDataTypeIsCategoryAction,
 		Message:         "“" + claims.Username + "” 删除了分类",
 	}
 	models.Broadcast <- msg

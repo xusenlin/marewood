@@ -10,7 +10,7 @@ import * as serviceWorker from "./serviceWorker";
 ReactDOM.render(<App />, document.getElementById("root"));
 
 let token = getToken();
-if (token && !window.ws) {
+if (token && !window.ws && window.location.href.indexOf("/login") === -1) {
   connWebsocket(token);
 }
 

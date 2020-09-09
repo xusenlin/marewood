@@ -189,7 +189,6 @@ func JobDestroy(c *gin.Context) {
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
-		UpdateDataType:  models.UpdateDataTypeIsJobAction,
 		Message:         "“" + claims.Username + "” 删除了任务“" + job.Name + "”",
 	}
 	models.Broadcast <- msg
@@ -285,7 +284,6 @@ func JobRun(c *gin.Context) {
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
-		UpdateDataType:  models.UpdateDataTypeIsJobAction,
 		Message:         "“" + claims.Username + "” 运行了任务“" + job.Name + "”",
 	}
 	models.Broadcast <- msg

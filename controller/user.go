@@ -135,7 +135,6 @@ func UserDestroy(c *gin.Context) {
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
-		UpdateDataType:  models.UpdateDataTypeIsUserAction,
 		Message:         "“" + claims.Username + "” 删除了用户“" + user.Username + "”",
 	}
 	models.Broadcast <- msg

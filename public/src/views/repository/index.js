@@ -44,13 +44,13 @@ class RepositoryTable extends React.Component {
   }
   componentDidMount() {
     this.getTableData();
-    window.wsFuncRepo = () => {
+    window.wsUpdateDataFunc = () => {
       this.getTableData(this.state.pageNum);
     };
   }
 
   componentWillUnmount() {
-    window.wsFuncRepo = null;
+    window.wsUpdateDataFunc = null;
     // if (this.timeout) clearTimeout(this.timeout);
   }
   editDialogShow() {

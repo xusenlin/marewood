@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/gorilla/websocket"
 )
 
@@ -10,14 +9,6 @@ const (
 	MsgTypeError   = "error"
 	MsgTypeSuccess = "success"
 	MsgTypeWarning = "warning"
-)
-
-const (
-	UpdateDataTypeIsNotice = iota
-	UpdateDataTypeIsRepoAction
-	UpdateDataTypeIsCategoryAction
-	UpdateDataTypeIsJobAction
-	UpdateDataTypeIsUserAction
 )
 
 type ConnUser struct {
@@ -30,7 +21,6 @@ type Message struct {
 	TriggerID       uint
 	TriggerUsername string
 	NeedNotifySelf  bool
-	UpdateDataType  uint
 	Message         string
 }
 
@@ -38,11 +28,9 @@ var WsClients = make(map[uint]ConnUser)
 
 var Broadcast = make(chan Message)
 
-
 func BroadcastMessages() {
 	for {
 		msg := <-Broadcast
-		fmt.Println(WsClients)
 		for id, client := range WsClients {
 			if !msg.NeedNotifySelf && msg.TriggerID == id {
 				//如果不需要通知自己
@@ -50,7 +38,7 @@ func BroadcastMessages() {
 			}
 			err := client.WsConn.WriteJSON(msg)
 			if err != nil {
-				client.WsConn.Close()
+				_ = client.WsConn.Close()
 				delete(WsClients, id)
 			}
 		}
