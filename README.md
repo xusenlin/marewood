@@ -41,7 +41,7 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 
 
 那么，一个 React 或者 Vue 项目如何配置多个打包命令呢？请移步
-http://xusenlin.com/article?key=BzV0K2
+http://xusenlin.com/article?key=iQBftC
 如果不明白也可以参考实际的项目
 
 - https://github.com/xusenlin/VueMultiplePages.git
