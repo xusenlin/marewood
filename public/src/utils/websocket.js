@@ -13,11 +13,16 @@ export function connWebsocket(token) {
       window.wsUpdateDataFunc();
     }
   };
-
   window.ws.onerror = () => {
-    Snackbar.error("WebSocket出错");
+    Snackbar.error("WebSocket出错,2s后尝试链接...");
+    setTimeout(() => {
+      connWebsocket(token);
+    }, 2000);
   };
   window.ws.onclose = () => {
-    Snackbar.warning("WebSocket已关闭");
+    Snackbar.warning("WebSocket已关闭,2s后尝试链接...");
+    setTimeout(() => {
+      connWebsocket(token);
+    }, 2000);
   };
 }

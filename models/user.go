@@ -23,9 +23,9 @@ const ( //用户角色
 )
 
 const (
-	PasswordSalt        = "MareWood"
-	TokenExpireDuration = time.Hour * 10
-	JwtClaimsKey        = "JwtClaims"
+	PasswordSalt        = "MareWood"//密码加盐
+	TokenExpireDuration = time.Hour * 10 //Token过期时间
+	JwtClaimsKey        = "JwtClaims" //Claims 储存在 *gin.Context 里的关键字，通过JWTAuth中间件设置。
 )
 
 var TokenSecret = []byte("MareWood")
