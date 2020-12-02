@@ -103,3 +103,16 @@ export function jobLock(params) {
     params: params
   });
 }
+
+/**
+ * 搜索任务描述
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function jobSerach(params) {
+  return request({
+    url: "/search_job",
+    method: "get",
+    params: params
+  });
+}
