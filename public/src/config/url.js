@@ -1,10 +1,8 @@
 const nodeEnv = process.env.NODE_ENV;
 const appMode = process.env.REACT_APP_MODE;
 
-// let host = "localhost:8088";
-// let useApiUrl = "http://" + host;
-let host = "192.168.50.171:8088";
-let useApiUrl = "http://192.168.50.171:8088/";
+let host = "localhost:8088";
+let useApiUrl = "http://" + host;
 
 if ("production" === nodeEnv) {
   switch (appMode) {
