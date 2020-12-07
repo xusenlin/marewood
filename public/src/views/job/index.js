@@ -6,7 +6,7 @@ import { jobsFind } from "../../api/job";
 import { categories } from "../../api/category";
 import CategoriesTable from "./categoriesTable";
 import Edit from "./edit";
-import SearchBox from "./search";
+import SearchBox from "../../components/searchBox";
 import AddIcon from "@material-ui/icons/Add";
 
 const styles = theme => ({
@@ -36,16 +36,15 @@ const styles = theme => ({
     padding: theme.spacing(3)
   },
   search: {
-    width: "500px",
+    width: "400px",
     height: "64px",
     position: "absolute",
     top: 0,
     left: "50%",
-    marginLeft: "-250px",
-    zIndex: "999",
+    transform: 'translateX(-50%)',
     display: "flex",
     alignItems: "center",
-    justenAlign: "center",
+    justifyContent: "center",
   }
 });
 
@@ -61,14 +60,9 @@ class Jobs extends React.Component {
         categoryId: 0,
         categoryName: ""
       },
-      searchDrawer: {
-        show: true,
-        categoryId: 0,
-        categoryName: ""
-      },
-      name: "",
       totalPage: 1,
-      pageNum: 1
+      pageNum: 1,
+      name: "",
     };
     this.timeoutId = null;
   }
@@ -97,11 +91,9 @@ class Jobs extends React.Component {
   }
 
   refreshSearch(val) {
-    this.setState({name: val})
-    setTimeout(() => {
-      console.log("refreshSearch name", this.state.name)
-      this.setTabAndJobsByCategoryId(this.state.category);
-    }, 0);
+    this.setState({name: val}, () => {
+      this.setTabAndJobsByCategoryId(this.state.category)
+    })
   }
 
   changePagination(v, pageNum) {
@@ -120,8 +112,7 @@ class Jobs extends React.Component {
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
     }
-    let name = this.state.name
-    console.log("setTabAndJobsByCategoryId name", name)
+    let name = this.state.name;
     jobsFind({ categoryId, pageNum, pageSize, name })
       .then(r => {
         this.setState({
@@ -174,33 +165,12 @@ class Jobs extends React.Component {
     });
   }
 
-  searchDrawerOpen() {
-    let category = this.state.categories[this.state.category];
-    this.setState({
-      searchDrawer: {
-        show: true,
-        categoryId: category.ID,
-        categoryName: category.Name
-      }
-    });
-  }
-
-  searchClose() {
-    this.setState({
-      searchDrawer: {
-        show: false,
-        categoryId: 0,
-        categoryName: ""
-      }
-    })
-  }
-
   render() {
     const { classes } = this.props;
     return (
       <div>
         <div className={classes.search}>
-          <SearchBox  refreshSearch={this.refreshSearch.bind(this)} />
+          <SearchBox refreshSearch={this.refreshSearch.bind(this)} />
         </div>
         <Paper className={classes.root}>
           <Tabs

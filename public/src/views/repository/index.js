@@ -7,6 +7,8 @@ import Table from "./repositoryTable";
 import { getSystemInfo } from "../../utils/dataStorage";
 import { repositoryFind } from "../../api/repository";
 import Pagination from "@material-ui/lab/Pagination";
+import SearchBox from "../../components/searchBox";
+
 
 const styles = theme => ({
   root: {
@@ -28,6 +30,17 @@ const styles = theme => ({
   },
   headFun: {
     textAlign: "right"
+  },
+  search: {
+    width: "400px",
+    height: "64px",
+    position: "absolute",
+    top: 0,
+    left: "50%",
+    transform: 'translateX(-50%)',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   }
 });
 
@@ -39,7 +52,8 @@ class RepositoryTable extends React.Component {
       editShow: false,
       dependentSupport: getSystemInfo("DependTools") || [],
       totalPage: 1,
-      pageNum: 1
+      pageNum: 1,
+      name: ""
     };
   }
   componentDidMount() {
@@ -67,7 +81,8 @@ class RepositoryTable extends React.Component {
   }
   getTableData(pageNum = 1, pageSize = 8) {
     // if (this.timeout) clearTimeout(this.timeout);
-    repositoryFind({ pageNum, pageSize })
+    let name = this.state.name;
+    repositoryFind({ pageNum, pageSize, name })
       .then(r => {
         this.setState({
           tableData: r.List,
@@ -97,10 +112,20 @@ class RepositoryTable extends React.Component {
     }
     this.getTableData(pageNum);
   }
+
+  refreshSearch(val) {
+    this.setState({name: val}, () => {
+      this.getTableData()
+    })
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <div>
+        <div className={classes.search}>
+          <SearchBox refreshSearch={this.refreshSearch.bind(this)} />
+        </div>
         <Paper className={classes.root}>
           <Table
             tableData={this.state.tableData}
