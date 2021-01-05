@@ -1,0 +1,30 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/vendor
+
+
+# testing
+/coverage
+
+# production
+
+# misc
+.DS_Store
+.env
+
+
+/resources
+*.db
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+*.db
+

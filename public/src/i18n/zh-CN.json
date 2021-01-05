@@ -1,0 +1,117 @@
+{
+  "common": {
+    "title": "标题",
+    "name": "名字",
+    "value": "值",
+    "remark": "备注",
+    "terminalOut": "终端输出",
+    "remoteUrl": "远程地址",
+    "address": "访问地址",
+    "clickEdit": "点击可以修改",
+    "modify": "修改",
+    "success": "成功",
+    "modifySuccess": "修改成功",
+    "save": "保存",
+    "confirm": "确认",
+    "close": "关闭",
+    "dependentTools": "依赖工具",
+    "actions": "操作",
+    "actionsUser": "操作人",
+    "total": "总数",
+    "createdAt": "创建时间",
+    "delete": "删除",
+    "deleteSuccess": "删除成功",
+    "lock": "锁",
+    "status": "状态",
+    "branch": "分支",
+    "role": "角色名",
+    "about": "关于",
+    "desc": "描述",
+    "username": "用户名",
+    "password": "密码",
+    "create": "创建"
+  },
+  "bar": {
+    "dashboard": "仪表盘",
+    "repositories": "仓库列表",
+    "category": "任务分类",
+    "task": "部署任务",
+    "users": "用户管理",
+    "switchCN": "中文",
+    "switchEN": "英文",
+    "noticeEmpty": "暂无任何通知！",
+    "searchTip": "请输入搜索的关键字",
+    "logout": "退出",
+    "noticeQuantityTip": "共有{v}条通知",
+    "onlineTip": "共有{v}人在线"
+  },
+  "role": {
+    "1": "超级管理员",
+    "2": "管理员",
+    "3": "开发者",
+    "4": "项目记者"
+  },
+  "login": {
+    "signIn": "登陆",
+    "title": "登录到 MareWood",
+    "tip": "没有账户? 注册一个吧 ╯︿╰"
+  },
+  "register": {
+    "title": "注册账户",
+    "createAccount": "创建账户",
+    "registerSuccess": "注册成功！",
+    "tip": "已经有账户？去登陆 ^_^",
+    "roleTip": "注册默认获得记者(Reporter)角色"
+  },
+  "repo": {
+    "cloneStatus": "克隆状态",
+    "workingStatus": "工作状态",
+    "auth": "仓库权限",
+    "cloneFail": "仓库克隆失败",
+    "cloneSuccess": "仓库克隆成功",
+    "cloneProcessing": "仓库克隆中...",
+    "repoLeisured": "仓库空闲",
+    "repoBusy": "当前仓库有任务正在打包",
+    "deleteDependent": "删除依赖(node_modules)",
+    "deleteDependentFailedTip": "仓库状态不正常，无法删除依赖",
+    "resetRepo": "删除并重新克隆仓库",
+    "resetRepoSuccess": "后台正在重建仓库...",
+    "resetRepoFailed": "该仓库有任务正在运行 ，重建失败",
+    "deleteTitle": "确认删除仓库?",
+    "deleteTip": "你确认要删除这个仓库？没有任务使用此仓库才能删除。"
+  },
+  "category": {
+    "createTip": "请先新建分类"
+  },
+  "task": {
+    "runQuantity": "运行次数",
+    "buildDir": "打包目录",
+    "npmScript": "打包命令",
+    "lockTip": "锁定任务并禁止其他人切换分支和打包",
+    "notLock": "没有加锁",
+    "accessTip": "打包成功之后才能访问",
+    "switchBranch": "切换分支",
+    "noBranch": "没有任何分支",
+    "runTask": "运行任务",
+    "positioning": "定位到当前对应的仓库",
+    "lockTitle": "解锁或加锁",
+    "lockInputTip": "需要你输入密码来解锁或加锁。",
+    "deleteTitle": "删除任务",
+    "deleteTip": "你确认要删除这个任务？",
+    "waitBuild": "任务正在打包，请稍等",
+    "waitBuildSuccess": "请等待任务打包完成",
+    "unlockTip": "任务被锁定，请先解锁",
+    "buildSuccessTip": "运行成功，正在打包",
+    "statusFail": "打包失败",
+    "statusSuccess": "打包成功",
+    "statusLeisured": "任务空闲",
+    "statusProcessing": "正在打包"
+  },
+  "users": {
+    "roleUpgrade": "角色升级",
+    "roleDowngrade": "角色降级"
+  },
+  "dashboard": {
+    "about": "MareWood 是一个Go开发的轻量级前端部署工具,可以很灵活的配置各种打包部署环境并提供访问。"
+  }
+}
