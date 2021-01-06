@@ -2,7 +2,7 @@ package controller
 
 import (
 	"MareWood/models"
-	"MareWood/service/serviceJob"
+	"MareWood/service/serviceTask"
 	"MareWood/service/serviceUser"
 	"MareWood/sql"
 	"net/http"
@@ -12,9 +12,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func JobFindAll(c *gin.Context) {
+func TaskFindAll(c *gin.Context) {
 
-	result, err := new(models.Job).FindAll()
+	result, err := new(models.Task).FindAll()
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -33,7 +33,7 @@ func JobFindAll(c *gin.Context) {
 
 }
 
-func JobFind(c *gin.Context) {
+func TaskFind(c *gin.Context) {
 
 	name := c.Query("name")
 
@@ -54,12 +54,12 @@ func JobFind(c *gin.Context) {
 	if err2 != nil {
 		pageSize = 8
 	}
-	var result models.JobPageResult
+	var result models.TaskPageResult
 	if strings.HasPrefix(name, "id:") {
-		result, err = models.FindJob("", pageNum, pageSize,
+		result, err = models.FindTask("", pageNum, pageSize,
 			map[string]interface{}{"id": strings.TrimLeft(name, "id:"),"category_id": categoryId})
 	} else {
-		result, err = models.FindJob(name, pageNum, pageSize, map[string]interface{}{"category_id": categoryId})
+		result, err = models.FindTask(name, pageNum, pageSize, map[string]interface{}{"category_id": categoryId})
 	}
 
 	if err != nil {
@@ -79,10 +79,10 @@ func JobFind(c *gin.Context) {
 
 }
 
-func JobCreate(c *gin.Context) {
+func TaskCreate(c *gin.Context) {
 
-	var job models.Job
-	err := c.ShouldBindJSON(&job)
+	var task models.Task
+	err := c.ShouldBindJSON(&task)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -93,7 +93,7 @@ func JobCreate(c *gin.Context) {
 		return
 	}
 
-	err = job.Create()
+	err = task.Create()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
@@ -103,7 +103,7 @@ func JobCreate(c *gin.Context) {
 		return
 	}
 
-	err = new(models.Category).CategoryJobQuantityIncrement(job.CategoryId)
+	err = new(models.Category).CategoryTaskQuantityIncrement(task.CategoryId)
 	//分类数量
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -120,14 +120,14 @@ func JobCreate(c *gin.Context) {
 	})
 }
 
-func JobUpdateBranch(c *gin.Context) {
+func TaskUpdateBranch(c *gin.Context) {
 
 	id := c.Query("id")
 	branch := c.Query("branch")
 
-	var job models.Job
+	var task models.Task
 
-	if sql.DB.First(&job, id).Error != nil {
+	if sql.DB.First(&task, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -135,7 +135,7 @@ func JobUpdateBranch(c *gin.Context) {
 		})
 		return
 	}
-	if job.LockPassword != "" {
+	if task.LockPassword != "" {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -143,7 +143,7 @@ func JobUpdateBranch(c *gin.Context) {
 		})
 		return
 	}
-	if err := job.UpdateBranch(branch); err != nil {
+	if err := task.UpdateBranch(branch); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   sql.DB.Error.Error(),
@@ -159,12 +159,12 @@ func JobUpdateBranch(c *gin.Context) {
 	})
 }
 
-func JobDestroy(c *gin.Context) {
+func TaskDestroy(c *gin.Context) {
 
 	id := c.Query("id")
-	var job models.Job
+	var task models.Task
 
-	if sql.DB.First(&job, id).Error != nil {
+	if sql.DB.First(&task, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -172,7 +172,7 @@ func JobDestroy(c *gin.Context) {
 		})
 		return
 	}
-	if job.LockPassword != "" {
+	if task.LockPassword != "" {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -181,7 +181,7 @@ func JobDestroy(c *gin.Context) {
 		return
 	}
 
-	err := job.Destroy(id)
+	err := task.Destroy(id)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
@@ -195,7 +195,7 @@ func JobDestroy(c *gin.Context) {
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
-		Message:         "“" + claims.Username + "”deleted the task “" + job.Name + "”",
+		Message:         "“" + claims.Username + "”deleted the task “" + task.Name + "”",
 	}
 	models.Broadcast <- msg
 	c.JSON(http.StatusOK, gin.H{
@@ -205,13 +205,13 @@ func JobDestroy(c *gin.Context) {
 	})
 }
 
-func JobUpdateField(c *gin.Context) {
+func TaskUpdateField(c *gin.Context) {
 
 	id := c.Query("id")
 	field := c.Query("field")
 	fieldContent := c.Query("fieldContent")
 
-	err := new(models.Job).UpdateFieldContent(id, field, fieldContent)
+	err := new(models.Task).UpdateFieldContent(id, field, fieldContent)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -236,14 +236,14 @@ func JobUpdateField(c *gin.Context) {
 打包->创建目录并复制代码->更新Url->
 更新运行次数->更新任务状态->更新仓库状态为空闲->（执行附加脚本，暂不做）->更新终端信息。
 */
-func JobRun(c *gin.Context) {
+func TaskRun(c *gin.Context) {
 
-	jobId := c.Query("id")
+	taskId := c.Query("id")
 
-	var job models.Job
+	var task models.Task
 	var repository models.Repository
 
-	if sql.DB.First(&job, jobId).Error != nil {
+	if sql.DB.First(&task, taskId).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -251,7 +251,7 @@ func JobRun(c *gin.Context) {
 		})
 		return
 	}
-	if job.LockPassword != "" {
+	if task.LockPassword != "" {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -259,7 +259,7 @@ func JobRun(c *gin.Context) {
 		})
 		return
 	}
-	if sql.DB.First(&repository, job.RepositoryId).Error != nil {
+	if sql.DB.First(&repository, task.RepositoryId).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -276,7 +276,7 @@ func JobRun(c *gin.Context) {
 		return
 	}
 
-	if repository.JobStatus != models.RepoJobStatusLeisured {
+	if repository.TaskStatus != models.RepoTaskStatusLeisured {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -290,15 +290,15 @@ func JobRun(c *gin.Context) {
 		Type:            models.MsgTypeInfo,
 		TriggerID:       claims.ID,
 		TriggerUsername: claims.Username,
-		Message:         "“" + claims.Username + "” run task“" + job.Name + "”",
+		Message:         "“" + claims.Username + "” run task“" + task.Name + "”",
 	}
 	models.Broadcast <- msg
 
 	//开始执行任务，任务状态和仓库的任务状态
-	repository.JobStatus = models.RepoJobStatusBusy
-	job.Status = models.JobStatusProcessing
+	repository.TaskStatus = models.RepoTaskStatusBusy
+	task.Status = models.TaskStatusProcessing
 
-	if sql.DB.Save(&repository).Save(&job).Error != nil {
+	if sql.DB.Save(&repository).Save(&task).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -309,7 +309,7 @@ func JobRun(c *gin.Context) {
 
 	//go
 
-	go serviceJob.JobRun(&job, &repository, claims)
+	go serviceTask.TaskRun(&task, &repository, claims)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": true,
@@ -319,13 +319,13 @@ func JobRun(c *gin.Context) {
 
 }
 
-func JobLock(c *gin.Context) {
+func TaskLock(c *gin.Context) {
 	id := c.Query("id")
 	password := c.Query("password")
 	claims, _ := serviceUser.GetJwtClaimsByContext(c)
 
-	var job models.Job
-	if sql.DB.First(&job, id).Error != nil {
+	var task models.Task
+	if sql.DB.First(&task, id).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -334,8 +334,8 @@ func JobLock(c *gin.Context) {
 		return
 	}
 	//加锁
-	if job.LockPassword == "" {
-		if sql.DB.Model(&job).
+	if task.LockPassword == "" {
+		if sql.DB.Model(&task).
 			UpdateColumn("lock_password", password).
 			UpdateColumn("user", claims.Username).
 			Error != nil {
@@ -356,7 +356,7 @@ func JobLock(c *gin.Context) {
 
 	}
 	//解锁
-	if job.LockPassword != password {
+	if task.LockPassword != password {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",
@@ -364,7 +364,7 @@ func JobLock(c *gin.Context) {
 		})
 		return
 	}
-	if sql.DB.Model(&job).UpdateColumn("lock_password", "").Error != nil {
+	if sql.DB.Model(&task).UpdateColumn("lock_password", "").Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",

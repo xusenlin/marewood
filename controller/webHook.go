@@ -5,6 +5,6 @@ import (
 )
 
 //webHook 触发任务
-func JobWebHook(c *gin.Context) {
-	JobRun(c)
+func TaskWebHook(c *gin.Context) {
+	TaskRun(c)
 }

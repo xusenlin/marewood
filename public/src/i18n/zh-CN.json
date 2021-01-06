@@ -81,7 +81,9 @@
     "deleteTip": "你确认要删除这个仓库？没有任务使用此仓库才能删除。"
   },
   "category": {
-    "createTip": "请先新建分类"
+    "createTip": "请先新建分类",
+    "deleteTitle": "确认删除分类?",
+    "deleteTip": " 如果你确认要删除这个分类，请确保在这个分类下面已经没有任何任务了。"
   },
   "task": {
     "runQuantity": "运行次数",
@@ -105,13 +107,21 @@
     "statusFail": "打包失败",
     "statusSuccess": "打包成功",
     "statusLeisured": "任务空闲",
-    "statusProcessing": "正在打包"
+    "statusProcessing": "正在打包",
+    "addTaskTitle": "在《{v}》分类下添加任务",
+    "selectRepo": "选择关联的仓库",
+    "compileDir": "编译的目录(dist | build)",
+    "selectScript": "选择打包的脚本(必须先选择仓库)"
   },
   "users": {
     "roleUpgrade": "角色升级",
     "roleDowngrade": "角色降级"
   },
   "dashboard": {
-    "about": "MareWood 是一个Go开发的轻量级前端部署工具,可以很灵活的配置各种打包部署环境并提供访问。"
+    "about": "MareWood 是一个Go开发的轻量级前端部署工具,可以很灵活的配置各种打包部署环境并提供访问。",
+    "webSocketConnected": "WebSocket已连接",
+    "webSocketError": "WebSocket出错,2s后尝试链接...",
+    "webSocketClosed": "WebSocket已关闭,2s后尝试链接..."
+
   }
 }

@@ -5,7 +5,7 @@ import request from "../utils/request.js";
  * @param params
  * @returns {AxiosPromise}
  */
-export function jobs(params) {
+export function tasks(params) {
   return request({
     url: "/tasks",
     method: "get",

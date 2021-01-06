@@ -11,9 +11,8 @@
 <img src="https://img.shields.io/badge/material ui-4.9.10-green"/>
 </div>
 
-![Job](preview/jobs.png)
+![Task](preview/task.png)
 ![Repo](preview/repo.png)
-![Category](preview/category.png)
 # MareWood
 >MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、WEBSOCKET、SQLITE、REACT、MATERIAL-UI 开发，
 不同于 Jenkins 的大而全，它很简单且只针对前端，你可以很灵活的配置各种部署环境。
@@ -59,6 +58,7 @@ http://xusenlin.com/article?key=iQBftC
 
 # 更新日志
 ### v0.40
+(此版本升级需要将jobs表修改为tasks，仓库表的字段job_status修改为task_status，分类表job_quantity修改为task_quantity)
 * 添加在线人数显示 （2021-01-05）
 * 添加国际化支持（2021-01-05）
 * 添加任务可快速定位到对应仓库 （2020-12-31）

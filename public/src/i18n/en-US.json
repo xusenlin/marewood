@@ -42,7 +42,7 @@
     "noticeEmpty": "There is no notice yet!",
     "searchTip": "Search Keyword",
     "logout": "Sign out",
-    "noticeQuantityTip": "{v} notices",
+    "noticeQuantityTip": "total {v}",
     "onlineTip": "{v} people online"
   },
   "role": {
@@ -81,7 +81,9 @@
     "deleteTip": "Are you sure you want to delete this repository? No tasks can be deleted using this repository."
   },
   "category": {
-    "createTip": "Please create a new category first"
+    "createTip": "Please create a new category first",
+    "deleteTitle": "Confirm delete category?",
+    "deleteTip": "If you confirm that you want to delete this category, please make sure that there are no tasks under this category."
   },
   "task": {
     "runQuantity": "NumberOfRuns",
@@ -105,13 +107,20 @@
     "statusFail": "Packaging failed",
     "statusSuccess": "Packaged successfully",
     "statusLeisured": "Task leisured",
-    "statusProcessing": "Packaging"
+    "statusProcessing": "Packaging",
+    "addTaskTitle": "Add tasks under the 《{v}》 category",
+    "selectRepo": "Select the associated repository",
+    "compileDir": "Compiled directory(dist | build)",
+    "selectScript": "Select compile script(must choose repository first)"
   },
   "users": {
     "roleUpgrade": "Role Upgrade",
     "roleDowngrade": "Role downgrade"
   },
   "dashboard": {
-    "about": "MareWood is an open source automatic packaging deployment tool for front-end"
+    "about": "MareWood is an open source automatic packaging deployment tool for front-end",
+    "webSocketConnected": "WebSocket connected",
+    "webSocketError": "WebSocket error, try to connect after 2s...",
+    "webSocketClosed": "WebSocket is closed, try to connect after 2s..."
   }
 }

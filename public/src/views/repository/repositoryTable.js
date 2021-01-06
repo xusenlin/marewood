@@ -153,7 +153,7 @@ class RepositoryTable extends React.Component {
     });
   }
   resetRepo(row) {
-    if (row.JobStatus !== 0) {
+    if (row.taskStatus !== 0) {
       return Snackbar.warning(i18n.get("repo.resetRepoFailed"));
     }
     reset({ id: row.ID })
@@ -234,7 +234,7 @@ class RepositoryTable extends React.Component {
                   <RepositoryStatus status={row.Status} />
                 </TableCell>
                 <TableCell align="center">
-                  <RepositoryTaskStatus status={row.JobStatus} />
+                  <RepositoryTaskStatus status={row.TaskStatus} />
                 </TableCell>
                 <TableCell align="center">
                   {row.UserName && row.Password ? (

@@ -11,6 +11,15 @@ const styles = theme => ({
   item: {
     margin: theme.spacing(1)
   },
+  content:{
+    display: "flex",
+    maxHeight:360,
+    flexDirection: "column",
+  },
+  notice:{
+    flex:1,
+    overflowY:"auto"
+  },
   bar: {
     width: "100%",
     justifyContent: "space-around",
@@ -55,31 +64,36 @@ const Notice = props => {
         PaperProps={{
           style: {
             padding: 0,
-            maxHeight: 360,
-            width: "40ch"
+            width: "40ch",
           }
         }}
         onClose={() => {
           setAnchorEl(null);
         }}
       >
-        {notices.length === 0 ? (
-          <Alert severity="info" className={classes.item}>
-            {i18n.get("bar.noticeEmpty")}
-          </Alert>
-        ) : (
-          notices.map((r, i) => (
-            <Alert key={i} severity={r.Type} className={classes.item}>
-              {r.Message}
-            </Alert>
-          ))
-        )}
-        <Divider />
-        <div className={classes.bar}>
+        <div className={classes.content}>
+          <div className={classes.notice}>
+            {notices.length === 0 ? (
+              <Alert severity="info" className={classes.item}>
+                {i18n.get("bar.noticeEmpty")}
+              </Alert>
+            ) : (
+              notices.map((r, i) => (
+                <Alert key={i} severity={r.Type} className={classes.item}>
+                  {r.Message}
+                </Alert>
+              ))
+            )}
+          </div>
+          <div>
+            <Divider />
+            <div className={classes.bar}>
           <span>
             {i18n.get("bar.noticeQuantityTip", { v: notices.length })}
           </span>
-          <span>{i18n.get("bar.onlineTip", { v: onlineUsers })}</span>
+              <span>{i18n.get("bar.onlineTip", { v: onlineUsers })}</span>
+            </div>
+          </div>
         </div>
       </Menu>
     </div>

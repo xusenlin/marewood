@@ -10,6 +10,7 @@ import {
   MenuItem
 } from "@material-ui/core";
 import { create } from "../../../api/task";
+import i18n from "react-intl-universal"
 import { repositories, getScript } from "../../../api/repository";
 
 class Edit extends React.Component {
@@ -69,7 +70,7 @@ class Edit extends React.Component {
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">
-            在《{this.props.categoryName}》分类下添加任务
+            { i18n.get("task.addTaskTitle",{v:this.props.categoryName})}
           </DialogTitle>
           <DialogContent>
             <TextField
@@ -82,7 +83,7 @@ class Edit extends React.Component {
               margin="dense"
               id="name"
               onChange={this.textFieldChange.bind(this, "name")}
-              label="任务名称"
+              label={ i18n.get("common.name")}
               type="text"
               fullWidth
             />
@@ -96,7 +97,7 @@ class Edit extends React.Component {
               margin="dense"
               id="repositoryId"
               onChange={this.textFieldChange.bind(this, "repositoryId")}
-              label="选择仓库"
+              label={i18n.get("task.selectRepo")}
               type="text"
               fullWidth
             >
@@ -118,7 +119,7 @@ class Edit extends React.Component {
               margin="dense"
               id="buildDir"
               onChange={this.textFieldChange.bind(this, "buildDir")}
-              label="打包目录"
+              label={i18n.get("task.compileDir")}
               type="text"
               fullWidth
             />
@@ -132,7 +133,7 @@ class Edit extends React.Component {
               margin="dense"
               id="buildCommand"
               onChange={this.textFieldChange.bind(this, "buildCommand")}
-              label="选择打包的命令"
+              label={i18n.get("task.selectScript")}
               type="text"
               fullWidth
             >
@@ -144,21 +145,6 @@ class Edit extends React.Component {
                 );
               })}
             </TextField>
-            {/*<TextField*/}
-            {/*  InputLabelProps={{*/}
-            {/*    shrink: true,*/}
-            {/*  }}*/}
-            {/*  autoFocus value={this.state.password} margin="dense" id="password"*/}
-            {/*  onChange={this.textFieldChange.bind(this, 'password')} label="任务加密" type="password" fullWidth*/}
-            {/*/>*/}
-            {/*<TextField*/}
-            {/*  InputLabelProps={{*/}
-            {/*    shrink: true,*/}
-            {/*  }}*/}
-            {/*  margin="dense" value={this.state.successScript} id="desc" multiline rows={6}*/}
-            {/*  onChange={this.textFieldChange.bind(this, 'successScript')} label="打包成功执行的命令（用户权限模块没有完成，现在不会运行）"*/}
-            {/*  type="text" fullWidth*/}
-            {/*/>*/}
             <TextField
               InputLabelProps={{
                 shrink: true
@@ -169,15 +155,15 @@ class Edit extends React.Component {
               multiline
               rows={6}
               onChange={this.textFieldChange.bind(this, "desc")}
-              label="任务描述"
+              label={i18n.get("common.desc")}
               type="text"
               fullWidth
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.handleClose}>关闭</Button>
+            <Button onClick={this.props.handleClose}>{i18n.get("common.close")}</Button>
             <Button onClick={this.submitForm.bind(this)} color="primary">
-              确认
+              {i18n.get("common.confirm")}
             </Button>
           </DialogActions>
         </Dialog>

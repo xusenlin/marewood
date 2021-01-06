@@ -121,9 +121,9 @@ func RepositoryDestroy(c *gin.Context) {
 
 	id := c.Query("id")
 
-	var jobCount int
+	var taskCount int
 
-	if sql.DB.Model(&models.Job{}).Where("repository_id = ?", id).Count(&jobCount).Error != nil {
+	if sql.DB.Model(&models.Task{}).Where("repository_id = ?", id).Count(&taskCount).Error != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   id,
@@ -131,11 +131,11 @@ func RepositoryDestroy(c *gin.Context) {
 		})
 	}
 
-	if jobCount > 0 {
+	if taskCount > 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
-			"data":   jobCount,
-			"msg":    "Unable to delete, there are " + strconv.Itoa(jobCount) + " tasks using this repository",
+			"data":   taskCount,
+			"msg":    "Unable to delete, there are " + strconv.Itoa(taskCount) + " tasks using this repository",
 		})
 		return
 	}
@@ -362,7 +362,7 @@ func RepositoryReset(c *gin.Context) {
 		})
 		return
 	}
-	if repo.JobStatus != models.RepoJobStatusLeisured {
+	if repo.TaskStatus != models.RepoTaskStatusLeisured {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 			"data":   "",

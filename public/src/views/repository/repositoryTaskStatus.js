@@ -14,13 +14,14 @@ class RepositoryTaskStatus extends React.Component {
   }
   render() {
     return (
-      <div>
-        <Tooltip title={i18n.get(STATUS[this.props.status])}>
-          <IconButton color="primary">
-            {this.renderCircularProgress(this.props.status)}
-          </IconButton>
-        </Tooltip>
-      </div>
+      (this.props.status === 0 || this.props.status === 1)  ?
+        (<div>
+          <Tooltip title={i18n.get(STATUS[this.props.status])}>
+            <IconButton color="primary">
+              {this.renderCircularProgress(this.props.status)}
+            </IconButton>
+          </Tooltip>
+        </div>):""
     );
   }
 }

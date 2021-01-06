@@ -19,7 +19,7 @@ type PackageJson struct {
 
 func AutoMigrate()  {
 	sql.DB.AutoMigrate(
-		&Job{},
+		&Task{},
 		&User{},
 		&Category{},
 		&Repository{},

@@ -180,14 +180,14 @@ class CategoryTable extends React.Component {
                         this,
                         row,
                         1,
-                        "标题",
+                        i18n.get("common.title"),
                         "Name"
                       )}
                       color="primary"
                     />
                     {row.Name}
                   </TableCell>
-                  <TableCell align="left">{row.JobQuantity}</TableCell>
+                  <TableCell align="left">{row.TaskQuantity}</TableCell>
                   <TableCell align="left">
                     <Tooltip
                       title={row.Desc}
@@ -200,7 +200,7 @@ class CategoryTable extends React.Component {
                           this,
                           row,
                           8,
-                          "描述",
+                          i18n.get("common.desc"),
                           "Desc"
                         )}
                       >
@@ -231,10 +231,10 @@ class CategoryTable extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"确认删除分类?"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{i18n.get("category.deleteTitle")}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              如果你确认要删除这个分类，请确保在这个分类下面已经没有任何任务了。
+              {i18n.get("category.deleteTip")}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -242,14 +242,14 @@ class CategoryTable extends React.Component {
               onClick={this.destroyDialogClose.bind(this)}
               color="primary"
             >
-              关闭
+              {i18n.get("common.close")}
             </Button>
             <Button
               onClick={this.destroyConfirm.bind(this)}
               color="secondary"
               autoFocus
             >
-              确认
+              {i18n.get("common.confirm")}
             </Button>
           </DialogActions>
         </Dialog>

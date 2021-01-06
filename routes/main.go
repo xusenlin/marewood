@@ -28,7 +28,7 @@ func InitRouter() *gin.Engine {
 			c.Redirect(http.StatusMovedPermanently, "/public")
 		})
 
-		r.Any(config.Cfg.WebHookUrl, controller.JobWebHook)
+		r.Any(config.Cfg.WebHookUrl, controller.TaskWebHook)
 		r.Any("/websocket", controller.WebsocketMsg)
 	}
 
@@ -63,14 +63,14 @@ func InitRouter() *gin.Engine {
 		v1.GET("/category/update_field", middlewares.RoleDeveloper(), controller.CategoryUpdateField)
 		v1.GET("/category/delete", middlewares.RoleAdmin(), controller.CategoryDestroy)
 		//任务
-		v1.GET("/tasks", middlewares.RoleReporter(), controller.JobFindAll)
-		v1.GET("/task_find", middlewares.RoleReporter(), controller.JobFind)
-		v1.POST("/task/create", middlewares.RoleDeveloper(), controller.JobCreate)
-		v1.GET("/task/update_branch", middlewares.RoleDeveloper(), controller.JobUpdateBranch)
-		v1.GET("/task/update_field", middlewares.RoleDeveloper(), controller.JobUpdateField)
-		v1.GET("/task/delete", middlewares.RoleAdmin(), controller.JobDestroy)
-		v1.GET("/task/run", middlewares.RoleDeveloper(), controller.JobRun)
-		v1.GET("/task/lock", middlewares.RoleDeveloper(), controller.JobLock)
+		v1.GET("/tasks", middlewares.RoleReporter(), controller.TaskFindAll)
+		v1.GET("/task_find", middlewares.RoleReporter(), controller.TaskFind)
+		v1.POST("/task/create", middlewares.RoleDeveloper(), controller.TaskCreate)
+		v1.GET("/task/update_branch", middlewares.RoleDeveloper(), controller.TaskUpdateBranch)
+		v1.GET("/task/update_field", middlewares.RoleDeveloper(), controller.TaskUpdateField)
+		v1.GET("/task/delete", middlewares.RoleAdmin(), controller.TaskDestroy)
+		v1.GET("/task/run", middlewares.RoleDeveloper(), controller.TaskRun)
+		v1.GET("/task/lock", middlewares.RoleDeveloper(), controller.TaskLock)
 		//user
 		v1.GET("/users", middlewares.RoleReporter(), controller.UserFindAll)
 		v1.GET("/user/delete", middlewares.RoleSuperAdmin(), controller.UserDestroy)

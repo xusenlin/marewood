@@ -1,5 +1,6 @@
 import { host } from "../config/url.js";
 import Snackbar, { notice } from "../components/snackbar/index.js";
+import i18n from "react-intl-universal"
 import BusEvent from "./busEvents";
 
 const websocketRetryQuantity = 5;
@@ -9,7 +10,7 @@ export function connWebsocket(token) {
   websocketQuantity++;
   window.ws = new WebSocket(`ws://${host}/websocket?token=${token}`);
   window.ws.onopen = () => {
-    Snackbar.success("WebSocket已连接");
+    Snackbar.success(i18n.get("dashboard.webSocketConnected"));
   };
   window.ws.onmessage = r => {
     let data = JSON.parse(r.data);
@@ -21,7 +22,7 @@ export function connWebsocket(token) {
     if (websocketQuantity > websocketRetryQuantity) {
       return;
     }
-    Snackbar.error("WebSocket出错,2s后尝试链接...");
+    Snackbar.error(i18n.get("dashboard.webSocketError"));
     setTimeout(() => {
       connWebsocket(token);
     }, 2000);
@@ -30,7 +31,7 @@ export function connWebsocket(token) {
     if (websocketQuantity > websocketRetryQuantity) {
       return;
     }
-    Snackbar.warning("WebSocket已关闭,2s后尝试链接...");
+    Snackbar.warning(i18n.get("dashboard.webSocketClosed"));
     setTimeout(() => {
       connWebsocket(token);
     }, 2000);
