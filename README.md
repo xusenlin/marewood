@@ -1,5 +1,5 @@
 <div align=center>
-<img src="http://xusenlin.com/assets/images/marewood/logo.svg" width=300" height="300" />
+<img src="preview/logo.png" width=300" height="300" />
 </div>
 <div align=center>
 <img src="https://img.shields.io/badge/golang-1.12-blue"/>
@@ -59,6 +59,7 @@ http://xusenlin.com/article?key=iQBftC
 # 更新日志
 ### v0.40
 (此版本升级需要将jobs表修改为tasks，仓库表的字段job_status修改为task_status，分类表job_quantity修改为task_quantity)
+* 重新优化了 Logo,看起来比之前聪明了 :) (2021-01-17)
 * 添加在线人数显示 （2021-01-05）
 * 添加国际化支持（2021-01-05）
 * 添加任务可快速定位到对应仓库 （2020-12-31）

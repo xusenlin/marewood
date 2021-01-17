@@ -11,7 +11,7 @@ import Copyright from "../../components/copyright";
 import { register } from "../../api/user";
 import snackbar from "../../components/snackbar/index";
 import i18n from "react-intl-universal";
-const Logo = require("../../assets/img/logo.svg");
+const Logo = require("../../assets/img/logov2.svg");
 
 const useStyles = makeStyles(theme => ({
   paper: {

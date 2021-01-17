@@ -18,7 +18,7 @@ import Lang from "./lang";
 import i18n from "react-intl-universal";
 import { getUserInfo } from "../../utils/dataStorage";
 
-const Logo = require("../../assets/img/logo.svg");
+const Logo = require("../../assets/img/logov2.svg");
 let UserInfo = getUserInfo();
 
 const TopBar = props => {

@@ -13,7 +13,7 @@ import Container from "@material-ui/core/Container";
 import Copyright from "../../components/copyright";
 import { setToken, setUserInfo, removeToken } from "../../utils/dataStorage";
 import { login } from "../../api/user";
-const Logo = require("../../assets/img/logo.svg");
+const Logo = require("../../assets/img/logov2.svg");
 
 const useStyles = makeStyles(theme => ({
   paper: {
