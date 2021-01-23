@@ -10,6 +10,10 @@ func JoinWsClientsByToken(token string, conn *websocket.Conn) error {
 	if err != nil {
 		return err
 	}
+
+	if conn,ok := models.WsClients[claims.ID]; ok {
+		_ = conn.WsConn.Close()
+	}
 	models.WsClients[claims.ID] = models.ConnUser{Username: claims.Username, WsConn: conn}
 
 	models.Broadcast <- models.Message{
