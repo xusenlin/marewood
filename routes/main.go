@@ -29,6 +29,7 @@ func InitRouter() *gin.Engine {
 		})
 
 		r.Any(config.Cfg.WebHookUrl, controller.TaskWebHook)
+		r.GET("/run_task_and_pack", controller.RunTaskAndPack)
 		r.Any("/websocket", controller.WebsocketMsg)
 	}
 

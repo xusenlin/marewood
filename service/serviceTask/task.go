@@ -84,6 +84,10 @@ func TaskRun(t *models.Task, repository *models.Repository, claims *models.Claim
 	sql.DB.Model(&repository).
 		Update("task_status", models.RepoTaskStatusLeisured)
 
+	if claims == nil {
+		return
+	}
+
 	successMsg := models.Message{
 		Type:            models.MsgTypeSuccess,
 		TriggerID:       claims.ID,
@@ -99,6 +103,10 @@ func taskRunError(t *models.Task, repository *models.Repository, errOut string, 
 	fmt.Println("taskRunError::", errOut)
 	sql.DB.Model(&t).Update("status", models.TaskStatusFail).Update("terminal_info", errOut)
 	sql.DB.Model(&repository).Update("task_status", models.RepoTaskStatusLeisured)
+
+	if claims == nil {
+		return
+	}
 
 	errMsg := models.Message{
 		Type:            models.MsgTypeError,

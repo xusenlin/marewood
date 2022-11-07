@@ -57,7 +57,7 @@ func TaskFind(c *gin.Context) {
 	var result models.TaskPageResult
 	if strings.HasPrefix(name, "id:") {
 		result, err = models.FindTask("", pageNum, pageSize,
-			map[string]interface{}{"id": strings.TrimLeft(name, "id:"),"category_id": categoryId})
+			map[string]interface{}{"id": strings.TrimLeft(name, "id:"), "category_id": categoryId})
 	} else {
 		result, err = models.FindTask(name, pageNum, pageSize, map[string]interface{}{"category_id": categoryId})
 	}
@@ -239,6 +239,15 @@ func TaskUpdateField(c *gin.Context) {
 func TaskRun(c *gin.Context) {
 
 	taskId := c.Query("id")
+
+	if taskId == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"status": false,
+			"data":   "",
+			"msg":    "taskId is empty",
+		})
+		return
+	}
 
 	var task models.Task
 	var repository models.Repository
