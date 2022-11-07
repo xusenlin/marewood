@@ -4,12 +4,14 @@ import (
 	"MareWood/config"
 	"MareWood/helper"
 	"MareWood/models"
+	"MareWood/service/serviceRepository"
 	"MareWood/service/serviceTask"
 	"MareWood/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"net/http"
+	"strconv"
 )
 
 //webHook 触发任务
@@ -90,4 +92,31 @@ func RunTaskAndPack(c *gin.Context) {
 	c.File(dst)
 
 	return
+}
+
+func GetRevParse(c *gin.Context) {
+	taskId := c.Query("id")
+	var task models.Task
+
+	if taskId == "" {
+		c.Data(http.StatusBadRequest, "text", []byte("taskId is empty"))
+		return
+	}
+
+	if sql.DB.First(&task, taskId).Error == gorm.ErrRecordNotFound {
+		c.Data(http.StatusBadRequest, "text", []byte(gorm.ErrRecordNotFound.Error()))
+		return
+	}
+	if sql.DB.Error != nil {
+		c.Data(http.StatusBadRequest, "text", []byte(sql.DB.Error.Error()))
+		return
+	}
+
+	o, err := serviceRepository.RunCmdOnRepositoryDir(strconv.Itoa(task.RepositoryId), "git", "rev-parse", "--short", "HEAD")
+	if err != nil {
+		c.Data(http.StatusBadRequest, "text", []byte(err.Error()))
+		return
+	}
+	c.Data(http.StatusOK, "text", []byte(o))
+
 }
