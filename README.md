@@ -57,6 +57,10 @@ http://xusenlin.com/article?key=iQBftC
 注：等级高的角色拥有低级角色的全部权限。用户注册默认成为项目记者，如果注册的名字是 Admin 会自动成为超级管理员，注册名字不可重复。
 
 # 更新日志
+### 未发布（当前代码2022.11.07）
+* 添加一键下载打包好的压缩文件（访问you-url/run_task_and_pack?id=3即可使用最新代码打包对应任务并生成压缩包下载）
+* 添加任务默认分支修改为main
+
 ### v0.40
 (此版本升级需要将jobs表修改为tasks，仓库表的字段job_status修改为task_status，分类表job_quantity修改为task_quantity)
 * 重新优化了 Logo,看起来比之前聪明了 :) (2021-01-17)
