@@ -14,104 +14,72 @@
 ![Task](preview/task.png)
 ![Repo](preview/repo.png)
 # MareWood
->MareWood 是一个轻量级的前端部署工具，使用了 GOLANG、GIN、GORM、JWT、WEBSOCKET、SQLITE、REACT、MATERIAL-UI 开发，
-不同于 Jenkins 的大而全，它很简单且只针对前端，你可以很灵活的配置各种部署环境。
-如果你愿意，线上发布也可以是点击一下按钮这么简单的事情,当然也可以配置 WEBHOOK，提交 GIT 代码既自动发布。
+>MareWood is a lightweight front-end deployment tool that is developed using GOLANG, GIN, GORM, JWT, WEBSOCKET, SQLITE, REACT, and MATERIAL-UI. Unlike Jenkins, which is large and comprehensive, MareWood is simple and focuses specifically on front-end. You can flexibly configure various deployment environments. If you wish, online publishing can be as simple as clicking a button, and of course, you can also configure WEBHOOK, so that submitting GIT code will automatically release.
 
 
-# MareWood 在做什么
-MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖，并能在同一个仓库下通过不同的任务不同的打包命令和不同的分支打包出多个环境下的前端资源并放在 resources\webs 下，通过任务 ID 一一对应，并提供快捷访问，超级简单好用灵活。
+# What is MareWood doing?
+MareWood is a front-end deployment tool that can help you clone your front-end repository and install dependencies using the tools you choose. It allows you to package multiple environments in the same repository by using different task commands and different branches. The generated front-end resources will be placed in the "resources\webs" directory, and can be accessed easily by corresponding task IDs. MareWood is designed to be easy to use, flexible and super easy to access.
+
+# Usage
+To use MareWood, users can:
+
+1. Fill in the repository address
+2. Create multiple tasks associated with the repository
+3. Click the package button, wait for the process to complete and then access the resources.
+> Once a task is created, users can switch branches and package them at any time.
 
 
-# 使用
+To set up the service:
+1. Install git, node, npm on the server, it is recommended to install cnpm and yarn for options.
+2. Modify the config.json to configure the port number, domain, and supported front-end tools for MareWood.
+3. Enter the public directory to install front-end dependencies and package them to generate the build folder.
+4. Compile MareWood and run it in the background.
 
-用户使用： 1.填入仓库地址->2.可以新建多个任务关联此仓库->3.点击打包等待完成即可访问。
-> 任务一旦生成，可以随时切换分支打包。
-
-
-服务搭建：
-- 服务器请先安装 git、node、npm，建议同时安装 cnpm 和 yarn 以供选择。
-- 修改 config.json 来配置 MareWood 启动的端口号、域名、和支持的前端工具。
-- 进入 public 目录安装前端依赖并打包生成build文件夹。
-- 编译 MareWood 并放入后台运行。
-
-其他：MareWood 提供 http 访问，建议 nginx 提供 https 静态文件服务器（nginx指向resources\webs ,配置好你的 OtherAddressUrl 字段，可留空）这样可以灵活的选择 http 或者 https 去访问打包的前端项目。
+Other: MareWood provides http access, it is recommended to use nginx to provide https static file server (nginx points to resources\webs, configure your OtherAddressUrl field, can be left blank) in this way you can flexibly choose http or https to access the packaged front-end project.
 
 
-那么，一个 React 或者 Vue 项目如何配置多个打包命令呢？请移步
-http://xusenlin.com/article?key=iQBftC
-如果不明白也可以参考实际的项目
+How can a React or Vue project configure multiple build commands? Please refer to http://xusenlin.com/article?key=iQBftC
 
-- https://github.com/xusenlin/VueMultiplePages.git
-- https://github.com/xusenlin/VueElementUiAdmin.git
 
-# 角色
+# Roles
 
-角色目前分为超级管理员、管理员、开发者、项目记者。权限如下：
+Currently, the roles are divided into: Super Administrator, Administrator, Developer, and Project Journalist. The permissions are as follows:
 
-- 项目记者 - 只能查看所有内容，并且可以访问打包好的前端项目
-- 开发者 - 拥有创建仓库、分类、任务和拉代码、切换分支、运行打包、删除依赖、裁剪分支权限
-- 管理员 - 可以删除仓库、分类、任务
-- 超级管理员 -可以管理用户（提升和降级角色，删除用户）
+- Project Journalist - can only view all content and access the packaged front-end project
+- Developer - has the permissions to create repositories, categories, tasks, pull code, switch branches, run builds, delete dependencies, and trim branches
+- Administrator - can delete repositories, categories, and tasks
+- Super Administrator - can manage users (promote and demote roles, delete users)
+- 
+Note: Higher-level roles have all the permissions of lower-level roles. Users are registered as Project Journalists by default. If the registered name is Admin, it will automatically become a Super Administrator. Registered names cannot be duplicated.
 
-注：等级高的角色拥有低级角色的全部权限。用户注册默认成为项目记者，如果注册的名字是 Admin 会自动成为超级管理员，注册名字不可重复。
 
-# 更新日志
-### 未发布（当前代码2022.11.07）
-* 添加一键下载打包好的压缩文件（访问you-url/run_task_and_pack?id=3即可使用最新代码打包对应任务并生成压缩包下载）
-* 添加任务默认分支修改为main
+
+
+
+# Update log
+### Unpublished (current code 2022.11.07)
+* Add one-click download of the packaged compressed file (visit you-url/run_task_and_pack?id=3 to use the latest code to package the corresponding task and generate a compressed package for download)
+* Add a task default branch modification to main
 
 ### v0.40
-(此版本升级需要将jobs表修改为tasks，仓库表的字段job_status修改为task_status，分类表job_quantity修改为task_quantity)
-* 重新优化了 Logo,看起来比之前聪明了 :) (2021-01-17)
-* 添加在线人数显示 （2021-01-05）
-* 添加国际化支持（2021-01-05）
-* 添加任务可快速定位到对应仓库 （2020-12-31）
-* webhook支持post或者get请求 （2020-12-30）
-* 重构了前端任务的部分代码 （2020-12-30）
-* 优化了搜索栏，添加分类可搜索 （2020-12-30）
-* 添加了websocket通知记录 （2020-12-30）
+(This version upgrade requires the jobs table to be modified to tasks, the repository table's job_status field to be modified to task_status, and the category table's job_quantity field to be modified to task_quantity)
+
+* Re-optimized the Logo, it looks smarter than before :) (2021-01-17)
+* Added online number display (2021-01-05)
+* Added internationalization support (2021-01-05)
+* Added the ability to quickly locate the corresponding repository for a task (2020-12-31)
+* webhook support for post or get requests (2020-12-30)
+* Partially refactored the front-end task code (2020-12-30)
+* Optimized the search bar and added category searchability (2020-12-30)
+* Added websocket notification record (2020-12-30)
 
 ### v0.30
-* @wenbiyou 添加了任务和仓库的搜索功能 （2020-12-07）
-* 添加了 websocket 重试机制
-* @wojiaolingdu111 添加了仓库重建功能
-* 添加了 websocket 广播，每个仓库和任务状态实时同步所有人。
-* 优化了接口请求加载动画禁止页面操作。
-* 添加了查看用户提交代码记录的功能。
-
-### v0.20
-* 添加丢弃本地仓库变动的功能 （2020-07-23）
-* 修复运行老的任务分支不存在的 BUG (2020-06-25)
-* 可以快捷修改更多字段和添加任务分页
-* 缩短必要时的任务查询时间，完成打包及时知道
-* 将任务密码重构为任务加锁解锁（多人协作时方便锁定任务，但是密码是透明的）
-* 修复了裁剪分支和新建仓库不刷新相关BUG
-* 设计了 MareWood 的矢量 logo
-* 删除了读取的 dev 打包命令
-* 设置 Token 失效时间为 10H
-* 添加了裁剪分支的功能，可以手动保持和远程分支一致
-
-### v0.12
-* 添加用户和权限控制模块
-* 可以快速修改仓库、分类、任务描述
-* 优化和重构了大部分前后端代码
-* 优化了前端界面UI
-* 修复了一部分代码的隐藏 BUG
-
-### v0.10
-* 仪表盘的关键信息展示
-* 仓库列表的相关功能（克隆、锁定、更新代码、删除依赖、依赖工具、删除仓库等功能）
-* 任务分类（除了按照打包环境分类也可以按照 后台管理、H5活动、M站等自由发挥）
-* 部署任务（同一个前端仓库可以新建多个部署任务，每个部署任务可以任意分支任意命令打包并提供访问）
-
-
-
-# 番外
-
-MareWood 翻译过来是 玛瑞·伍德 看上去像是一个人的名字，其实它是代表两个人，一个咒语。
-
-
+* @wenbiyou added the search function for tasks and repositories (2020-12-07)
+* Added a websocket retry mechanism
+* @wojiaolingdu111 added the repository rebuilding function
+* Added websocket broadcasting, so that the status of each repository and task is in real-time synchronization with all people.
+* Optimized the interface request loading animation to prohibit page operation.
+* Added the ability to view the user's code submission record.
 
 # License
 
