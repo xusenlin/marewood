@@ -29,13 +29,25 @@ MareWood 可以帮你克隆前端仓库并使用你选择的工具安装依赖�
 > 任务一旦生成，可以随时切换分支打包。
 
 
-服务搭建：
+## Docker 安装
+marewood容器目录/marewood/resources 包含了程序数据库、所有后续克隆的仓库和打包好的前端资源，建议将其映射到宿主机的某个目录下，以便于数据的持久化。
+```
+docker run -d --name marewood -p 8088:8088 -v ~/marewood:/marewood/resources ghcr.io/xusenlin/marewood:0.4
+```
+这样即可通过8088端口访问MareWood，通过 localhost:8088/webs/taskId 即可访打包好的仓库资源。建议使用nginx给~/marewood/webs提供静态文件服务器 ，以便于使用https访问前端内容。
+```
+docker run -d --name marewood -p 8088:8088 -v ~/marewood:/marewood/resources -e MW_URL=https://your-url.com ghcr.io/xusenlin/marewood:0.4 
+```
+这样marewood提供快捷访问https://your-url.com/taskId
+
+
+## 手动安装
 - 服务器请先安装 git、node、npm，建议同时安装 cnpm 和 yarn 以供选择。
-- 修改 config.json 来配置 MareWood 启动的端口号、域名、和支持的前端工具。
+- 通过MW_PORT和MW_URL环境变量来配置 MareWood 启动的端口号、前端资源域名。
 - 进入 public 目录安装前端依赖并打包生成build文件夹。
 - 编译 MareWood 并放入后台运行。
 
-其他：MareWood 提供 http 访问，建议 nginx 提供 https 静态文件服务器（nginx指向resources\webs ,配置好你的 OtherAddressUrl 字段，可留空）这样可以灵活的选择 http 或者 https 去访问打包的前端项目。
+其他：MareWood 提供 http 访问，建议 nginx 提供 https 静态文件服务器（nginx指向resources\webs）这样可以灵活的选择 http 或者 https 去访问打包的前端项目。
 
 
 那么，一个 React 或者 Vue 项目如何配置多个打包命令呢？请移步

@@ -34,3 +34,5 @@ EXPOSE 8088
 VOLUME  /marewood/resources
 
 ENTRYPOINT ["/marewood/MareWood"]
+
+#docker run -d --name marewood -p 8088:8088 -v ~/.marewood:/marewood/resources ghcr.io/xusenlin/marewood:0.4

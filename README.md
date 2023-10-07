@@ -2,6 +2,9 @@
 <img src="preview/logo.png" width=300" height="300" />
 </div>
 <div align=center>
+<a href="./README.zh-Hans.md">中文说明</a>
+</div>
+<div align=center>
 <img src="https://img.shields.io/badge/golang-1.12-blue"/>
 <img src="https://img.shields.io/badge/gin-1.4.0-lightBlue"/>
 <img src="https://img.shields.io/badge/jwt go-3.2.0-lightBlue"/>
@@ -21,17 +24,28 @@
 MareWood is a front-end deployment tool that can help you clone your front-end repository and install dependencies using the tools you choose. It allows you to package multiple environments in the same repository by using different task commands and different branches. The generated front-end resources will be placed in the "resources\webs" directory, and can be accessed easily by corresponding task IDs. MareWood is designed to be easy to use, flexible and super easy to access.
 
 # Usage
-To use MareWood, users can:
+## To use MareWood, users can:
 
 1. Fill in the repository address
 2. Create multiple tasks associated with the repository
 3. Click the package button, wait for the process to complete and then access the resources.
 > Once a task is created, users can switch branches and package them at any time.
 
+## Docker installation
+The MareWood container directory /marewood/resources contains the program database, all cloned repositories, and packaged front-end resources. It is recommended to map it to a directory on the host for data persistence.
+```
+docker run -d --name marewood -p 8088:8088 -v ~/marewood:/marewood/resources ghcr.io/xusenlin/marewood:0.4
+```
+In this way, you can access MareWood through port 8088, and access the packaged repository resources through localhost:8088/webs/taskId. It is recommended to use nginx to provide a static file server for ~/marewood/webs, so that you can use https to access the front-end content.
+```
+docker run -d --name marewood -p 8088:8088 -v ~/marewood:/marewood/resources -e MW_URL=https://your-url.com ghcr.io/xusenlin/marewood:0.4 
+```
+In this way, MareWood provides quick access to https://your-url.com/taskId
 
-To set up the service:
+
+## Manual installation
 1. Install git, node, npm on the server, it is recommended to install cnpm and yarn for options.
-2. Modify the config.json to configure the port number, domain, and supported front-end tools for MareWood.
+2. Configure the port number and front-end resource domain for MareWood startup through the MW_PORT and MW_URL environment variables.
 3. Enter the public directory to install front-end dependencies and package them to generate the build folder.
 4. Compile MareWood and run it in the background.
 
