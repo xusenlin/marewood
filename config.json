@@ -1,7 +1,0 @@
-{
-  "HttpPort": "8088",
-  "GinMode": "debug",
-  "DependTools": ["npm","yarn"],
-  "LogMode": true,
-  "OtherAddressUrl" : ["https://you-url.com"]
-}

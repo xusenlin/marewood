@@ -1,5 +1,7 @@
 .git
 public/node_modules
+public/build
+resources
 Dockerfile
 .dockerignore
 .*

@@ -1,9 +1,9 @@
 package config
 
 import (
-	"encoding/json"
-	"io/ioutil"
+	"github.com/gin-gonic/gin"
 	"os"
+	"strings"
 )
 
 type Config struct {
@@ -21,29 +21,32 @@ func init() {
 		panic(err)
 	}
 
-	b, err := ioutil.ReadFile(systemCfg.CurrentDir + "/config.json")
+	userCfg.DependTools = []string{"npm", "yarn"}
+	userCfg.LogMode = false
 
-	if err != nil {
-		panic(err)
+	userCfg.GinMode = os.Getenv("MW_GIN_MODE")
+	if userCfg.GinMode == "" {
+		userCfg.GinMode = gin.ReleaseMode
 	}
 
-	if json.Unmarshal(b, &userCfg) != nil {
-		panic(err)
+	userCfg.HttpPort = os.Getenv("MW_PORT")
+	if userCfg.HttpPort == "" {
+		userCfg.HttpPort = "8088"
 	}
 
-	ClientDir := os.Getenv("ClientDir")
-	if ClientDir == "" {
-		ClientDir = systemCfg.CurrentDir + "/public/build"
+	otherAddressUrl := os.Getenv("MW_URL")
+	if otherAddressUrl != "" {
+		userCfg.OtherAddressUrl = strings.Split(otherAddressUrl, ",")
 	}
 
 	systemCfg.Version = 0.40
 	systemCfg.AppName = "MareWood"
 	systemCfg.AppRepository = "https://github.com/xusenlin/MareWood"
-	systemCfg.DbDns = systemCfg.CurrentDir + "/database.db"
 	systemCfg.ResourcesDir = systemCfg.CurrentDir + "/resources"
+	systemCfg.DbDns = systemCfg.ResourcesDir + "/database.db"
 	systemCfg.RepositoryDir = systemCfg.ResourcesDir + "/repositories"
 	systemCfg.WebRootDir = systemCfg.ResourcesDir + "/webs"
-	systemCfg.ClientDir = ClientDir
+	systemCfg.ClientDir = systemCfg.CurrentDir + "/public/build"
 	systemCfg.WebHookUrl = "/web_hook"
 	systemCfg.WebsUrl = "/webs"
 	Cfg.systemConfig = systemCfg
