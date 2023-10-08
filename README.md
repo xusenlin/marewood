@@ -97,4 +97,4 @@ Note: Higher-level roles have all the permissions of lower-level roles. Users ar
 
 # License
 
-MIT © Richard McRichface
+MIT
