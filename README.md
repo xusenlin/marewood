@@ -7,6 +7,8 @@ marewood will help you clone the frontend Git repository. Once you associate a r
 
 # Usage
 
+If the registered username is Admin, it will automatically become a super administrator, and usernames cannot be repeated.
+
 ## node16
 ```shell
 docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.0-node16
