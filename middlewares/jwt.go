@@ -1,36 +1,28 @@
 package middlewares
 
 import (
-	"MareWood/models"
-	"MareWood/service/serviceUser"
+	"errors"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"marewood/internal/common"
+	"marewood/internal/context"
 )
-
 
 func JWTAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
+		ctx := context.New(c)
 		if token == "" {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    "please log in first",
-			})
+			ctx.SendErr(errors.New("please log in first"))
 			c.Abort()
 			return
 		}
-		claims, err := serviceUser.ParseToken(token)
+		claims, err := common.JwtParseToken(token)
 		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    err.Error(),
-			})
+			ctx.SendErr(err)
 			c.Abort()
 			return
 		}
-		c.Set(models.JwtClaimsKey, claims)
+		c.Set(common.JwtClaimsKey, claims)
 		c.Next() // 后续的处理函数可以用过c.Get("JwtClaims")来获取当前请求的用户信息
 	}
 }

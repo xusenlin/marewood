@@ -1,108 +1,45 @@
 package middlewares
 
 import (
-	"MareWood/models"
-	"MareWood/service/serviceUser"
+	"errors"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"marewood/internal/context"
+	"marewood/internal/user"
 )
 
 func RoleReporter() func(c *gin.Context) {
-	return func(c *gin.Context) {
-		claims, err := serviceUser.GetJwtClaimsByContext(c)
-		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    err.Error(),
-			})
-			c.Abort()
-			return
-		}
-		if claims.Role > models.UserRoleReporter {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    "Only reporters and above roles have permission to operate",
-			})
-			c.Abort()
-			return
-		}
-		c.Next()
-	}
+	tip := errors.New("only reporters and above roles have permission to operate")
+	return func(c *gin.Context) { role(c, user.RoleReporter, tip) }
 }
 
 func RoleDeveloper() func(c *gin.Context) {
-	return func(c *gin.Context) {
-		claims, err := serviceUser.GetJwtClaimsByContext(c)
-		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    err.Error(),
-			})
-			c.Abort()
-			return
-		}
-		if claims.Role > models.UserRoleDeveloper {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    "Developer and above roles have the right to operate",
-			})
-			c.Abort()
-			return
-		}
-		c.Next()
-	}
+	tip := errors.New("developer and above roles have the right to operate")
+	return func(c *gin.Context) { role(c, user.RoleDeveloper, tip) }
 }
 
 func RoleAdmin() func(c *gin.Context) {
-	return func(c *gin.Context) {
-		claims, err := serviceUser.GetJwtClaimsByContext(c)
-		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    err.Error(),
-			})
-			c.Abort()
-			return
-		}
-		if claims.Role > models.UserRoleAdminister {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    "Only the administrator has the authority to operate",
-			})
-			c.Abort()
-			return
-		}
-		c.Next()
-	}
+	tip := errors.New("only the administrator has the authority to operate")
+	return func(c *gin.Context) { role(c, user.RoleAdminister, tip) }
 }
 
 func RoleSuperAdmin() func(c *gin.Context) {
-	return func(c *gin.Context) {
-		claims, err := serviceUser.GetJwtClaimsByContext(c)
-		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    err.Error(),
-			})
-			c.Abort()
-			return
-		}
-		if claims.Role > models.UserRoleSuperAdministrator {
-			c.JSON(http.StatusOK, gin.H{
-				"status": false,
-				"data":   "",
-				"msg":    "Only super administrators have authority to operate",
-			})
-			c.Abort()
-			return
-		}
-		c.Next()
+	tip := errors.New("only super administrators have authority to operate")
+	return func(c *gin.Context) { role(c, user.RoleSuperAdministrator, tip) }
+}
+
+func role(c *gin.Context, roleVal int, errTip error) {
+
+	ctx := context.New(c)
+	claims, err := ctx.GetClaims()
+	if err != nil {
+		ctx.SendErr(err)
+		c.Abort()
+		return
 	}
+	if claims.Role > roleVal {
+		ctx.SendErr(errTip)
+		c.Abort()
+		return
+	}
+	c.Next()
 }

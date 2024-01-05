@@ -1,6 +1,7 @@
 .git
-public/node_modules
-public/build
+.idea
+ui/node_modules
+ui/dist
 resources
 Dockerfile
 .dockerignore

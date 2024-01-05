@@ -1,33 +1,33 @@
 package main
 
 import (
-	"MareWood/config"
-	"MareWood/models"
-	"MareWood/routes"
-	"MareWood/service/serviceConfig"
-	"MareWood/sql"
 	"log"
+	"marewood/conf"
+	"marewood/initial"
+	"marewood/internal/db"
+	"marewood/routes"
 )
 
 func main() {
 
-	err := serviceConfig.CheckEnvAndInitDir()
-	if err != nil {
-		log.Printf("检查命令工具或者初始化目录失败！")
-		log.Printf("请安装git和node以及在.env配置里所有前端依赖安装工具")
+	if err := initial.CheckEnvAndInitDir(); err != nil {
 		log.Fatal(err)
+		return
 	}
-
-	sql.InitDb()
-	defer sql.DB.Close()
-
-	models.AutoMigrate()
-	go models.BroadcastMessages()
+	if err := db.Connection(conf.DbDns); err != nil {
+		log.Fatal(err)
+		return
+	}
+	if err := initial.AutoMigrate(); err != nil {
+		log.Fatal(err)
+		return
+	}
 
 	r := routes.InitRouter()
 
-	err = r.Run(":" + config.Cfg.HttpPort)
+	err := r.Run(":" + conf.HttpPort)
 	if err != nil {
 		panic(err)
 	}
+
 }

@@ -1,9 +1,8 @@
 # Build frontend dist.
-FROM node:14-alpine AS frontend
+FROM node:18-alpine AS frontend
 WORKDIR /frontend-build
 
-COPY ./public .
-
+COPY ./ui .
 
 RUN yarn && yarn build
 
@@ -11,28 +10,26 @@ RUN yarn && yarn build
 FROM golang:1.21-alpine AS backend
 WORKDIR /backend-build
 
-RUN apk add build-base
-
 COPY . .
 
-RUN CGO_ENABLED=1 go build -o MareWood ./MareWood.go
+RUN go env -w GOPROXY=https://goproxy.cn,direct
+RUN go build -o main ./marewood.go
 
 
-
-
-FROM node:16-alpine AS marewood
+FROM node:20-alpine AS marewood
 WORKDIR /marewood
 
+#RUN npm install -g pnpm@7 && npm cache clean --force (node16)
+RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN apk add git
 
-
-COPY --from=backend /backend-build/MareWood /marewood
-COPY --from=frontend /frontend-build/build /marewood/public/build
+COPY --from=backend /backend-build/main /marewood/main
+COPY --from=frontend /frontend-build/dist /marewood/ui/dist
 
 
 EXPOSE 8088
 VOLUME  /marewood/resources
 
-ENTRYPOINT ["/marewood/MareWood"]
+ENTRYPOINT ["/marewood/main"]
 
-#docker run -d --name marewood -p 8088:8088 -v ~/.marewood:/marewood/resources ghcr.io/xusenlin/marewood:0.4
+#docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.0-node18
