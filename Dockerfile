@@ -19,7 +19,10 @@ RUN go build -o main ./marewood.go
 FROM node:20-alpine AS marewood
 WORKDIR /marewood
 
-#RUN npm install -g pnpm@7 && npm cache clean --force (node16)
+#(node16)
+#RUN npm install -g pnpm@7 && npm cache clean --force
+
+
 RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN apk add git
 
