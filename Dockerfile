@@ -16,7 +16,7 @@ RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go build -o main ./marewood.go
 
 
-FROM node:20-alpine AS marewood
+FROM node:18-alpine AS marewood
 WORKDIR /marewood
 
 #(node16)
@@ -25,6 +25,11 @@ WORKDIR /marewood
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN apk add git
+
+RUN npm config set registry https://registry.npmmirror.com
+RUN yarn config set registry https://registry.npmmirror.com
+RUN pnpm config set registry https://registry.npmmirror.com
+
 
 COPY --from=backend /backend-build/main /marewood/main
 COPY --from=frontend /frontend-build/dist /marewood/ui/dist
