@@ -10,6 +10,7 @@ marewood will help you clone the frontend Git repository. Once you associate a r
 - If the registered username is Admin, it will automatically become a super administrator, and usernames cannot be repeated.
 - Configure the front-end project to automatically select different API request addresses using different packaging commands, in order to meet the packaging requirements of various environments.
 - If you need to switch the Node.js version, please stop the Marewood container and run another version of the container using the same mounted directory.
+- The mounted "resources" directory contains database files, cloned Git repositories, and packaged static files (in the "web" directory). Nginx is used to serve the static files and is configured to point to the "web" directory. This setup allows for accessing the packaged projects freely using URLs.
 
 ## node16
 ```shell
