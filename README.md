@@ -7,7 +7,9 @@ marewood will help you clone the frontend Git repository. Once you associate a r
 
 # Usage
 
-If the registered username is Admin, it will automatically become a super administrator, and usernames cannot be repeated.
+- If the registered username is Admin, it will automatically become a super administrator, and usernames cannot be repeated.
+- Configure the front-end project to automatically select different API request addresses using different packaging commands, in order to meet the packaging requirements of various environments.
+- If you need to switch the Node.js version, please stop the Marewood container and run another version of the container using the same mounted directory.
 
 ## node16
 ```shell
@@ -23,13 +25,12 @@ docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resour
 ```
 
 # Screenshot
+### Dashboard
 ![Dashboard](screenshot/dashboard.png)
-
-
-![Task](screenshot/task.png)
-
-
+### Repo
 ![Repo](screenshot/repo.png)
+### Task
+![Task](screenshot/task.png)
 
 # Roles
 

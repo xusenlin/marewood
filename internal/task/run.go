@@ -130,7 +130,7 @@ func RunTask(claims *common.Claims, task *Task, repo *repository.Repository) {
 	}
 
 	name, arg := BuildDependCmd(repo.DependTools)
-	installDepend := cmd.NewTimeoutCmd(name, 5*time.Minute).AddArgs(arg)
+	installDepend := cmd.NewTimeoutCmd(name, 10*time.Minute).AddArgs(arg)
 	out, err = installDepend.RunInDir(repoDir)
 	if err != nil {
 		terminalOut += "\n😭😭😭InstallDependError:\n" + out + "\n" + err.Error()
