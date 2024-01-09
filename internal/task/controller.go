@@ -171,7 +171,7 @@ func Tar(c *gin.Context) {
 		return
 	}
 
-	ctx.SendFile(fmt.Sprintf("%s.tar.gz", task.CommitHash), file)
+	ctx.SendFile(fmt.Sprintf("%s.tar", task.CommitHash), file)
 }
 
 func Destroy(c *gin.Context) {
