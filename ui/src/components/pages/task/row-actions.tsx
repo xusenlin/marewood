@@ -90,7 +90,7 @@ export const RowActions = ({row,reload,edit}:RowActionsProps) => {
               </DropdownMenuItem>
               <DropdownMenuItem onClick={()=>{window.open(getTaskTarUrl(row.id!), "_blank");}}>
                 <ArrowDownToLine className="mr-2 h-4 w-4" />
-                <span>Download Tar.gz</span>
+                <span>Download Tar</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={()=>{del(row.id!)}}>
                 <Trash2 className="mr-2 h-4 w-4" />
