@@ -2,6 +2,7 @@ package task
 
 import (
 	"archive/tar"
+	"archive/zip"
 	"bytes"
 	"errors"
 	"gorm.io/gorm"
@@ -71,68 +72,6 @@ func (t *Task) Edit(u *common.Claims) error {
 	}
 }
 
-func (t *Task) Tar() ([]byte, error) {
-
-	dst := filepath.Join(conf.WebRootDir, t.Alias)
-	folder, err := os.Open(dst)
-	if err != nil {
-		return nil, err
-	}
-	defer folder.Close()
-
-	buf := new(bytes.Buffer)
-	tw := tar.NewWriter(buf)
-
-	// 遍历源目录下的文件和子目录
-	err = filepath.Walk(dst, func(file string, fi os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		// 为当前文件或目录创建一个tar头
-		header, err := tar.FileInfoHeader(fi, file)
-		if err != nil {
-			return err
-		}
-
-		// 更新tar头中的文件名
-		rel, err := filepath.Rel(dst, file)
-		if err != nil {
-			return err
-		}
-		header.Name = filepath.ToSlash(rel)
-
-		// 写入tar头
-		if err := tw.WriteHeader(header); err != nil {
-			return err
-		}
-
-		// 如果当前文件是一个普通文件，则将内容写入tar文件
-		if !fi.IsDir() {
-			data, err := os.Open(file)
-			if err != nil {
-				return err
-			}
-			defer data.Close()
-			if _, err := io.Copy(tw, data); err != nil {
-				return err
-			}
-		}
-
-		return nil
-	})
-	if err != nil {
-		return buf.Bytes(), err
-	}
-
-	// 关闭tar文件
-	if err := tw.Close(); err != nil {
-		return buf.Bytes(), err
-	}
-
-	return buf.Bytes(), nil
-}
-
 func (t *Task) CheckBranch() error {
 
 	dst := filepath.Join(conf.RepositoryDir, strconv.Itoa(int(t.RepositoryId)))
@@ -147,4 +86,112 @@ func (t *Task) CheckBranch() error {
 		}
 	}
 	return errors.New("the branch does not exist")
+}
+
+func (t *Task) Tar() ([]byte, error) {
+
+	dst := filepath.Join(conf.WebRootDir, t.Alias)
+	folder, err := os.Open(dst)
+	if err != nil {
+		return nil, err
+	}
+	defer folder.Close()
+
+	tarFile := new(bytes.Buffer)
+	tw := tar.NewWriter(tarFile)
+
+	err = filepath.Walk(dst, func(file string, fi os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		header, err := tar.FileInfoHeader(fi, file)
+		if err != nil {
+			return err
+		}
+
+		rel, err := filepath.Rel(dst, file)
+		if err != nil {
+			return err
+		}
+		header.Name = filepath.ToSlash(rel)
+
+		if err := tw.WriteHeader(header); err != nil {
+			return err
+		}
+
+		if !fi.IsDir() {
+			data, err := os.Open(file)
+			if err != nil {
+				return err
+			}
+			defer data.Close()
+			if _, err := io.Copy(tw, data); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		return tarFile.Bytes(), err
+	}
+	if err := tw.Close(); err != nil {
+		return tarFile.Bytes(), err
+	}
+
+	return tarFile.Bytes(), nil
+}
+
+func (t *Task) Zip() ([]byte, error) {
+	dst := filepath.Join(conf.WebRootDir, t.Alias)
+	zipFile := new(bytes.Buffer)
+
+	zw := zip.NewWriter(zipFile)
+
+	err := filepath.Walk(dst, func(file string, fi os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		header, err := zip.FileInfoHeader(fi)
+		if err != nil {
+			return err
+		}
+
+		rel, err := filepath.Rel(dst, file)
+		if err != nil {
+			return err
+		}
+		header.Name = filepath.ToSlash(rel)
+
+		w, err := zw.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+
+		if !fi.IsDir() {
+			data, err := os.Open(file)
+			if err != nil {
+				return err
+			}
+			defer data.Close()
+			_, err = io.Copy(w, data)
+			if err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	err = zw.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	return zipFile.Bytes(), nil
 }

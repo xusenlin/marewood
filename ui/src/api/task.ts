@@ -79,6 +79,6 @@ export const destroy = (id: number) => {
 export const getEventUrl = ()=>`${baseURL}/v1/event/task?token=${getToken()}`
 
 
-export const getTaskTarUrl = (id:number)=>`${baseURL}/v1/task/tar?id=${id}`
+export const getTaskArchiverUrl = (id:number,type:number)=>`${baseURL}/v1/task/archiver?id=${id}&type=${type}`
 
 

@@ -6,7 +6,6 @@ marewood is an open source automatic packaging deployment tool for front-end
 marewood will help you clone the frontend Git repository. Once you associate a repository with a packaging task, you can choose the branch and command for packaging. After a successful packaging, you can access it through an alias.
 
 # Usage
-
 - If the registered username is Admin, it will automatically become a super administrator, and usernames cannot be repeated.
 - Configure the front-end project to automatically select different API request addresses using different packaging commands, in order to meet the packaging requirements of various environments.
 - If you need to switch the Node.js version, please stop the Marewood container and run another version of the container using the same mounted directory.
@@ -14,15 +13,15 @@ marewood will help you clone the frontend Git repository. Once you associate a r
 
 ## node16
 ```shell
-docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.0-node16
+docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.2-node16
 ```
 ## node18
 ```shell
-docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.0-node18
+docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.2-node18
 ```
 ## node20
 ```shell
-docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.0-node20
+docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.2-node20
 ```
 
 # Screenshot

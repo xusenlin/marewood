@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {destroy, getTaskTarUrl, run, Task} from "@/api/task.ts";
+import {destroy, getTaskArchiverUrl, run, Task} from "@/api/task.ts";
 import {useRef} from "react";
 import {SwitchBranch, SwitchBranchType} from "@/components/pages/task/switch-branch.tsx";
 import {toast} from "sonner";
@@ -88,9 +88,13 @@ export const RowActions = ({row,reload,edit}:RowActionsProps) => {
                 <PencilRuler className="mr-2 h-4 w-4" />
                 <span>Edit Task</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>{window.open(getTaskTarUrl(row.id!), "_blank");}}>
+              <DropdownMenuItem onClick={()=>{window.open(getTaskArchiverUrl(row.id!,1), "_blank");}}>
                 <ArrowDownToLine className="mr-2 h-4 w-4" />
                 <span>Download Tar</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>{window.open(getTaskArchiverUrl(row.id!,2), "_blank");}}>
+                <ArrowDownToLine className="mr-2 h-4 w-4" />
+                <span>Download Zip</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={()=>{del(row.id!)}}>
                 <Trash2 className="mr-2 h-4 w-4" />

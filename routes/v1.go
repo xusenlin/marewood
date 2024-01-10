@@ -18,7 +18,7 @@ func setV1Api(r *gin.Engine) {
 
 		v1Public.GET("/event/repository", repository.EventSource)
 		v1Public.GET("/event/task", task.EventSource)
-		v1Public.GET("/task/tar", task.Tar)
+		v1Public.GET("/task/archiver", task.Archiver)
 	}
 
 	v1 := r.Group("/v1").Use(middlewares.JWTAuth())

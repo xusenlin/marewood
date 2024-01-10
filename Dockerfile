@@ -16,7 +16,7 @@ RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go build -o main ./marewood.go
 
 
-FROM node:18-alpine AS marewood
+FROM node:20-alpine AS marewood
 WORKDIR /marewood
 
 #(node16)

@@ -148,9 +148,10 @@ func EventSource(c *gin.Context) {
 	})
 }
 
-func Tar(c *gin.Context) {
+func Archiver(c *gin.Context) {
 	ctx := context.New(c)
 	id := c.Query("id")
+	archiverType := c.Query("type")
 	if id == "" {
 		ctx.SendErr(errors.New("id is not allowed to be empty"))
 		return
@@ -165,13 +166,29 @@ func Tar(c *gin.Context) {
 		ctx.SendErr(errors.New("task status is not successful"))
 		return
 	}
-	file, err := task.Tar()
-	if err != nil {
-		ctx.SendErr(err)
+
+	switch archiverType {
+	case "1":
+		file, err := task.Tar()
+		if err != nil {
+			ctx.SendErr(err)
+			return
+		}
+		ctx.SendFile(fmt.Sprintf("%s.tar", task.CommitHash), file)
+		return
+	case "2":
+		file, err := task.Zip()
+		if err != nil {
+			ctx.SendErr(err)
+			return
+		}
+		ctx.SendFile(fmt.Sprintf("%s.zip", task.CommitHash), file)
+		return
+	default:
+		ctx.SendErr(errors.New("type is not allowed to be empty"))
 		return
 	}
 
-	ctx.SendFile(fmt.Sprintf("%s.tar", task.CommitHash), file)
 }
 
 func Destroy(c *gin.Context) {
