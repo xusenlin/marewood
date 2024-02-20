@@ -70,13 +70,19 @@ func (u *User) Destroy() (err error) {
 
 func (u *User) Edit() (err error) {
 
-	password := u.Password
+	var oldUser User
+	oldUser.ID = u.ID
+	if errors.Is(db.Conn.First(&oldUser).Error, gorm.ErrRecordNotFound) {
+		return errors.New("user not found")
+	}
 
-	if u.Role == RoleSuperAdministrator {
+	if oldUser.Role == RoleSuperAdministrator {
 		return errors.New("can not edit super administrator")
 	}
-	if password != "" {
-		u.Password = Md5(PasswordSalt + password)
+	if u.Password == "" { //没有输入密码使用老密码
+		u.Password = oldUser.Password
+	} else {
+		u.Password = Md5(PasswordSalt + u.Password)
 	}
 	return db.Conn.Save(&u).Error
 }
