@@ -31,6 +31,8 @@ docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resour
 ![Repo](screenshot/repo.png)
 ### Task
 ![Task](screenshot/task.png)
+![TaskTag](screenshot/task-tag.png)
+![TaskInfo](screenshot/task-info.png)
 
 # Roles
 
