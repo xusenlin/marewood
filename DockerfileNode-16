@@ -41,3 +41,6 @@ EXPOSE 8088
 VOLUME  /marewood/resources
 
 ENTRYPOINT ["/marewood/main"]
+
+
+#sudo docker build -t ghcr.io/xusenlin/marewood:1.0.3-node16 .  -f DockerfileNode-16
