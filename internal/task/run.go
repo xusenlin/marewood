@@ -4,12 +4,14 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	cmd "github.com/xusenlin/command"
+	"log/slog"
 	"marewood/conf"
 	"marewood/internal/command"
 	"marewood/internal/common"
 	"marewood/internal/context"
 	"marewood/internal/db"
 	"marewood/internal/event"
+	"marewood/internal/log"
 	"marewood/internal/repository"
 	"os"
 	"path/filepath"
@@ -80,6 +82,7 @@ func Run(c *gin.Context) {
 		RepositoryId: repo.ID,
 	}, claims.ID)
 
+	log.Slog.Info("run task", slog.Any("userId", claims.ID), slog.Any("taskId", task.ID), slog.Any("repoId", repo.ID))
 	go RunTask(claims, &task, &repo)
 
 	ctx.SendOk("Compiling in the background...", task.ID)
@@ -98,6 +101,7 @@ func RunTask(claims *common.Claims, task *Task, repo *repository.Repository) {
 				Msg:      "build fail",
 				TaskId:   task.ID,
 			})
+			log.Slog.Error("run task error", slog.Any("userId", claims.ID), slog.Any("taskId", task.ID), slog.Any("repoId", repo.ID), slog.String("err", err.Error()))
 		}
 		db.Conn.Model(&repo).Update("task_status", repository.TaskStatusLeisured)
 		event.RepoSource.PublishMsg(event.TaskTypeBuildOk, &event.RepoData{
@@ -116,6 +120,7 @@ func RunTask(claims *common.Claims, task *Task, repo *repository.Repository) {
 	}
 
 	err = task.CheckBranch()
+
 	if err != nil {
 		terminalOut += "\n😭😭😭CheckBranchError:\n" + err.Error()
 		return

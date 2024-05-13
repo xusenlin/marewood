@@ -7,10 +7,12 @@ import (
 	ginPagination "github.com/xusenlin/gin-pagination"
 	"gorm.io/gorm"
 	"io"
+	"log/slog"
 	"marewood/internal/common"
 	"marewood/internal/context"
 	"marewood/internal/db"
 	"marewood/internal/event"
+	"marewood/internal/log"
 	"strconv"
 	"strings"
 )
@@ -137,10 +139,12 @@ func EventSource(c *gin.Context) {
 
 	event.TaskSource.Subscribe(claims.ID)
 	defer event.TaskSource.CancelSubscribe(claims.ID)
+	log.Slog.Info("[TaskEventSource]:subscribe", slog.Any("userId", claims.ID))
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case msg := <-event.TaskSource.ReceiveMsg(claims.ID):
 			c.SSEvent(msg.Type, msg.Data)
+			log.Slog.Info("[TaskEventSource]:sendMsg", slog.Any("userId", claims.ID), slog.String("type", msg.Type), slog.String("msg", msg.Data.Msg))
 			return true
 		case <-c.Writer.CloseNotify():
 			return false

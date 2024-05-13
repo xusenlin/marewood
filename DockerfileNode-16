@@ -17,16 +17,18 @@ RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go build -o main ./marewood.go
 
 
-FROM node:22-alpine AS marewood
+FROM node:16-alpine AS marewood
 WORKDIR /marewood
-
-#(node > 18)
-RUN corepack enable && corepack prepare pnpm@latest --activate
 
 RUN npm config set registry https://registry.npmmirror.com
 RUN yarn config set registry https://registry.npmmirror.com
-RUN pnpm config set registry https://registry.npmmirror.com
 
+
+
+#(node16)
+RUN npm install -g pnpm@7 && npm cache clean --force
+
+RUN pnpm config set registry https://registry.npmmirror.com
 
 RUN apk add git
 

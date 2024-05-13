@@ -11,7 +11,7 @@ import (
 )
 
 func setV1Api(r *gin.Engine) {
-	v1Public := r.Group("/v1")
+	v1Public := r.Group("/v1").Use(middlewares.Logger())
 	{
 		v1Public.POST("/login", user.Login)
 		v1Public.POST("/register", user.Register)
@@ -21,7 +21,7 @@ func setV1Api(r *gin.Engine) {
 		v1Public.GET("/task/archiver", task.Archiver)
 	}
 
-	v1 := r.Group("/v1").Use(middlewares.JWTAuth())
+	v1 := r.Group("/v1").Use(middlewares.JWTAuth(), middlewares.AuthLogger())
 	{
 		v1.GET("/sys", func(c *gin.Context) {
 			ctx := context.New(c)

@@ -7,12 +7,14 @@ import (
 	ginPagination "github.com/xusenlin/gin-pagination"
 	"io"
 	"io/ioutil"
+	"log/slog"
 	"marewood/conf"
 	"marewood/internal/command"
 	"marewood/internal/common"
 	"marewood/internal/context"
 	"marewood/internal/db"
 	"marewood/internal/event"
+	"marewood/internal/log"
 	"path/filepath"
 	"strconv"
 )
@@ -115,10 +117,12 @@ func EventSource(c *gin.Context) {
 
 	event.RepoSource.Subscribe(claims.ID)
 	defer event.RepoSource.CancelSubscribe(claims.ID)
+	log.Slog.Info("[RepoEventSource]:subscribe", slog.Any("userId", claims.ID))
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case msg := <-event.RepoSource.ReceiveMsg(claims.ID):
 			c.SSEvent(msg.Type, msg.Data)
+			log.Slog.Info("[RepoEventSource]:send", slog.Any("userId", claims.ID), slog.String("type", msg.Type), slog.String("msg", msg.Data.Msg))
 			return true
 		case <-c.Writer.CloseNotify():
 			return false

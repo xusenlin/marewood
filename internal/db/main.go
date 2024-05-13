@@ -2,6 +2,9 @@ package db
 
 import (
 	ginPagination "github.com/xusenlin/gin-pagination"
+	"log/slog"
+	"marewood/internal/log"
+
 	//"gorm.io/driver/sqlite"  Remove cgo to use a slim Alpine Docker container
 	//Because of C-compiler requirement, you can't build your Go code inside tiny stripped containers like (golang-alpine)
 	"github.com/glebarez/sqlite"
@@ -19,6 +22,7 @@ func Connection(dns string) error {
 	}
 	//Conn = db.Debug()
 	Conn = db
+	log.Slog.Info("Connect to database successfully", slog.String("dns", dns))
 	ginPagination.Init(&ginPagination.Config{
 		PageSizeMaxVal:     100,
 		PageSizeDefaultVal: 20,

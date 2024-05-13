@@ -96,6 +96,8 @@ github.com/xusenlin/event-source v0.0.6-alpha h1:5rZrOpYqUV1GPrFSSQEjrznzAH4U0aZ
 github.com/xusenlin/event-source v0.0.6-alpha/go.mod h1:3ce5ekyi8hLEyS7t64dJ1ZEB5vGDs6t1FGjnyjs/JGA=
 github.com/xusenlin/gin-pagination v0.0.3-alpha h1:tiLrseVQfOrkg4W8eu6CeUOLSmKQlsyzKLzCdlVih74=
 github.com/xusenlin/gin-pagination v0.0.3-alpha/go.mod h1:Z7VP0lUkERmtdoKSapGOLi1EHjUN8w/DkW04KpHp/6M=
+github.com/xusenlin/timeSpliceFile v0.0.2-alpha h1:48wSNTolLUUQtmaisSOU+K2w+bXFb0/5gyMDWvL+hpA=
+github.com/xusenlin/timeSpliceFile v0.0.2-alpha/go.mod h1:BArgltbwQazDbvY59ZuVlMttJiFz78mNO/nwWpfC0ts=
 golang.org/x/arch v0.0.0-20210923205945-b76863e36670/go.mod h1:5om86z9Hs0C8fWVUuoMHwpExlXzs5Tkyp9hOrfG7pp8=
 golang.org/x/arch v0.6.0 h1:S0JTfE48HbRj80+4tbvZDYsJ3tGv6BUU3XxyZ7CirAc=
 golang.org/x/arch v0.6.0/go.mod h1:FEVrYAQjsQXMVJ1nsMoVVXPZg6p2JE2mx8psSWTDQys=
