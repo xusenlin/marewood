@@ -19,7 +19,7 @@ var DependTools = make(map[string]string)
 //ResourcesDir 容器挂载目录，包含数据库文件、仓库和打包的静态文件目录
 
 func init() {
-	Version = "1.0.0"
+	Version = "1.0.3"
 	AppName = "MareWood"
 	AppRepository = "https://github.com/xusenlin/MareWood"
 
