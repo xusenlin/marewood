@@ -13,12 +13,11 @@ BUILD_NODE_IMAGE := 18  20  22
 # 获取项目全部基础镜像
 pull:
 	@for image in $(BASE_IMAGES); do \
-		echo "\nPulling base image for Node $$image..."; \
+		echo "\nPulling base image for $$image..."; \
 		docker pull $$image; \
 	done
 
-# mac和 linux的 sed 命令有差异，需要注意,目前在mac下测试ok.
-
+# mac 和 linux的 sed 命令有差异，需要注意,目前在mac下测试ok.
 build:
 	@for nodeVersion in $(BUILD_NODE_IMAGE); do \
         imageName=ghcr.io/$(DOCKER_USERNAME)/$(PROJECT_NAME):$(PROJECT_VERSION)-node$$nodeVersion; \
@@ -27,7 +26,9 @@ build:
 		sudo docker build -t $$imageName .; \
     done
 
+
 check:
 	sudo docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:$(PROJECT_VERSION)-node22
+
 
 .PHONY: pull build check

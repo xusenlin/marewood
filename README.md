@@ -1,5 +1,7 @@
 
 # MareWood
+> [中文文档](./README_CN.md)
+
 marewood is an open source automatic packaging deployment tool for front-end
 
 # What is MareWood doing?
