@@ -29,7 +29,7 @@ func setV1Api(r *gin.Engine) {
 		})
 		//user
 		v1.GET("/users", middlewares.RoleReporter(), user.Find)
-		v1.POST("/users", middlewares.RoleSuperAdmin(), user.Edit)
+		v1.POST("/user", middlewares.RoleSuperAdmin(), user.Edit)
 		v1.DELETE("/user/:id", middlewares.RoleSuperAdmin(), user.Destroy)
 		//repository
 		v1.GET("/repositories", middlewares.RoleReporter(), repository.Find)

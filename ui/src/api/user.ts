@@ -35,14 +35,14 @@ export const getUsers = (params:UserParams) => {
 
 export const destroy = (params: {id: number}) => {
   return request<Response<number>>({
-    url: `/v1/users/${params.id}`,
+    url: `/v1/user/${params.id}`,
     method: 'delete',
   })
 }
 
 export const edit = (data: Partial<User>) => {
   return request<Response<number>>({
-    url: '/v1/users',
+    url: '/v1/user',
     method: 'post',
     data
   })
