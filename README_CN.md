@@ -29,6 +29,9 @@ docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resour
 ```shell
 docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.3-node22
 ```
+
+>>>镜像基于 alpine 多阶段构建，只包含必要的运行依赖，不会过多占用你的磁盘。为了使用 alpine,放弃了带 cgo 的 sqlite 包，转而使用纯 go 编写的 sqlite 包。
+
 # 截图
 ### Dashboard
 ![Dashboard](screenshot/dashboard.png)
