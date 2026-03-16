@@ -3,8 +3,8 @@ package middlewares
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"marewood/internal/common"
-	"marewood/internal/context"
+	"marewood/internal/pkg/context"
+	"marewood/internal/pkg/jwt"
 )
 
 func JWTAuth() func(c *gin.Context) {
@@ -16,13 +16,13 @@ func JWTAuth() func(c *gin.Context) {
 			c.Abort()
 			return
 		}
-		claims, err := common.JwtParseToken(token)
+		claims, err := jwt.ParseToken(token)
 		if err != nil {
 			ctx.SendErr(err)
 			c.Abort()
 			return
 		}
-		c.Set(common.JwtClaimsKey, claims)
+		c.Set(jwt.JwtClaimsKey, claims)
 		c.Next() // 后续的处理函数可以用过c.Get("JwtClaims")来获取当前请求的用户信息
 	}
 }

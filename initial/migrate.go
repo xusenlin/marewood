@@ -1,16 +1,14 @@
 package initial
 
 import (
-	"marewood/internal/db"
-	"marewood/internal/repository"
-	"marewood/internal/task"
-	"marewood/internal/user"
+	"marewood/internal/models"
+	"marewood/internal/pkg/database"
 )
 
 func AutoMigrate() error {
-	return db.Conn.AutoMigrate(
-		&task.Task{},
-		&user.User{},
-		&repository.Repository{},
+	return database.Conn.AutoMigrate(
+		&models.User{},
+		&models.Repository{},
+		&models.Task{},
 	)
 }

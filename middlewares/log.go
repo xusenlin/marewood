@@ -3,8 +3,8 @@ package middlewares
 import (
 	"github.com/gin-gonic/gin"
 	"log/slog"
-	"marewood/internal/common"
-	"marewood/internal/log"
+	"marewood/internal/pkg/jwt"
+	"marewood/internal/pkg/logger"
 )
 
 func Logger() gin.HandlerFunc {
@@ -16,7 +16,7 @@ func Logger() gin.HandlerFunc {
 
 		statusCode := c.Writer.Status()
 
-		log.GIN.Info(
+		logger.GIN.Info(
 			"[GIN] request middlewares",
 			slog.String("clientIP", clientIP),
 			slog.String("method", method),
@@ -36,17 +36,17 @@ func AuthLogger() gin.HandlerFunc {
 
 		statusCode := c.Writer.Status()
 
-		user := new(common.Claims)
+		user := new(jwt.Claims)
 
-		jwtClaims, hasClaims := c.Get(common.JwtClaimsKey)
+		jwtClaims, hasClaims := c.Get(jwt.JwtClaimsKey)
 		if hasClaims {
-			claims, ok := jwtClaims.(*common.Claims)
+			claims, ok := jwtClaims.(*jwt.Claims)
 			if ok {
 				user = claims
 			}
 		}
 
-		log.GIN.Info(
+		logger.GIN.Info(
 			"[GIN] request middlewares",
 			slog.String("clientIP", clientIP),
 			slog.String("method", method),

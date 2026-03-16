@@ -2,33 +2,28 @@ package middlewares
 
 import (
 	"errors"
+	"marewood/internal/models"
+	"marewood/internal/pkg/context"
+
 	"github.com/gin-gonic/gin"
-	"marewood/internal/context"
-	"marewood/internal/user"
 )
 
 func RoleReporter() func(c *gin.Context) {
 	tip := errors.New("only reporters and above roles have permission to operate")
-	return func(c *gin.Context) { role(c, user.RoleReporter, tip) }
+	return func(c *gin.Context) { role(c, models.UserRoleReporter, tip) }
 }
 
 func RoleDeveloper() func(c *gin.Context) {
 	tip := errors.New("developer and above roles have the right to operate")
-	return func(c *gin.Context) { role(c, user.RoleDeveloper, tip) }
-}
-
-func RoleAdmin() func(c *gin.Context) {
-	tip := errors.New("only the administrator has the authority to operate")
-	return func(c *gin.Context) { role(c, user.RoleAdminister, tip) }
+	return func(c *gin.Context) { role(c, models.UserRoleDeveloper, tip) }
 }
 
 func RoleSuperAdmin() func(c *gin.Context) {
 	tip := errors.New("only super administrators have authority to operate")
-	return func(c *gin.Context) { role(c, user.RoleSuperAdministrator, tip) }
+	return func(c *gin.Context) { role(c, models.UserRoleSuperAdmin, tip) }
 }
 
 func role(c *gin.Context, roleVal int, errTip error) {
-
 	ctx := context.New(c)
 	claims, err := ctx.GetClaims()
 	if err != nil {

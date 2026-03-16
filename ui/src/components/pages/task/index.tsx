@@ -27,7 +27,7 @@ export const TaskIndex = () => {
       const tags = res.data.data.map(item=>({label:item.tag,value:item.tag,count:item.count}))
       setTags(tags)
     }).catch(e=>{
-      toast.error(e)
+      toast.error(e.toString())
     })
   },[])
 

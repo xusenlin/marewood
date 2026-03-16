@@ -21,7 +21,7 @@ import {useUserStore,outLogin} from "@/store/user.ts";
 
 
 export const Account = () => {
-  const {user } = useUserStore()
+  const { user } = useUserStore()
 
   return (
       <DropdownMenu>
