@@ -1,10 +1,11 @@
 package middlewares
 
 import (
-	"errors"
-	"github.com/gin-gonic/gin"
 	"marewood/internal/pkg/context"
+	AppErr "marewood/internal/pkg/errors"
 	"marewood/internal/pkg/jwt"
+
+	"github.com/gin-gonic/gin"
 )
 
 func JWTAuth() func(c *gin.Context) {
@@ -12,7 +13,7 @@ func JWTAuth() func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
 		ctx := context.New(c)
 		if token == "" {
-			ctx.SendErr(errors.New("please log in first"))
+			ctx.SendErr(AppErr.NewForbiddenError("please log in first"))
 			c.Abort()
 			return
 		}

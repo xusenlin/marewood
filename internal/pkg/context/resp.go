@@ -10,16 +10,17 @@ import (
 )
 
 func (r *Context) SendErr(err error) {
-	status := http.StatusInternalServerError
+	errCode := AppErr.ErrCodeUndefined
 
 	var appErr *AppErr.AppError
 	if errors.As(err, &appErr) {
-		status = appErr.HttpStatus
+		errCode = appErr.Code
 	}
 
-	r.c.JSON(status, gin.H{
+	r.c.JSON(http.StatusOK, gin.H{
 		"status": false,
-		"data":   "",
+		"data":   nil,
+		"code":   errCode,
 		"msg":    err.Error(),
 	})
 }
@@ -27,6 +28,7 @@ func (r *Context) SendErr(err error) {
 func (r *Context) SendOk(msg string, data any) {
 	r.c.JSON(http.StatusOK, gin.H{
 		"status": true,
+		"code":   200,
 		"data":   data,
 		"msg":    msg,
 	})
