@@ -19,17 +19,20 @@ func setV1Api(r *gin.Engine) {
 	userDAO := dao.NewUserDAO(db)
 	repoDAO := dao.NewRepositoryDAO(db)
 	taskDAO := dao.NewTaskDAO(db)
+	historyDAO := dao.NewHistoryDao(db)
 
 	// 初始化 Services
 	gitService := services.NewGitService()
 	userService := services.NewUserService(userDAO)
 	repoService := services.NewRepositoryService(repoDAO, gitService)
-	taskService := services.NewTaskService(taskDAO, repoDAO, gitService)
+	taskService := services.NewTaskService(taskDAO, repoDAO, historyDAO, gitService)
+	historyService := services.NewHistoryService(historyDAO, taskDAO)
 
 	// 初始化 Controllers
 	userCtrl := controllers.NewUserController(userService)
 	repoCtrl := controllers.NewRepositoryController(repoService)
 	taskCtrl := controllers.NewTaskController(taskService)
+	historyCtrl := controllers.NewHistoryController(historyService)
 
 	// 公开路由
 	v1Public := r.Group("/v1").Use(middlewares.Logger())
@@ -72,5 +75,9 @@ func setV1Api(r *gin.Engine) {
 		v1.GET("/task/update_branch", middlewares.RoleDeveloper(), taskCtrl.UpdateBranch)
 		v1.DELETE("/task/:id", middlewares.RoleDeveloper(), taskCtrl.Destroy)
 		v1.GET("/task/run", middlewares.RoleDeveloper(), taskCtrl.Run)
+
+		// 历史版本路由
+		v1.GET("/histories", middlewares.RoleReporter(), historyCtrl.FindByTaskID)
+		v1.POST("/history/restore/:id", middlewares.RoleDeveloper(), historyCtrl.Restore)
 	}
 }

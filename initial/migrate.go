@@ -10,5 +10,6 @@ func AutoMigrate() error {
 		&models.User{},
 		&models.Repository{},
 		&models.Task{},
+		&models.History{},
 	)
 }

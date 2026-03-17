@@ -51,5 +51,10 @@ func initDir() error {
 			return err
 		}
 	}
+	if info, err := os.Stat(conf.HistoryDir); err != nil || !info.IsDir() {
+		if os.Mkdir(conf.HistoryDir, os.ModePerm) != nil {
+			return err
+		}
+	}
 	return nil
 }

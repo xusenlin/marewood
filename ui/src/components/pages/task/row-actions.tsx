@@ -1,5 +1,5 @@
 import {Button} from "@/components/ui/button.tsx";
-import {ArrowDownToLine, MoreHorizontal,PencilRuler, PlayCircle, Link, Share2, Trash2} from "lucide-react";
+import {ArrowDownToLine, MoreHorizontal,PencilRuler, PlayCircle, Link, Share2, Trash2, History} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,9 +18,10 @@ type RowActionsProps = {
   row:Task
   reload:(resetPageIndex:boolean)=>void
   edit:()=>void
+  showHistory:()=>void
 }
 
-export const RowActions = ({row,reload,edit}:RowActionsProps) => {
+export const RowActions = ({row,reload,edit,showHistory}:RowActionsProps) => {
 
   const switchBranchRef = useRef<SwitchBranchType>();
 
@@ -87,6 +88,10 @@ export const RowActions = ({row,reload,edit}:RowActionsProps) => {
               <DropdownMenuItem onClick={edit}>
                 <PencilRuler className="mr-2 h-4 w-4" />
                 <span>Edit Task</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={showHistory}>
+                <History className="mr-2 h-4 w-4" />
+                <span>History Version</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={()=>{window.open(getTaskArchiverUrl(row.id!,"tar"), "_blank");}}>
                 <ArrowDownToLine className="mr-2 h-4 w-4" />

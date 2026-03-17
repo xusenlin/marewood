@@ -134,11 +134,11 @@ export const Dashboard = () => {
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium flex items-center">
                         <Folder className="h-4 w-4 mr-1 text-muted-foreground inline-block align-text-bottom"/>
-                        ClientDir
+                        HistoryBuilds
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <code className="break-all text-muted-foreground text-sm">{sysInfo.clientDir}</code>
+                      <code className="break-all text-muted-foreground text-sm">{sysInfo.historyDir}</code>
                     </CardContent>
                   </Card>
 

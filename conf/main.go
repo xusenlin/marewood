@@ -13,6 +13,7 @@ var (
 	ResourcesDir  string
 	RepositoryDir string
 	WebRootDir    string
+	HistoryDir    string
 	CurrentDir    string
 	ClientDir     string
 )
@@ -53,6 +54,7 @@ func init() {
 	DbDns = path.Join(ResourcesDir, "database.db")
 	RepositoryDir = path.Join(ResourcesDir, "repositories")
 	WebRootDir = path.Join(ResourcesDir, "webs")
+	HistoryDir = path.Join(ResourcesDir, "history")
 
 	DependTools = map[string]string{"git": "", "node": "", "npm": "", "yarn": "", "pnpm": ""}
 }
@@ -84,7 +86,7 @@ func ConfigMap() map[string]any {
 		"resourcesDir":  ResourcesDir,
 		"repositoryDir": RepositoryDir,
 		"webRootDir":    WebRootDir,
-		"clientDir":     ClientDir,
+		"historyDir":    HistoryDir,
 
 		"dependTools": DependTools,
 

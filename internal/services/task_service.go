@@ -7,15 +7,20 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"os"
+	"path/filepath"
+	"strconv"
+	"time"
+
+	"gorm.io/gorm"
+
+	"marewood/conf"
 	"marewood/internal/dao"
 	"marewood/internal/models"
 	pkgErrors "marewood/internal/pkg/errors"
 	"marewood/internal/pkg/event"
 	"marewood/internal/pkg/jwt"
 	"marewood/internal/pkg/logger"
-	"os"
-	"path/filepath"
-	"time"
 
 	cmd "github.com/xusenlin/command"
 )
@@ -35,14 +40,16 @@ type TaskService interface {
 type taskService struct {
 	taskDAO    dao.TaskDAO
 	repoDAO    dao.RepositoryDAO
+	historyDAO dao.HistoryDao
 	gitService GitService
 }
 
 // NewTaskService 创建任务服务
-func NewTaskService(taskDAO dao.TaskDAO, repoDAO dao.RepositoryDAO, gitService GitService) TaskService {
+func NewTaskService(taskDAO dao.TaskDAO, repoDAO dao.RepositoryDAO, historyDAO dao.HistoryDao, gitService GitService) TaskService {
 	return &taskService{
 		taskDAO:    taskDAO,
 		repoDAO:    repoDAO,
+		historyDAO: historyDAO,
 		gitService: gitService,
 	}
 }
@@ -306,6 +313,45 @@ func (s *taskService) executeTask(claims *jwt.Claims, task *models.Task, repo *m
 		return
 	}
 
+	// 创建或更新历史记录
+	existingHistory, err := s.historyDAO.FindByTaskIDAndGitHash(task.ID, hash)
+	if err != nil && err != gorm.ErrRecordNotFound {
+		terminalOut += "\n😭😭😭FindHistoryError:\n" + err.Error()
+		err = err
+		return
+	}
+
+	if existingHistory.ID != 0 {
+		existingHistory.UserID = claims.ID
+		existingHistory.UserName = claims.Username
+		if err := s.historyDAO.Update(existingHistory); err != nil {
+			terminalOut += "\n😭😭😭UpdateHistoryError:\n" + err.Error()
+			err = err
+			return
+		}
+	} else {
+		history := &models.History{
+			TaskID:   task.ID,
+			Name:     task.Name,
+			GitHash:  hash,
+			UserID:   claims.ID,
+			UserName: claims.Username,
+		}
+		if err := s.historyDAO.Create(history); err != nil {
+			terminalOut += "\n😭😭😭CreateHistoryError:\n" + err.Error()
+			err = err
+			return
+		}
+	}
+
+	// 复制文件到历史目录
+	historyDir := filepath.Join(conf.HistoryDir, strconv.Itoa(int(task.ID)), hash)
+	if err := s.copy(website, historyDir); err != nil {
+		terminalOut += "\n😭😭😭CopyHistoryError:\n" + err.Error()
+		err = err
+		return
+	}
+
 	terminalOut += "\n🥳🥳🥳🥳  Compilation successful  🌼🌼🌼"
 
 	// 更新任务状态
@@ -469,4 +515,30 @@ func buildDependCmd(tools string) (name string, arg string) {
 func (s *taskService) gitCheckout(dir, branch string) (string, error) {
 	checkout := cmd.New("git").AddArgs("checkout", branch)
 	return checkout.RunInDir(dir)
+}
+
+func (s *taskService) copy(src, dst string) error {
+	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		relPath, err := filepath.Rel(src, path)
+		if err != nil {
+			return err
+		}
+
+		dstPath := filepath.Join(dst, relPath)
+
+		if info.IsDir() {
+			return os.MkdirAll(dstPath, info.Mode())
+		}
+
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+
+		return os.WriteFile(dstPath, data, info.Mode())
+	})
 }

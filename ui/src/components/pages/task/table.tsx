@@ -11,6 +11,7 @@ import {TooltipWrap} from "@/components/ui/tooltipWrap.tsx";
 import {Album, Lock} from "lucide-react";
 import {PaginationComponent} from "@/components/ui/pagination.tsx";
 import {FormActionType, TaskForm} from "@/components/pages/task/form.tsx";
+import {HistoryVersion, HistoryVersionType} from "@/components/pages/task/history-version.tsx";
 
 const columns:{id:keyof Task,title:string}[]= [
   {
@@ -75,6 +76,7 @@ const TableComponent = (props: TaskTableProps, ref: ForwardedRef<ActionType>) =>
   const [data, setData] = useState<Pagination<Task> | null>(null)
   const [params, setParams] = useState<TaskParams>({pageNum: 1, pageSize: 7})
   const formRef = useRef<FormActionType>();
+  const historyVersionRef = useRef<HistoryVersionType>(null);
   const isFirstRender = useRef(true);
 
   useEffect(() => {
@@ -178,6 +180,7 @@ const TableComponent = (props: TaskTableProps, ref: ForwardedRef<ActionType>) =>
                           <RowActions
                               row={t}
                               edit={()=>{formRef.current?.editForm(t);}}
+                              showHistory={() => {historyVersionRef.current?.Show(t.id!)} }
                               reload={()=>{reload()}}/>
                         </TableCell>
                       </TableRow>
@@ -193,6 +196,7 @@ const TableComponent = (props: TaskTableProps, ref: ForwardedRef<ActionType>) =>
           }}/>
         </div>
         <TaskForm ref={formRef} reload={()=>{reload()}}/>
+        <HistoryVersion ref={historyVersionRef}/>
       </>
 
   )
