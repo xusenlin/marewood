@@ -49,7 +49,7 @@ export const edit = (data: Partial<Task>) => {
 
 
 export type TagType = {
-  tag:string
+  name:string
   count:number
 }
 
@@ -79,6 +79,6 @@ export const destroy = (id: number) => {
 export const getEventUrl = ()=>`${baseURL}/v1/event/task?token=${getToken()}`
 
 
-export const getTaskArchiverUrl = (id:number,type:number)=>`${baseURL}/v1/task/archiver?id=${id}&type=${type}`
+export const getTaskArchiverUrl = (id:number,format:string)=>`${baseURL}/v1/task/archiver?id=${id}&format=${format}`
 
 

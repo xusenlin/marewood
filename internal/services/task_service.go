@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"archive/zip"
 	"bytes"
+	"fmt"
 	"io"
 	"log/slog"
 	"marewood/internal/dao"
@@ -25,10 +26,10 @@ type TaskService interface {
 	GetTask(id uint) (*models.Task, error)
 	DeleteTask(id uint, claims *jwt.Claims) error
 	ListTasks(page, pageSize int, filters map[string]interface{}, userID uint, userRole int) ([]*models.Task, int64, error)
-	GetAllTags() ([]string, error)
+	GetAllTags() ([]models.Tag, error)
 	UpdateBranch(taskID, repositoryID uint) error
 	RunTask(taskID uint, claims *jwt.Claims) error
-	ArchiveTask(taskID uint, format string) ([]byte, error)
+	ArchiveTask(taskID uint, format string) ([]byte, string, error)
 }
 
 type taskService struct {
@@ -100,7 +101,7 @@ func (s *taskService) ListTasks(page, pageSize int, filters map[string]interface
 	return s.taskDAO.List(offset, pageSize, filters, userID, isAdmin)
 }
 
-func (s *taskService) GetAllTags() ([]string, error) {
+func (s *taskService) GetAllTags() ([]models.Tag, error) {
 	return s.taskDAO.GetAllTags()
 }
 
@@ -323,16 +324,24 @@ func (s *taskService) executeTask(claims *jwt.Claims, task *models.Task, repo *m
 	})
 }
 
-func (s *taskService) ArchiveTask(taskID uint, format string) ([]byte, error) {
+func (s *taskService) ArchiveTask(taskID uint, format string) ([]byte, string, error) {
 	task, err := s.taskDAO.FindByID(taskID)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
-	if format == "zip" {
-		return s.zipTask(task)
+	var archiveFile []byte
+	switch format {
+	case "zip":
+		archiveFile, err = s.zipTask(task)
+	case "tar":
+		archiveFile, err = s.tarTask(task)
+	default:
+		return nil, "", fmt.Errorf("unsupported archive format: %s", format)
 	}
-	return s.tarTask(task)
+
+	filename := fmt.Sprintf("%s_%s_%s.%s", task.Tag, task.Name, task.CommitHash, format)
+	return archiveFile, filename, nil
 }
 
 func (s *taskService) tarTask(task *models.Task) ([]byte, error) {

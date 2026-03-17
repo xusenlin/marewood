@@ -111,7 +111,6 @@ func (s *repositoryService) ListAll() ([]*models.Repository, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	// 添加提示信息
 	for idx, r := range repos {
 		name, err := getRepositoryNameByURL(r.Url)

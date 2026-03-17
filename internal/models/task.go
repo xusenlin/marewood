@@ -16,6 +16,11 @@ const (
 	TaskStatusSuccess    TaskStatus = 3 // 成功
 )
 
+type Tag struct {
+	Name  string `json:"name"`
+	Count int    `json:"count"`
+}
+
 // Task 任务模型
 type Task struct {
 	Model

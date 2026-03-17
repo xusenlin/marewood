@@ -113,7 +113,7 @@ const TableComponent = (props: RepoTableProps, ref: ForwardedRef<ActionType>) =>
   }
   const pull = (id:number)=>{
     gitPull(id).then(r=>{
-      toast.success(r.data.data)
+      toast.success(r.data.msg)
     }).catch(e=>{
       toast.error(e)
     })
@@ -121,7 +121,7 @@ const TableComponent = (props: RepoTableProps, ref: ForwardedRef<ActionType>) =>
 
   const checkoutDot  = (id:number)=>{
     gitCheckoutDot(id).then(r=>{
-      toast.success(r.data.data)
+      toast.success(r.data.msg)
     }).catch(e=>{
       toast.error(e)
     })

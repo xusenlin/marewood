@@ -74,7 +74,7 @@ const TaskFormComponent =  (props: { reload: () => void; }, ref: ForwardedRef<Fo
     initialRepositoryData(repositoryId)
     setForm((prevForm) => ({...prevForm, repositoryId,branch:"" }));
 
-    const name = repositories.find(r=>r.id===repositoryId)?.tip
+    const name = repositories.find(r=>r.id===repositoryId)?.name
     setForm((prevForm) => ({...prevForm, alias:name }));
   }
   const initialRepositoryData = (repositoryId:number)=>{
@@ -147,7 +147,7 @@ const TaskFormComponent =  (props: { reload: () => void; }, ref: ForwardedRef<Fo
                   {/*<SelectValue placeholder={form.repositoryId} />*/}
                 </SelectTrigger>
                 <SelectContent>
-                  { repositories.map(r => <SelectItem key={r.id} value={r.id.toString()}>{r.name}({r.tip})</SelectItem>) }
+                  { repositories.map(r => <SelectItem key={r.id} value={r.id.toString()}>{r.name}(id:{r.id})</SelectItem>) }
                 </SelectContent>
               </Select>
             </div>

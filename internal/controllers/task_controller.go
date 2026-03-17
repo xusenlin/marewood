@@ -6,6 +6,7 @@ import (
 	"marewood/internal/pkg/context"
 	"marewood/internal/pkg/errors"
 	"marewood/internal/pkg/event"
+	"marewood/internal/pkg/jwt"
 	"marewood/internal/services"
 	"strconv"
 
@@ -179,30 +180,28 @@ func (ctrl *TaskController) Archiver(c *gin.Context) {
 		ctx.SendErr(errors.NewValidationError("id is not allowed to be empty"))
 		return
 	}
-
 	format := c.Query("format")
-	if format == "" {
-		format = "tar"
-	}
-
 	id, err := strconv.ParseUint(taskId, 10, 32)
 	if err != nil {
 		ctx.SendErr(errors.NewValidationError("invalid id"))
 		return
 	}
 
-	data, err := ctrl.taskService.ArchiveTask(uint(id), format)
+	data, fileName, err := ctrl.taskService.ArchiveTask(uint(id), format)
 	if err != nil {
 		ctx.SendErr(err)
 		return
 	}
-
 	// 返回文件
-	if format == "zip" {
-		ctx.SendZipFile("task_"+taskId+".zip", data)
-	} else {
-		ctx.SendTarFile("task_"+taskId+".tar", data)
+	switch format {
+	case "zip":
+		ctx.SendZipFile(fileName, data)
+	case "tar":
+		ctx.SendTarFile(fileName, data)
+	default:
+		ctx.SendErr(errors.NewValidationError("unsupported archive format"))
 	}
+
 }
 
 // EventSource SSE 事件流
@@ -211,7 +210,7 @@ func (ctrl *TaskController) EventSource(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache")
 	c.Header("Connection", "keep-alive")
 
-	claims, err := context.New(c).GetClaims()
+	claims, err := jwt.ParseToken(c.Query("token"))
 	var userID uint
 	if err != nil {
 		userID = 0
@@ -220,7 +219,8 @@ func (ctrl *TaskController) EventSource(c *gin.Context) {
 	}
 
 	event.TaskSource.Subscribe(userID)
-
+	c.SSEvent("message", "connected")
+	c.Writer.Flush()
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case msg := <-event.TaskSource.ReceiveMsg(userID):

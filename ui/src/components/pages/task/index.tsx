@@ -24,7 +24,7 @@ export const TaskIndex = () => {
 
   useEffect(()=>{
     allTags().then(res=>{
-      const tags = res.data.data.map(item=>({label:item.tag,value:item.tag,count:item.count}))
+      const tags = res.data.data.map(item=>({label:item.name,value:item.name,count:item.count}))
       setTags(tags)
     }).catch(e=>{
       toast.error(e.toString())

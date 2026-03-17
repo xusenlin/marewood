@@ -88,11 +88,11 @@ export const RowActions = ({row,reload,edit}:RowActionsProps) => {
                 <PencilRuler className="mr-2 h-4 w-4" />
                 <span>Edit Task</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>{window.open(getTaskArchiverUrl(row.id!,1), "_blank");}}>
+              <DropdownMenuItem onClick={()=>{window.open(getTaskArchiverUrl(row.id!,"tar"), "_blank");}}>
                 <ArrowDownToLine className="mr-2 h-4 w-4" />
                 <span>Download Tar</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>{window.open(getTaskArchiverUrl(row.id!,2), "_blank");}}>
+              <DropdownMenuItem onClick={()=>{window.open(getTaskArchiverUrl(row.id!,"zip"), "_blank");}}>
                 <ArrowDownToLine className="mr-2 h-4 w-4" />
                 <span>Download Zip</span>
               </DropdownMenuItem>

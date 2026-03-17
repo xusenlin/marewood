@@ -13,7 +13,7 @@ import {PanelBottomClose} from "lucide-react";
 import {toast} from "sonner";
 import {allTags} from "@/api/task.ts";
 export type TagType = {
-  tag:string
+  name:string
   count:number
 }
 export type AntoInputProps = {
@@ -48,15 +48,15 @@ export const SelectTag = ({onChange}:AntoInputProps) => {
               <CommandGroup>
                 {tags.map((t) => (
                     <CommandItem
-                        key={t.tag}
-                        value={t.tag}
+                        key={t.name}
+                        value={t.name}
                         onSelect={(v) => {
                           onChange(v)
                           setOpen(false)
                         }}
                     >
                       <div className="flex w-[200px] items-center justify-between">
-                        <span>{t.tag}</span>
+                        <span>{t.name}</span>
                         <span>{t.count}</span>
                       </div>
                     </CommandItem>

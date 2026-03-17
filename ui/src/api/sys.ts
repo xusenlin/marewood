@@ -1,6 +1,7 @@
 import request, {Response} from "@/lib/request.ts"
 
 export type Sys = {
+  systemInfo: string
   [key: string]: any
 }
 

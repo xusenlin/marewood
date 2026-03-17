@@ -16,7 +16,7 @@ type TaskDAO interface {
 	Update(task *models.Task) error
 	Delete(id uint) error
 	List(offset, limit int, filters map[string]interface{}, userID uint, isAdmin bool) ([]*models.Task, int64, error)
-	GetAllTags() ([]string, error)
+	GetAllTags() ([]models.Tag, error)
 }
 
 type taskDAO struct {
@@ -94,9 +94,9 @@ func (d *taskDAO) List(offset, limit int, filters map[string]interface{}, userID
 	err := query.Offset(offset).Limit(limit).Find(&tasks).Error
 	return tasks, total, err
 }
+func (d *taskDAO) GetAllTags() ([]models.Tag, error) {
+	var tags []models.Tag
 
-func (d *taskDAO) GetAllTags() ([]string, error) {
-	var tags []string
-	err := d.db.Model(&models.Task{}).Distinct().Pluck("tag", &tags).Error
+	err := d.db.Model(&models.Task{}).Select("tag as name, count(*) as count").Group("tag").Find(&tags).Error
 	return tags, err
 }

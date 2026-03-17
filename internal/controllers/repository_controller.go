@@ -6,6 +6,7 @@ import (
 	"marewood/internal/pkg/context"
 	pkgErrors "marewood/internal/pkg/errors"
 	"marewood/internal/pkg/event"
+	"marewood/internal/pkg/jwt"
 	"marewood/internal/services"
 	"strconv"
 
@@ -217,7 +218,7 @@ func (ctrl *RepositoryController) EventSource(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache")
 	c.Header("Connection", "keep-alive")
 
-	claims, err := context.New(c).GetClaims()
+	claims, err := jwt.ParseToken(c.Query("token"))
 	var userID uint
 	if err != nil {
 		userID = 0
@@ -226,7 +227,8 @@ func (ctrl *RepositoryController) EventSource(c *gin.Context) {
 	}
 
 	event.RepoSource.Subscribe(userID)
-
+	c.SSEvent("message", "connected")
+	c.Writer.Flush()
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case msg := <-event.RepoSource.ReceiveMsg(userID):

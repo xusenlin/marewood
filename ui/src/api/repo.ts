@@ -30,7 +30,6 @@ export type RepositoryLess = {
   id:number
   name:string
   url:string
-  tip:string
 }
 
 export const repositoryList = () => {
