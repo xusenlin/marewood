@@ -212,6 +212,7 @@ func (s *taskService) executeTask(claims *jwt.Claims, task *models.Task, repo *m
 
 	defer func() {
 		if err != nil {
+			terminalOut = "😭😭😭RunTaskError:\n" + err.Error()
 			task.Status = models.TaskStatusFailed
 			task.TerminalInfo = terminalOut
 			s.taskDAO.Update(task)

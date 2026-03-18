@@ -5,8 +5,8 @@ import {outLogin} from "@/store/user.ts";
 import nprogress from "nprogress"
 import {getToken} from "@/lib/utils.ts";
 
-//export const baseURL = window.location.origin
-export const baseURL = "http://localhost:8088"
+export const baseURL = window.location.origin
+//export const baseURL = "http://localhost:8088"
 
 const service = axios.create({baseURL})
 

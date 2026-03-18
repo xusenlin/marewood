@@ -14,4 +14,4 @@ type RepoData struct {
 	Msg          string `json:"msg"`
 }
 
-var RepoSource = eventSource.New[*RepoData, uint]()
+var RepoSource = eventSource.New[*RepoData, uint](50)

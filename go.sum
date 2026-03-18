@@ -92,8 +92,8 @@ github.com/ugorji/go/codec v1.2.11 h1:BMaWp1Bb6fHwEtbplGBGJ498wD+LKlNSl25MjdZY4d
 github.com/ugorji/go/codec v1.2.11/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZgYf6w6lg=
 github.com/xusenlin/command v0.0.3-alpha h1:CxuLEEAM1A8L5Yi5P0YOHc1M5GoDEdWMN2hSzLdCQCg=
 github.com/xusenlin/command v0.0.3-alpha/go.mod h1:c+W1NN7FUOZfGkI7I1wYCNI0mm9+iVq8Ub6AFT1/2/0=
-github.com/xusenlin/event-source v0.0.6-alpha h1:5rZrOpYqUV1GPrFSSQEjrznzAH4U0aZmWv5ucAgij+w=
-github.com/xusenlin/event-source v0.0.6-alpha/go.mod h1:3ce5ekyi8hLEyS7t64dJ1ZEB5vGDs6t1FGjnyjs/JGA=
+github.com/xusenlin/event-source v0.0.8-alpha h1:UrbKPEBj0RTDjAjxIBWHB+YSQVzVWTxIUQ7/o/3keyw=
+github.com/xusenlin/event-source v0.0.8-alpha/go.mod h1:3ce5ekyi8hLEyS7t64dJ1ZEB5vGDs6t1FGjnyjs/JGA=
 github.com/xusenlin/gin-pagination v0.0.3-alpha h1:tiLrseVQfOrkg4W8eu6CeUOLSmKQlsyzKLzCdlVih74=
 github.com/xusenlin/gin-pagination v0.0.3-alpha/go.mod h1:Z7VP0lUkERmtdoKSapGOLi1EHjUN8w/DkW04KpHp/6M=
 github.com/xusenlin/timeSpliceFile v0.0.2-alpha h1:48wSNTolLUUQtmaisSOU+K2w+bXFb0/5gyMDWvL+hpA=

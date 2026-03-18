@@ -17,4 +17,4 @@ type TaskData struct {
 	Msg      string `json:"msg"`
 }
 
-var TaskSource = eventSource.New[*TaskData, uint]()
+var TaskSource = eventSource.New[*TaskData, uint](50)

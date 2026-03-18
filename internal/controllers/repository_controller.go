@@ -229,6 +229,7 @@ func (ctrl *RepositoryController) EventSource(c *gin.Context) {
 	event.RepoSource.Subscribe(userID)
 	c.SSEvent("message", "connected")
 	c.Writer.Flush()
+	defer event.RepoSource.CancelSubscribe(userID)
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case msg := <-event.RepoSource.ReceiveMsg(userID):

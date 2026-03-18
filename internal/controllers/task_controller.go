@@ -221,6 +221,8 @@ func (ctrl *TaskController) EventSource(c *gin.Context) {
 	event.TaskSource.Subscribe(userID)
 	c.SSEvent("message", "connected")
 	c.Writer.Flush()
+	defer event.TaskSource.CancelSubscribe(userID)
+
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case msg := <-event.TaskSource.ReceiveMsg(userID):

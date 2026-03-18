@@ -7,8 +7,9 @@ require (
 	github.com/glebarez/sqlite v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/xusenlin/command v0.0.3-alpha
-	github.com/xusenlin/event-source v0.0.6-alpha
+	github.com/xusenlin/event-source v0.0.8-alpha
 	github.com/xusenlin/gin-pagination v0.0.3-alpha
+	github.com/xusenlin/timeSpliceFile v0.0.2-alpha
 	gorm.io/gorm v1.25.5
 )
 
@@ -38,7 +39,6 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
-	github.com/xusenlin/timeSpliceFile v0.0.2-alpha // indirect
 	golang.org/x/arch v0.6.0 // indirect
 	golang.org/x/crypto v0.15.0 // indirect
 	golang.org/x/net v0.18.0 // indirect
