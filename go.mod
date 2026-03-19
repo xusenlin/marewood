@@ -7,7 +7,7 @@ require (
 	github.com/glebarez/sqlite v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/xusenlin/command v0.0.3-alpha
-	github.com/xusenlin/event-source v0.0.8-alpha
+	github.com/xusenlin/event-source v0.0.9-alpha
 	github.com/xusenlin/gin-pagination v0.0.3-alpha
 	github.com/xusenlin/timeSpliceFile v0.0.2-alpha
 	gorm.io/gorm v1.25.5
