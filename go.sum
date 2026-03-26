@@ -90,8 +90,8 @@ github.com/twitchyliquid64/golang-asm v0.15.1 h1:SU5vSMR7hnwNxj24w34ZyCi/FmDZTkS
 github.com/twitchyliquid64/golang-asm v0.15.1/go.mod h1:a1lVb/DtPvCB8fslRZhAngC2+aY1QWCk3Cedj/Gdt08=
 github.com/ugorji/go/codec v1.2.11 h1:BMaWp1Bb6fHwEtbplGBGJ498wD+LKlNSl25MjdZY4dU=
 github.com/ugorji/go/codec v1.2.11/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZgYf6w6lg=
-github.com/xusenlin/command v0.0.3-alpha h1:CxuLEEAM1A8L5Yi5P0YOHc1M5GoDEdWMN2hSzLdCQCg=
-github.com/xusenlin/command v0.0.3-alpha/go.mod h1:c+W1NN7FUOZfGkI7I1wYCNI0mm9+iVq8Ub6AFT1/2/0=
+github.com/xusenlin/command v0.0.4-alpha h1:+G605QVKU7/2U7qvgnOTktI8WiXhn3gJzHg9kXJQqB4=
+github.com/xusenlin/command v0.0.4-alpha/go.mod h1:c+W1NN7FUOZfGkI7I1wYCNI0mm9+iVq8Ub6AFT1/2/0=
 github.com/xusenlin/event-source v0.0.9-alpha h1:LlpYqdxlyt5TgS/uQyyKrRCIKokwIO8wpq7kIK6Gq0E=
 github.com/xusenlin/event-source v0.0.9-alpha/go.mod h1:3ce5ekyi8hLEyS7t64dJ1ZEB5vGDs6t1FGjnyjs/JGA=
 github.com/xusenlin/gin-pagination v0.0.3-alpha h1:tiLrseVQfOrkg4W8eu6CeUOLSmKQlsyzKLzCdlVih74=
