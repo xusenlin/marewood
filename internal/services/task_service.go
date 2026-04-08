@@ -212,7 +212,6 @@ func (s *taskService) executeTask(claims *jwt.Claims, task *models.Task, repo *m
 
 	defer func() {
 		if err != nil {
-			terminalOut = "😭😭😭RunTaskError:\n" + err.Error()
 			task.Status = models.TaskStatusFailed
 			task.TerminalInfo = terminalOut
 			s.taskDAO.Update(task)
@@ -240,8 +239,11 @@ func (s *taskService) executeTask(claims *jwt.Claims, task *models.Task, repo *m
 	repoDir := repo.CodeDir()
 
 	// Git Pull
+	logger.Slog.Info("git pull start", slog.Any("taskId", task.ID), slog.String("dir", repoDir))
 	terminalOut, err = s.gitService.Pull(repoDir)
+	logger.Slog.Info("git pull result", slog.Any("taskId", task.ID), slog.String("out", terminalOut), slog.Any("err", err))
 	if err != nil {
+		terminalOut += "\n😭😭😭GitPullError:\n" + err.Error()
 		return
 	}
 
@@ -267,7 +269,9 @@ func (s *taskService) executeTask(claims *jwt.Claims, task *models.Task, repo *m
 	}
 
 	// Git Checkout
+	logger.Slog.Info("git checkout start", slog.Any("taskId", task.ID), slog.String("branch", task.Branch), slog.String("dir", repoDir))
 	out, checkoutErr := s.gitCheckout(repoDir, task.Branch)
+	logger.Slog.Info("git checkout result", slog.Any("taskId", task.ID), slog.String("out", out), slog.Any("err", checkoutErr))
 	if checkoutErr != nil {
 		terminalOut += "\n😭😭😭GitCheckoutError:\n" + out + "\n" + checkoutErr.Error()
 		err = checkoutErr
@@ -277,8 +281,10 @@ func (s *taskService) executeTask(claims *jwt.Claims, task *models.Task, repo *m
 
 	// 安装依赖
 	name, arg := buildDependCmd(repo.DependTools)
+	logger.Slog.Info("installing dependencies", slog.Any("taskId", task.ID), slog.String("cmd", name), slog.String("args", arg), slog.String("dir", repoDir))
 	installDepend := cmd.NewTimeoutCmd(name, 10*time.Minute).AddArgs(arg)
 	out, installErr := installDepend.RunInDir(repoDir)
+	logger.Slog.Info("install output", slog.Any("taskId", task.ID), slog.String("out", out), slog.Any("err", installErr))
 	if installErr != nil {
 		terminalOut += "\n😭😭😭InstallDependError:\n" + out + "\n" + installErr.Error()
 		err = installErr
@@ -287,8 +293,10 @@ func (s *taskService) executeTask(claims *jwt.Claims, task *models.Task, repo *m
 	terminalOut += out
 
 	// 执行构建命令
+	logger.Slog.Info("building project", slog.Any("taskId", task.ID), slog.String("cmd", "npm"), slog.String("args", "run "+task.BuildCommand), slog.String("dir", repoDir))
 	pack := cmd.NewTimeoutCmd("npm", 5*time.Minute).AddArgs("run").AddArgs(task.BuildCommand)
 	out, buildErr := pack.RunInDir(repoDir)
+	logger.Slog.Info("build output", slog.Any("taskId", task.ID), slog.String("out", out), slog.Any("err", buildErr))
 	if buildErr != nil {
 		terminalOut += "\n😭😭😭Compilation failed:\n" + out + "\n" + buildErr.Error()
 		err = buildErr

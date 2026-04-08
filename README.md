@@ -10,24 +10,28 @@ marewood will help you clone the frontend Git repository. Once you associate a r
 # Usage
 - If the registered username is Admin, it will automatically become a super administrator, and usernames cannot be repeated.
 - Configure the front-end project to automatically select different API request addresses using different packaging commands, in order to meet the packaging requirements of various environments.
-- If you need to switch the Node.js version, please stop the Marewood container and run another version of the container using the same mounted directory.
+- If you need to switch the Node.js version, please stop the Marewood container and run another version of the container. Each Node version uses its own named volume (e.g., `marewood-data-22` for node22) to avoid compatibility issues.
 - The mounted "resources" directory contains database files, cloned Git repositories, log files,and packaged static files (in the "web" directory). Nginx is used to serve the static files and is configured to point to the "web" directory. This setup allows for accessing the packaged projects freely using URLs.
 
 ## node16
 ```shell
-docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.3-node16
+docker run -d --name marewood -p 8088:8088 -v marewood-data-16:/marewood/resources ghcr.io/xusenlin/marewood:1.2-node16
 ```
 ## node18
 ```shell
-docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.3-node18
+docker run -d --name marewood -p 8088:8088 -v marewood-data-18:/marewood/resources ghcr.io/xusenlin/marewood:1.2-node18
 ```
 ## node20
 ```shell
-docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.3-node20
+docker run -d --name marewood -p 8088:8088 -v marewood-data-20:/marewood/resources ghcr.io/xusenlin/marewood:1.2-node20
 ```
 ## node22
 ```shell
-docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resources ghcr.io/xusenlin/marewood:1.0.3-node22
+docker run -d --name marewood -p 8088:8088 -v marewood-data-22:/marewood/resources ghcr.io/xusenlin/marewood:1.2-node22
+```
+## node24
+```shell
+docker run -d --name marewood -p 8088:8088 -v marewood-data-24:/marewood/resources ghcr.io/xusenlin/marewood:1.2-node24
 ```
 # Screenshot
 ### Dashboard
@@ -36,8 +40,8 @@ docker run -d --name marewood -p 8088:8088 -v ~/docker/marewood:/marewood/resour
 ![Repo](screenshot/repo.png)
 ### Task
 ![Task](screenshot/task.png)
-#### Task Tag
-![TaskTag](screenshot/task-tag.png)
+#### Task History
+![TaskHistory](screenshot/task-history.png)
 #### Task Info
 ![TaskInfo](screenshot/task-info.png)
 
@@ -58,10 +62,9 @@ If your git repository is not public, you need to provide your Git account and p
 ## task
 This task runs every time using git pull to fetch the latest code, and displays the hash of the current git commit in the task field column, so you can confirm if it is the latest submission.
 ## docker for mac
-If you want to use pnpm to install dependencies in a Docker container on Mac, you need to modify the Docker file mounting method to osxfs.
-issues: https://github.com/docker/for-mac/issues/6787
-🙁🙁
-The thing is that osxfs has bad performance compared to grpc, and even worse compared to virtiofs...
+We use **named volumes** instead of host path mounting to avoid the pnpm + gRPC FUSE/VirtioFS issue on Docker Desktop for Mac. Named volumes store data in Docker's internal filesystem, avoiding the file sharing problems that affect pnpm when using bind mounts.
+
+Related issue: https://github.com/docker/for-mac/issues/6787
 
 # android and ios app
 [App](https://github.com/xusenlin/marewoodClient)

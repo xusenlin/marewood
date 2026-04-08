@@ -16,8 +16,8 @@ func InitRouter() *gin.Engine {
 	r.Use(middlewares.Cors())
 
 	{
-		r.GET("/ping", func(c *gin.Context) { //服务健康检查
-			c.JSON(http.StatusOK, gin.H{"message": "pong"})
+		r.GET("/health", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{"status": "ok"})
 		})
 
 		r.Static("/webs", conf.WebRootDir)
